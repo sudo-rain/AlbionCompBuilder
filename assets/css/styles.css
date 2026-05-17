@@ -66,3 +66,42 @@ body {
   font-style: italic;
   background: var(--s2);
 }
+
+/* Nav */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--s1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-wiki {
+  color: var(--disabled);
+  pointer-events: none;
+  cursor: default;
+  font-size: 0.9rem;
+}
+
+.nav-wiki::after {
+  content: " (Coming Soon)";
+  font-size: 0.75rem;
+}
