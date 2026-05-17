@@ -290,3 +290,27 @@ nav {
   overflow-x: auto;
   white-space: nowrap;
 }
+
+/* Footer */
+footer {
+  background: var(--s1);
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  text-align: center;
+}
+
+footer a {
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer p {
+  color: var(--text3);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
