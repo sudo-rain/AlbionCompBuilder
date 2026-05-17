@@ -1,0 +1,68 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #09090e;
+  --s1: #111119;
+  --s2: #181824;
+  --s3: #1f1f2e;
+  --s4: #272738;
+  --border: #2a2a3e;
+  --border2: #363650;
+  --text: #dddad0;
+  --text2: #9896ac;
+  --text3: #55536a;
+  --gold: #c9a84c;
+  --gold2: #8a6e2a;
+  --disabled: #55536a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+}
+
+/* Shared button styles */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: #09090e;
+}
+
+.btn-full {
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+
+/* Shared placeholder frame */
+.placeholder-media {
+  border: 2px dashed var(--border2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text3);
+  font-size: 0.9rem;
+  font-style: italic;
+  background: var(--s2);
+}
