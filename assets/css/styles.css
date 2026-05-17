@@ -105,3 +105,45 @@ nav {
   content: " (Coming Soon)";
   font-size: 0.75rem;
 }
+
+/* Hero */
+#hero {
+  text-align: center;
+  padding: 5rem 2rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+#hero h1 span {
+  color: var(--gold);
+}
+
+#hero > p {
+  color: var(--text2);
+  font-size: 1.15rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.placeholder-media--hero {
+  height: 400px;
+  max-width: 800px;
+  margin: 0 auto;
+}
