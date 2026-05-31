@@ -625,3 +625,188 @@ footer p {
     display: none;
   }
 }
+
+/* ===== Demo scenes ===================================================== */
+/* Auto-playing CSS mockups that replace the old .placeholder-media slots.
+   Animations run with zero JS (baseline); demos.js only pauses off-screen
+   scenes when JS is present (html.js gate). prefers-reduced-motion freezes
+   each scene on its base frame. No binary assets. */
+
+.demo {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--s1);
+}
+.wiki-content .demo { height: 260px; margin: 1.25rem 0 2rem; }
+.demo--hero { height: 400px; margin-top: 1.5rem; }
+.demo--feature { height: 280px; }
+
+.scene-stage {
+  position: absolute;
+  inset: 0;
+  padding: 16px;
+  font-size: 11px;
+  color: var(--text2);
+  user-select: none;
+}
+
+/* Shared primitives ---------------------------------------------------- */
+.s-cursor {
+  position: absolute;
+  width: 18px;
+  height: 26px;
+  /* macOS-style pointer: slim black arrow with a real white stroke (an SVG
+     stroke gives a crisp, even outline that a chained drop-shadow can't). */
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 28'><path d='M2 2 L2 22 L7.5 17 L11 25.5 L14 24 L10.5 16 L18 16 Z' fill='%2316161c' stroke='%23ffffff' stroke-width='1.4' stroke-linejoin='round'/></svg>") center/contain no-repeat;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.45));
+  transform-origin: 10% 7%;    /* press scales from the pointer tip */
+  z-index: 9;
+  pointer-events: none;
+}
+.s-card {
+  position: relative;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.s-chip {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--s3);
+  color: var(--text2);
+  font-size: 9px;
+}
+.s-btn {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 9px;
+  letter-spacing: 0.03em;
+  background: var(--s3);
+  color: var(--text);
+}
+.s-btn--gold { background: var(--gold); color: #1a160a; font-weight: 700; }
+.s-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.s-slot {
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  background: var(--s2);
+  aspect-ratio: 1;
+}
+.s-slot--filled { border-style: solid; }
+.s-slot--active { border: 1px dashed var(--gold); box-shadow: 0 0 0 2px rgba(201,168,76,0.18); }
+
+/* JS-only perf gate: pause scenes that are off-screen. With no JS the
+   html.js prefix never matches, so animations always run (PE baseline). */
+html.js .demo:not(.is-onscreen) .scene-stage,
+html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-stage, .scene-stage * { animation: none !important; }
+}
+
+/* Scene: Dashboard ----------------------------------------------------- */
+.scene--dashboard .sd-head {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.scene--dashboard .sd-title { color: var(--gold); font-weight: 700; font-size: 13px; }
+/* sd-pulse is reused by later scenes (bulkgrid Apply, templates Save). */
+@keyframes sd-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
+  50% { box-shadow: 0 0 0 4px rgba(201,168,76,0.22); }
+}
+/* New Composition button depresses + flashes the instant the cursor presses. */
+.scene--dashboard .sd-new { animation: sd-click 5s ease-in-out infinite; }
+@keyframes sd-click {
+  0%, 24% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
+  29% { box-shadow: 0 0 0 4px rgba(201,168,76,0.32); transform: scale(0.95); }
+  36%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
+}
+.scene--dashboard .sd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+/* Cursor travels to the New Composition button (top-right) and presses at 30%;
+   the new card (sd-cardin) appears at 34%. */
+.scene--dashboard .s-cursor { left: 42%; top: 66%; animation: sd-cursor 5s ease-in-out infinite; }
+@keyframes sd-cursor {
+  0%, 6% { left: 42%; top: 66%; transform: scale(1); }
+  26% { left: 84%; top: 7%; transform: scale(1); }
+  30% { left: 84%; top: 7%; transform: scale(0.78); }
+  35% { left: 84%; top: 7%; transform: scale(1); }
+  100% { left: 84%; top: 7%; transform: scale(1); }
+}
+.scene--dashboard .sd-card .sd-row1 { display: flex; align-items: center; gap: 6px; }
+.scene--dashboard .sd-handle { color: var(--text3); letter-spacing: 1px; }
+.scene--dashboard .sd-name { color: var(--text); font-weight: 700; font-size: 12px; }
+.scene--dashboard .sd-cdot { margin-left: auto; background: var(--gold); }
+.scene--dashboard .sd-sub { color: var(--text3); font-size: 9px; margin: 4px 0 6px; }
+.scene--dashboard .sd-chips { display: flex; gap: 5px; margin-bottom: 8px; }
+.scene--dashboard .sd-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.scene--dashboard .sd-del { background: #5a2730; color: #f0c0c4; }
+.scene--dashboard .sd-card--new {
+  animation: sd-cardin 5s ease-in-out infinite;
+}
+@keyframes sd-cardin {
+  0%, 18% { opacity: 0; transform: translateY(10px); }
+  34%, 82% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+/* selection variant (bulk-edit): faithful loadout cards (header + mini slot-icon
+   grid + notation, matching the app's .loadout-card) selected one then the other. */
+.wiki-content .demo.scene--dashboard-select { height: 300px; }   /* taller so the full card fits */
+.scene--dashboard-select .sd-grid { align-items: start; }
+.scene--dashboard-select .sd-new { animation: sds-enable 5.5s ease-in-out infinite; }
+@keyframes sds-enable {            /* Bulk Edit button enables once both are selected */
+  0%, 54% { opacity: 0.5; }
+  60%, 100% { opacity: 1; }
+}
+.scene--dashboard-select .lc-card {
+  background: var(--s2); border: 1px solid var(--border); border-radius: 5px;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.scene--dashboard-select .lc-head {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--s3); border-bottom: 1px solid var(--border); padding: 6px 8px;
+}
+.scene--dashboard-select .lc-handle { color: var(--text3); letter-spacing: 1px; font-size: 10px; }
+.scene--dashboard-select .lc-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.scene--dashboard-select .lc-name { color: var(--text); font-weight: 700; font-size: 11px; }
+.scene--dashboard-select .lc-slots {
+  display: grid; grid-template-columns: repeat(3, 34px); gap: 4px;
+  justify-content: center; padding: 9px 9px 3px;
+}
+.scene--dashboard-select .lc-slots span {
+  width: 34px; height: 34px; border: 1px solid var(--border2); border-radius: 4px; background: var(--s1);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.scene--dashboard-select .lc-slots img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.scene--dashboard-select .lc-slots .lc-add { color: var(--text3); font-size: 14px; border-style: dashed; }
+.scene--dashboard-select .lc-slots .mount { grid-column: 2; }   /* mount centered, last row */
+.scene--dashboard-select .lc-note { color: var(--gold); font-weight: 700; font-size: 10px; padding: 3px 9px 8px; }
+.scene--dashboard-select .lc-card--a { animation: sds-sel 5.5s ease-in-out infinite; }
+.scene--dashboard-select .lc-card--b { animation: sds-sel-b 5.5s ease-in-out infinite; }
+@keyframes sds-sel {
+  0%, 22% { box-shadow: none; border-color: var(--border); }
+  26%, 94% { box-shadow: 0 0 0 2px rgba(201,168,76,0.5); border-color: var(--gold); }
+  100% { box-shadow: none; border-color: var(--border); }
+}
+@keyframes sds-sel-b {
+  0%, 50% { box-shadow: none; border-color: var(--border); }
+  54%, 94% { box-shadow: 0 0 0 2px rgba(201,168,76,0.5); border-color: var(--gold); }
+  100% { box-shadow: none; border-color: var(--border); }
+}
+/* Cursor clicks card A (~22%), then card B (~50%). */
+.scene--dashboard-select .s-cursor { left: 22%; top: 86%; animation: sds-cursor 5.5s ease-in-out infinite; }
+@keyframes sds-cursor {
+  0%, 5% { left: 22%; top: 86%; transform: scale(1); }
+  18% { left: 26%; top: 52%; transform: scale(1); }
+  22% { left: 26%; top: 52%; transform: scale(0.78); }
+  26% { left: 26%; top: 52%; transform: scale(1); }
+  46% { left: 70%; top: 52%; transform: scale(1); }
+  50% { left: 70%; top: 52%; transform: scale(0.78); }
+  54% { left: 70%; top: 52%; transform: scale(1); }
+  100% { left: 70%; top: 52%; transform: scale(1); }
+}

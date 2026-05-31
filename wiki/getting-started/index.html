@@ -6,6 +6,7 @@
   <title>Getting Started — Albion Comp Builder Wiki</title>
   <meta name="description" content="Get started with Albion Comp Builder: create a composition, add a loadout, fill slots, and export to Google Sheets.">
   <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
@@ -29,7 +30,26 @@
 
       <h2>1. Create a composition</h2>
       <p>From the <strong>Dashboard</strong>, click <strong>New Composition</strong>, give it a name, and confirm. A composition is a collection of loadouts — one per role or player slot in your comp.</p>
-      <div class="placeholder-media">[Screenshot: Dashboard + New Composition — add asset]</div>
+      <figure class="demo scene scene--dashboard" role="img" aria-label="Animated demo: the Party Compositions dashboard, pulsing the New Composition button as a new composition card appears.">
+        <div class="scene-stage">
+          <div class="sd-head"><span class="sd-title">Party Compositions</span><span class="s-btn s-btn--gold sd-new">+ New Composition</span></div>
+          <div class="sd-grid">
+            <div class="s-card sd-card">
+              <div class="sd-row1"><span class="sd-handle">⠿</span><span class="sd-name">ZvZ Frontline</span><span class="s-dot sd-cdot"></span></div>
+              <div class="sd-sub">3 loadouts</div>
+              <div class="sd-chips"><span class="s-chip">Tank x1</span><span class="s-chip">Healer x1</span><span class="s-chip">DPS x1</span></div>
+              <div class="sd-actions"><span class="s-btn">OPEN</span><span class="s-btn sd-del">DELETE</span></div>
+            </div>
+            <div class="s-card sd-card sd-card--new">
+              <div class="sd-row1"><span class="sd-handle">⠿</span><span class="sd-name">Hellgate 2v2</span><span class="s-dot sd-cdot" style="background:#5aaee0"></span></div>
+              <div class="sd-sub">2 loadouts</div>
+              <div class="sd-chips"><span class="s-chip">Fighter x1</span><span class="s-chip">Mage x1</span></div>
+              <div class="sd-actions"><span class="s-btn">OPEN</span><span class="s-btn sd-del">DELETE</span></div>
+            </div>
+          </div>
+          <div class="s-cursor"></div>
+        </div>
+      </figure>
 
       <h2>2. Add a loadout and pick a role</h2>
       <p>Inside the composition, add a loadout and choose its role (Main Tank, Healer, DPS, and so on). The role colors the loadout so the comp is easy to read at a glance.</p>
@@ -53,6 +73,7 @@
     </main>
   </div>
 
+  <script defer src="../../assets/js/demos.js"></script>
   <script src="../../assets/js/wiki.js"></script>
 </body>
 </html>
