@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk edit — Albion Comp Builder Wiki</title>
+  <meta name="description" content="Edit many loadouts or templates at once in Albion Comp Builder: leave-unchanged, set, or clear gear, spells, and roles across a selection.">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body>
+
+  <nav>
+    <a href="../../" class="nav-brand">Albion Comp Builder</a>
+    <div class="nav-links">
+      <a href="../getting-started/" class="nav-wiki-link">Wiki</a>
+      <a href="../../#install" class="btn btn-gold">Download</a>
+    </div>
+  </nav>
+
+  <div class="wiki-body">
+    <details class="wiki-sidebar-wrap" open>
+      <summary>Wiki contents</summary>
+      <nav id="wiki-sidebar" aria-label="Wiki navigation"></nav>
+    </details>
+
+    <main class="wiki-content">
+      <h1>Bulk edit</h1>
+      <p>Bulk edit lets you change many loadouts at once instead of editing each one by hand — ideal for applying a shared weapon, swapping a cape across a whole comp, or renaming a batch of templates.</p>
+
+      <h2>Opening bulk edit</h2>
+      <p>Bulk edit works in two places, with the same editor:</p>
+      <ul>
+        <li><strong>In a composition</strong> — select multiple loadouts, then click <strong>Bulk Edit</strong>.</li>
+        <li><strong>In Loadout Templates</strong> — select multiple templates, then click <strong>Bulk Edit</strong>.</li>
+      </ul>
+      <div class="placeholder-media">[Screenshot: selecting loadouts + Bulk Edit — add asset]</div>
+
+      <h2>How each slot behaves: leave unchanged, set, or clear</h2>
+      <p>Every slot in the bulk editor has three possible actions:</p>
+      <ul>
+        <li><strong>Leave unchanged</strong> (the default) — the slot is not touched on any selected loadout; each keeps whatever it already had.</li>
+        <li><strong>Set</strong> — choose an item, tier, and enchant to apply to that slot on <em>all</em> selected loadouts.</li>
+        <li><strong>Clear</strong> — empty that slot on all selected loadouts.</li>
+      </ul>
+      <p>Because the default is "leave unchanged", you only affect the slots you deliberately touch.</p>
+
+      <h2>Reading the shared state</h2>
+      <p>Each slot shows the current state across your selection so you know what's shared before you change anything:</p>
+      <ul>
+        <li><strong>Empty</strong> — the slot is empty on every selected loadout.</li>
+        <li><strong>Unanimous</strong> — every selected loadout has the same item in that slot.</li>
+        <li><strong>Mixed</strong> — the selected loadouts differ in that slot.</li>
+      </ul>
+      <div class="placeholder-media">[Screenshot: bulk edit slot grid with shared-state badges — add asset]</div>
+
+      <h2>What you can bulk edit</h2>
+      <p>The editor covers gear slots, inventory slots, spell selections, and meta fields (each loadout's name and role). Changes are staged as you go.</p>
+
+      <h2>Applying changes</h2>
+      <p>Click <strong>Apply</strong> to write every staged change to all selected loadouts at once. Slots left as "leave unchanged" keep each loadout's existing value.</p>
+
+      <div class="wiki-next">
+        <h2>Related</h2>
+        <ul>
+          <li><a href="../building-a-composition/">Building a composition</a> — where you select loadouts to bulk edit</li>
+          <li><a href="../loadout-templates/">Loadout templates</a> — bulk edit also works on templates</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../assets/js/wiki.js"></script>
+</body>
+</html>
