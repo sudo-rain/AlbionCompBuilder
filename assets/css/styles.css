@@ -404,8 +404,29 @@ footer p {
   display: none; /* desktop: no disclosure toggle, sidebar always shown */
 }
 
+/* Flatten the <nav> box: wrapped in <details>, a <nav> child triggers a
+   Chromium sizing quirk that collapses the disclosure height on mobile, so
+   the open list overflows and overlaps the page. display:contents lets the
+   <ul> size the <details> directly while keeping the nav landmark. */
+.wiki-sidebar-wrap nav {
+  display: contents;
+}
+
 .wiki-nav-list {
   list-style: none;
+}
+
+.wiki-nav-list::before {
+  content: "Contents";
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text3);
+  padding: 0 0.75rem 0.6rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .wiki-nav-link {
@@ -432,18 +453,44 @@ footer p {
 .wiki-content {
   flex: 1;
   min-width: 0;
+  max-width: 720px; /* readable measure (~70ch) under the left sidebar */
 }
 
 .wiki-content h1 {
-  font-size: 2rem;
+  font-size: 2.25rem;
   color: var(--text);
-  margin-bottom: 1rem;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+/* short gold accent overlapping the h1 rule */
+.wiki-content h1::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 3rem;
+  height: 2px;
+  background: var(--gold);
+}
+
+/* lead paragraph: the intro line right after the page title */
+.wiki-content h1 + p {
+  font-size: 1.1rem;
+  color: var(--text);
+  line-height: 1.65;
+  margin-bottom: 1.75rem;
 }
 
 .wiki-content h2 {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   color: var(--gold);
-  margin: 2rem 0 0.75rem;
+  letter-spacing: 0.01em;
+  margin: 2.25rem 0 0.75rem;
 }
 
 .wiki-content p {
@@ -459,19 +506,89 @@ footer p {
   line-height: 1.8;
 }
 
+.wiki-content li {
+  margin-bottom: 0.35rem;
+}
+
 .wiki-content strong {
   color: var(--text);
 }
 
-.wiki-content .placeholder-media {
-  height: 260px;
-  margin: 1rem 0 2rem;
+/* in-prose links: gold with a dim-gold underline that brightens on hover */
+.wiki-content a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold2);
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 
+.wiki-content a:hover {
+  border-bottom-color: var(--gold);
+}
+
+/* inline code chip */
+.wiki-content code {
+  font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+  font-size: 0.85em;
+  color: var(--text);
+  background: var(--s3);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+}
+
+/* deliberate "coming soon" media slot: faint diagonal hatch + image icon */
+.wiki-content .placeholder-media {
+  height: 260px;
+  margin: 1.25rem 0 2rem;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text3);
+  border-color: var(--border2);
+  background-color: var(--s2);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--s3) 0,
+    var(--s3) 1px,
+    transparent 1px,
+    transparent 11px
+  );
+}
+
+.wiki-content .placeholder-media::before {
+  content: "";
+  width: 30px;
+  height: 30px;
+  flex: none;
+  background: var(--text3);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.6'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3'%20y='4'%20width='18'%20height='16'%20rx='2'/%3E%3Ccircle%20cx='8.5'%20cy='9.5'%20r='1.5'/%3E%3Cpath%20d='M21%2015l-5-5L6%2019'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.6'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3'%20y='4'%20width='18'%20height='16'%20rx='2'/%3E%3Ccircle%20cx='8.5'%20cy='9.5'%20r='1.5'/%3E%3Cpath%20d='M21%2015l-5-5L6%2019'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* related / next-up block as a distinct callout card */
 .wiki-next {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.wiki-next h2 {
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.85rem;
+}
+
+.wiki-next ul {
+  margin: 0 0 0 1.25rem;
+}
+
+.wiki-next li:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 700px) {
@@ -479,6 +596,10 @@ footer p {
     flex-direction: column;
     gap: 1rem;
     padding: 1.5rem 1.25rem 3rem;
+  }
+
+  .wiki-content {
+    max-width: none;
   }
 
   .wiki-sidebar-wrap {
@@ -497,5 +618,10 @@ footer p {
     color: var(--gold);
     font-weight: 600;
     padding: 0.5rem 0;
+  }
+
+  /* the summary already labels the collapsed nav on mobile */
+  .wiki-nav-list::before {
+    display: none;
   }
 }
