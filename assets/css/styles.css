@@ -350,7 +350,8 @@ footer p {
     gap: 1.5rem;
   }
 
-  .placeholder-media--feature {
+  .placeholder-media--feature,
+  .demo--feature {
     width: 100%;
     min-width: unset;
   }
@@ -641,7 +642,7 @@ footer p {
 }
 .wiki-content .demo { height: 260px; margin: 1.25rem 0 2rem; }
 .demo--hero { height: 400px; margin-top: 1.5rem; }
-.demo--feature { height: 280px; }
+.demo--feature { height: 280px; flex: 1; min-width: 260px; }
 
 .scene-stage {
   position: absolute;
@@ -659,8 +660,8 @@ footer p {
   height: 26px;
   /* macOS-style pointer: slim black arrow with a real white stroke (an SVG
      stroke gives a crisp, even outline that a chained drop-shadow can't). */
-  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 28'><path d='M2 2 L2 22 L7.5 17 L11 25.5 L14 24 L10.5 16 L18 16 Z' fill='%2316161c' stroke='%23ffffff' stroke-width='1.4' stroke-linejoin='round'/></svg>") center/contain no-repeat;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.45));
+  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 28'><path d='M2 2 L2 22 L7.5 17 L11 25.5 L14 24 L10.5 16 L18 16 Z' fill='%2316161c' stroke='%23ffffff' stroke-width='2.4' stroke-linejoin='round'/></svg>") center/contain no-repeat;
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.55)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
   transform-origin: 10% 7%;    /* press scales from the pointer tip */
   z-index: 9;
   pointer-events: none;
@@ -810,3 +811,159 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
   54% { left: 70%; top: 52%; transform: scale(1); }
   100% { left: 70%; top: 52%; transform: scale(1); }
 }
+
+
+/* Scene: Builder (faithful three-pane) --------------------------------- */
+/* One fixed-proportion canvas. The .demo box is a query container and every
+   internal size is in cqw (1cqw = 1% of the demo's width), so the whole
+   builder scales uniformly to whatever width each slot (hero / feature / wiki)
+   gives it — identical fidelity everywhere, and ONE cursor path (% are
+   container-relative). aspect-ratio derives the height from the width. */
+.demo.scene--builder { container-type: inline-size; aspect-ratio: 2 / 1; height: auto; }
+.scene--builder .scene-stage { padding: 0; display: flex; flex-direction: column; font-size: 1.3cqw; text-align: left; }
+
+/* Toolbar: Back button + role dot + name input + role select */
+.scene--builder .sb-bar { display: flex; align-items: center; gap: 1cqw; padding: 1cqw 1.4cqw; border-bottom: 1px solid var(--border); flex: none; }
+.scene--builder .sb-btn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); padding: 0.7cqw 1cqw; font-size: 1.15cqw; }
+.scene--builder .sb-roledot { width: 1.3cqw; height: 1.3cqw; border-radius: 50%; background: #4a90d9; flex: none; }
+.scene--builder .sb-name { flex: 1; max-width: 26cqw; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text3); padding: 0.7cqw 1cqw; font-size: 1.2cqw; }
+.scene--builder .sb-role { display: flex; align-items: center; justify-content: space-between; gap: 0.8cqw; min-width: 11cqw; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text); padding: 0.7cqw 1cqw; font-size: 1.2cqw; }
+.scene--builder .sb-caret { color: var(--text3); font-size: 1cqw; flex: none; }
+
+/* Panes */
+.scene--builder .sb-panes { flex: 1; display: flex; min-height: 0; }
+
+/* Equipment pane */
+.scene--builder .sb-equip { flex: 0 0 24cqw; background: var(--s1); border-right: 1px solid var(--border); padding: 1.6cqw 1.2cqw; overflow: hidden; }
+.scene--builder .sb-label { color: var(--text3); font-size: 1.05cqw; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8cqw; }
+.scene--builder .sb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6cqw; }
+.scene--builder .sb-slot { display: flex; flex-direction: column; align-items: center; gap: 0.4cqw; padding: 0.4cqw; background: transparent; border: 0; min-width: 0; }
+.scene--builder .sb-slot:nth-child(10) { grid-column: 2; }   /* mount centered, last row */
+.scene--builder .sb-ic { width: 100%; aspect-ratio: 1; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+.scene--builder .sb-ic img { width: 100%; height: 100%; object-fit: contain; }
+.scene--builder .sb-empty { color: var(--text3); font-size: 2cqw; }
+.scene--builder .sb-sl { color: var(--text3); font-size: 0.92cqw; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+.scene--builder .sb-inv { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--text2); font-weight: 600; font-size: 1.15cqw; padding: 0.8cqw 0; margin-top: 0.6cqw; }
+.scene--builder .sb-notation { background: var(--s2); border: 1px solid var(--border); border-radius: 0.5cqw; padding: 1cqw; display: flex; flex-direction: column; gap: 0.5cqw; }
+.scene--builder .sb-notation span { color: var(--text3); font-size: 1cqw; letter-spacing: 0.08em; text-transform: uppercase; }
+.scene--builder .sb-notation strong { color: var(--gold); font-size: 1.25cqw; }
+.scene--builder .sb-fieldlabel { color: var(--text3); font-size: 1.05cqw; margin: 1.2cqw 0 0.5cqw; }
+.scene--builder .sb-notes { height: 4cqw; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); }
+
+/* Item browser */
+.scene--builder .sb-browser { flex: 0 0 38cqw; background: var(--s2); border-right: 1px solid var(--border); display: flex; flex-direction: column; min-width: 0; }
+.scene--builder .sb-bhead { border-bottom: 1px solid var(--border); padding: 1.2cqw 1.4cqw; display: flex; flex-direction: column; gap: 0.9cqw; }
+.scene--builder .sb-titlerow { display: flex; align-items: center; justify-content: space-between; }
+.scene--builder .sb-titlerow strong { color: var(--text2); font-size: 1.2cqw; letter-spacing: 0.08em; text-transform: uppercase; }
+.scene--builder .sb-remove { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s3); color: var(--text2); font-size: 1cqw; padding: 0.4cqw 0.9cqw; }
+.scene--builder .sb-search { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s1); color: var(--text3); padding: 0.8cqw 1cqw; font-size: 1.15cqw; }
+.scene--builder .sb-te { display: flex; gap: 0.9cqw; }
+.scene--builder .sb-tef { flex: 1; display: flex; flex-direction: column; gap: 0.3cqw; min-width: 0; }
+.scene--builder .sb-tef > span { color: var(--text3); font-size: 1cqw; }
+.scene--builder .sb-sel { display: flex; align-items: center; justify-content: space-between; gap: 0.6cqw; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s1); color: var(--text); padding: 0.7cqw 1cqw; font-size: 1.15cqw; }
+.scene--builder .sb-bbody { flex: 1; display: flex; min-height: 0; }
+.scene--builder .sb-cats { flex: 0 0 13cqw; background: var(--s1); border-right: 1px solid var(--border); overflow: hidden; }
+.scene--builder .sb-cat { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--text2); font-size: 1.1cqw; padding: 0.8cqw 1cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scene--builder .sb-cat-active { background: rgba(201,168,76,0.08); box-shadow: inset 0.25cqw 0 0 var(--gold); color: var(--gold); }
+.scene--builder .sb-cat-ancestor { background: var(--s2); color: var(--text); }
+.scene--builder .sb-cat-children { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.scene--builder .sb-cat-l2 { padding-left: 2.4cqw; font-size: 1cqw; }
+.scene--builder .sb-items { flex: 1; min-width: 0; padding: 0.7cqw 0.9cqw; overflow: hidden; display: flex; flex-direction: column; gap: 0.5cqw; }
+.scene--builder .sb-item { display: flex; align-items: center; gap: 0.9cqw; background: var(--s3); border: 1px solid transparent; border-radius: 0.5cqw; padding: 0.8cqw; text-align: left; width: 100%; }
+.scene--builder .sb-iic { width: 5cqw; height: 5cqw; flex: none; border-radius: 0.4cqw; background: var(--s1); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.scene--builder .sb-iic img { width: 118%; height: 118%; object-fit: contain; }
+.scene--builder .sb-item strong { display: block; color: var(--text); font-size: 1.3cqw; }
+.scene--builder .sb-item small { display: block; color: var(--text3); font-size: 1.05cqw; }
+
+/* Ability pane (real Arcane Staff spells; icons from /v1/spell/<uniqueName>) */
+.scene--builder .sb-ability { flex: 1; background: var(--s1); padding: 1.6cqw 1.8cqw; overflow: hidden; min-width: 0; }
+.scene--builder .sb-aname { color: var(--gold); font-size: 1.9cqw; margin: 0 0 1.2cqw; font-weight: 700; }
+.scene--builder .sb-arow { border-bottom: 1px solid var(--border); padding: 1cqw 0; }
+.scene--builder .sb-arow h3 { color: var(--text2); font-size: 1.25cqw; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 0.8cqw; }
+.scene--builder .sb-spells { display: flex; gap: 0.8cqw; margin-bottom: 0.9cqw; }
+.scene--builder .sb-spell { width: 4.2cqw; height: 4.2cqw; border-radius: 50%; border: 0.22cqw solid var(--border2); background: var(--s3); overflow: hidden; padding: 0; flex: none; }
+.scene--builder .sb-spell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scene--builder .sb-detail { background: var(--s3); border: 1px solid var(--border); border-radius: 0.5cqw; padding: 1cqw 1.2cqw; }
+.scene--builder .sb-detail h4 { margin: 0 0 0.6cqw; color: var(--text); font-size: 1.4cqw; }
+.scene--builder .sb-detail p { margin: 0; color: var(--text2); font-size: 1.15cqw; line-height: 1.5; }
+.scene--builder .sb-detail b { color: var(--text); }
+/* Lit spell-option (selected). sb-spell-on = static; sb-spell-pick animates on. */
+.scene--builder .sb-spell-on { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, var(--s3)); box-shadow: 0 0 0 0.12cqw var(--gold2), 0 0 1.2cqw rgba(201,168,76,0.35); }
+/* W row keeps two stacked detail cards (cross-faded in the choreography). */
+.scene--builder .sb-wdetail { position: relative; height: 8.5cqw; }
+.scene--builder .sb-wdetail .sb-detail { position: absolute; inset: 0; }
+.scene--builder .sb-d-enigma { opacity: 1; }
+.scene--builder .sb-d-frazzle { opacity: 0; }
+
+/* Choreography (~9s): press main-hand slot -> press Arcane Staff row -> slot
+   fills + Q's Chain Missile selected -> click W's Frazzle then Enigma, the W
+   detail snapping between them (shows ability details are live for every slot,
+   no game needed). Base (non-animated) states are the COMPLETED look, so the
+   scene still reads under prefers-reduced-motion. */
+.scene--builder .sb-slot-main .sb-ic { border: 1px solid var(--gold2); box-shadow: 0 0 1.4cqw rgba(201,168,76,0.25); animation: sb-slotactive 9s ease-in-out infinite; }
+@keyframes sb-slotactive {
+  0%, 9% { border-color: var(--border2); box-shadow: none; }
+  12%, 26% { border: 1px dashed var(--gold); box-shadow: 0 0 0 0.3cqw rgba(201,168,76,0.18); }
+  30%, 100% { border-color: var(--gold2); box-shadow: 0 0 1.4cqw rgba(201,168,76,0.25); }
+}
+.scene--builder .sb-fill { opacity: 1; animation: sb-fill 9s ease-in-out infinite; }
+@keyframes sb-fill {
+  0%, 28% { opacity: 0; transform: scale(0.6); }
+  32%, 100% { opacity: 1; transform: scale(1); }
+}
+.scene--builder .sb-item-pick { border-color: var(--gold); background: rgba(201,168,76,0.1); animation: sb-itempick 9s ease-in-out infinite; }
+@keyframes sb-itempick {
+  0%, 26% { border-color: transparent; background: var(--s3); }
+  30%, 100% { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+}
+/* Q's Chain Missile: auto-selected (lit) once the item is equipped. */
+.scene--builder .sb-spell-pick { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, var(--s3)); box-shadow: 0 0 0 0.12cqw var(--gold2), 0 0 1.2cqw rgba(201,168,76,0.35); animation: sb-spellpick 9s ease-in-out infinite; }
+@keyframes sb-spellpick {
+  0%, 29% { border-color: var(--border2); box-shadow: none; background: var(--s3); }
+  33%, 100% { border-color: var(--gold); box-shadow: 0 0 0 0.12cqw var(--gold2), 0 0 1.2cqw rgba(201,168,76,0.35); background: color-mix(in srgb, var(--gold) 18%, var(--s3)); }
+}
+/* W spell switch: Enigma (w0) lit -> click Frazzle (w2) -> click back to Enigma.
+   Fast snaps (~2%) at the press frames, like a real click. */
+.scene--builder .sb-w0 { animation: sb-w0 9s ease-in-out infinite; }
+@keyframes sb-w0 {
+  0%, 44% { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, var(--s3)); box-shadow: 0 0 0 0.12cqw var(--gold2), 0 0 1.2cqw rgba(201,168,76,0.35); }
+  46%, 66% { border-color: var(--border2); background: var(--s3); box-shadow: none; }
+  68%, 100% { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, var(--s3)); box-shadow: 0 0 0 0.12cqw var(--gold2), 0 0 1.2cqw rgba(201,168,76,0.35); }
+}
+.scene--builder .sb-w2 { animation: sb-w2 9s ease-in-out infinite; }
+@keyframes sb-w2 {
+  0%, 44% { border-color: var(--border2); background: var(--s3); box-shadow: none; }
+  46%, 66% { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, var(--s3)); box-shadow: 0 0 0 0.12cqw var(--gold2), 0 0 1.2cqw rgba(201,168,76,0.35); }
+  68%, 100% { border-color: var(--border2); background: var(--s3); box-shadow: none; }
+}
+.scene--builder .sb-d-enigma { animation: sb-d-enigma 9s ease-in-out infinite; }
+@keyframes sb-d-enigma { 0%, 44% { opacity: 1; } 46%, 66% { opacity: 0; } 68%, 100% { opacity: 1; } }
+.scene--builder .sb-d-frazzle { animation: sb-d-frazzle 9s ease-in-out infinite; }
+@keyframes sb-d-frazzle { 0%, 44% { opacity: 0; } 46%, 66% { opacity: 1; } 68%, 100% { opacity: 0; } }
+
+/* Cursor — one path; container-relative % + cqw size so it scales with the UI.
+   Targets (main-hand slot / Arcane row / W Frazzle / W Enigma) come from a
+   single measurement of the canvas. */
+.scene--builder .s-cursor { width: max(15px, 2.2cqw); height: max(21px, 3.1cqw); left: 65.9%; top: 75.4%; animation: sb-cursor 9s ease-in-out infinite; }
+@keyframes sb-cursor {
+  0%, 5% { left: 45%; top: 86%; transform: scale(1); }      /* idle */
+  9% { left: 4.7%; top: 44%; transform: scale(1); }         /* arrive: main-hand slot */
+  12% { left: 4.7%; top: 44%; transform: scale(0.78); }     /* press */
+  15% { left: 4.7%; top: 44%; transform: scale(1); }
+  24% { left: 42%; top: 51%; transform: scale(1); }         /* arrive: Arcane Staff row */
+  27% { left: 42%; top: 51%; transform: scale(0.78); }      /* press */
+  30% { left: 42%; top: 51%; transform: scale(1); }
+  40% { left: 75.8%; top: 75.4%; transform: scale(1); }     /* arrive: W Frazzle */
+  43% { left: 75.8%; top: 75.4%; transform: scale(0.78); }  /* press */
+  46% { left: 75.8%; top: 75.4%; transform: scale(1); }
+  62% { left: 65.9%; top: 75.4%; transform: scale(1); }     /* arrive: W Enigma */
+  65% { left: 65.9%; top: 75.4%; transform: scale(0.78); }  /* press */
+  68% { left: 65.9%; top: 75.4%; transform: scale(1); }
+  100% { left: 65.9%; top: 75.4%; transform: scale(1); }
+}
+
+/* hero variant: nothing extra — cqw already scales everything to the box. */
+/* game-info variant: lightly dim equip/browser and ring the ability pane so the
+   eye lands on the real spell data (the feature's selling point). */
+.scene--builder-game .sb-equip, .scene--builder-game .sb-browser { opacity: 0.6; }
+.scene--builder-game .sb-ability { box-shadow: inset 0 0 0 0.15cqw rgba(201,168,76,0.3); }
