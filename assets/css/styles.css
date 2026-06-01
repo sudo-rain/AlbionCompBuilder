@@ -967,3 +967,169 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
    eye lands on the real spell data (the feature's selling point). */
 .scene--builder-game .sb-equip, .scene--builder-game .sb-browser { opacity: 0.6; }
 .scene--builder-game .sb-ability { box-shadow: inset 0 0 0 0.15cqw rgba(201,168,76,0.3); }
+
+/* Scene: BulkEdit (faithful three-pane bulk editor) -------------------- */
+/* Parallel to scene--builder: same cqw canvas technique (1cqw = 1% of demo
+   width) and one cursor keyframe, but its own be-* selectors and content so the
+   builder's sb-* keyframes never bind here. Equipment pane is the focal point;
+   browser + ability panes are dimmed. Base (non-animated) states are the
+   COMPLETED look, so the scene reads under prefers-reduced-motion. */
+.demo.scene--bulkedit { container-type: inline-size; aspect-ratio: 1.7 / 1; height: auto; }
+/* Slightly larger base font than the builder: this scene has less crammed
+   content, and the orange "Mixed" / hint text must stay legible. */
+.scene--bulkedit .scene-stage { padding: 0; display: flex; flex-direction: column; font-size: 1.45cqw; text-align: left; }
+/* Camera wrapper: holds the whole UI + the cursor, so the cursor zooms with the
+   content. The cinematic "camera" pans/zooms this layer (transform), revealing a
+   close-up of the Main Hand click, a medium shot of picking the weapon, and a
+   final full-screen view. transform-origin 0 0 keeps the translate math simple. */
+.scene--bulkedit .be-camera { position: relative; flex: 1; display: flex; flex-direction: column; min-height: 0; transform-origin: 0 0; }
+
+/* Toolbar: Back + segmented control + count (pushed right) + pulsing Apply. */
+.scene--bulkedit .be-bar { display: flex; align-items: center; gap: 1cqw; padding: 1cqw 1.4cqw; border-bottom: 1px solid var(--border); flex: none; }
+.scene--bulkedit .be-btn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); padding: 0.7cqw 1cqw; font-size: 1.2cqw; }
+.scene--bulkedit .be-seg { display: inline-flex; border: 1px solid var(--border); border-radius: 0.5cqw; overflow: hidden; background: var(--s2); }
+.scene--bulkedit .be-seg span { padding: 0.6cqw 1cqw; font-size: 1.15cqw; color: var(--text2); letter-spacing: 0.02em; }
+.scene--bulkedit .be-seg .on { background: var(--gold); color: #1a160a; font-weight: 700; }
+.scene--bulkedit .be-count { color: var(--text3); font-size: 1.2cqw; margin-left: auto; }
+.scene--bulkedit .be-apply { border: 0; border-radius: 0.5cqw; background: var(--gold); color: #1a160a; font-weight: 700; font-size: 1.2cqw; padding: 0.7cqw 1.2cqw; animation: sd-pulse 5s ease-in-out infinite; }
+
+/* Panes */
+.scene--bulkedit .be-panes { flex: 1; display: flex; min-height: 0; }
+
+/* Equipment pane — THE FOCAL POINT (full strength). A touch wider than the
+   builder's 24cqw so the shared-state grid and labels stay readable. */
+.scene--bulkedit .be-equip { flex: 0 0 27cqw; background: var(--s1); border-right: 1px solid var(--border); padding: 1.6cqw 1.2cqw; overflow: hidden; }
+.scene--bulkedit .be-label { color: var(--text3); font-size: 1.2cqw; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.9cqw; }
+.scene--bulkedit .be-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6cqw; }
+.scene--bulkedit .be-slot { display: flex; flex-direction: column; align-items: center; gap: 0.4cqw; padding: 0.4cqw; background: transparent; border: 0; min-width: 0; }
+.scene--bulkedit .be-slot:nth-child(10) { grid-column: 2; }   /* mount centered, last row */
+.scene--bulkedit .be-ic { width: 100%; aspect-ratio: 1; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+.scene--bulkedit .be-ic img { width: 100%; height: 100%; object-fit: contain; }
+.scene--bulkedit .be-empty { color: var(--text3); font-size: 2cqw; }
+.scene--bulkedit .be-sl { color: var(--text3); font-size: 1.05cqw; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+/* Per-slot shared-state badges — STATIC (survive prefers-reduced-motion). */
+.scene--bulkedit .be-ic--unanimous { border-color: #4ec87a; }
+.scene--bulkedit .be-ic--mixed { border-color: #e08840; }
+.scene--bulkedit .be-sl--mixed { color: #e08840; font-weight: 700; font-size: 1.2cqw; }
+.scene--bulkedit .be-inv { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--text2); font-weight: 600; font-size: 1.2cqw; padding: 0.8cqw 0; margin-top: 0.6cqw; }
+/* Bulk-slot-actions: neutral "Leave unchanged" + danger "Clear for all". */
+.scene--bulkedit .be-actions { display: flex; gap: 0.8cqw; margin-top: 0.4cqw; }
+.scene--bulkedit .be-act { flex: 1; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); font-size: 1.1cqw; padding: 0.7cqw 0.6cqw; }
+.scene--bulkedit .be-act--danger { border-color: #7a3036; background: rgba(224,85,85,0.12); color: #e05555; }
+
+/* Item browser — context, DIMMED. */
+.scene--bulkedit .be-browser { flex: 0 0 38cqw; background: var(--s2); border-right: 1px solid var(--border); display: flex; flex-direction: column; min-width: 0; opacity: 0.6; }
+.scene--bulkedit .be-bhead { border-bottom: 1px solid var(--border); padding: 1.2cqw 1.4cqw; display: flex; flex-direction: column; gap: 0.9cqw; }
+.scene--bulkedit .be-titlerow { display: flex; align-items: center; justify-content: space-between; }
+.scene--bulkedit .be-titlerow strong { color: var(--text2); font-size: 1.2cqw; letter-spacing: 0.08em; text-transform: uppercase; }
+.scene--bulkedit .be-remove { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s3); color: var(--text2); font-size: 1cqw; padding: 0.4cqw 0.9cqw; }
+.scene--bulkedit .be-search { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s1); color: var(--text3); padding: 0.8cqw 1cqw; font-size: 1.15cqw; }
+.scene--bulkedit .be-te { display: flex; gap: 0.9cqw; }
+.scene--bulkedit .be-tef { flex: 1; display: flex; flex-direction: column; gap: 0.3cqw; min-width: 0; }
+.scene--bulkedit .be-tef > span { color: var(--text3); font-size: 1cqw; }
+.scene--bulkedit .be-sel { display: flex; align-items: center; justify-content: space-between; gap: 0.6cqw; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s1); color: var(--text); padding: 0.7cqw 1cqw; font-size: 1.15cqw; }
+.scene--bulkedit .be-caret { color: var(--text3); font-size: 1cqw; flex: none; }
+.scene--bulkedit .be-bbody { flex: 1; display: flex; min-height: 0; }
+.scene--bulkedit .be-cats { flex: 0 0 13cqw; background: var(--s1); border-right: 1px solid var(--border); overflow: hidden; }
+.scene--bulkedit .be-cat { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--text2); font-size: 1.1cqw; padding: 0.8cqw 1cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scene--bulkedit .be-cat-active { background: rgba(201,168,76,0.08); box-shadow: inset 0.25cqw 0 0 var(--gold); color: var(--gold); }
+.scene--bulkedit .be-cat-ancestor { background: var(--s2); color: var(--text); }
+.scene--bulkedit .be-cat-children { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.scene--bulkedit .be-cat-l2 { padding-left: 2.4cqw; font-size: 1cqw; }
+.scene--bulkedit .be-items { flex: 1; min-width: 0; padding: 0.7cqw 0.9cqw; overflow: hidden; display: flex; flex-direction: column; gap: 0.5cqw; }
+.scene--bulkedit .be-item { display: flex; align-items: center; gap: 0.9cqw; background: var(--s3); border: 1px solid transparent; border-radius: 0.5cqw; padding: 0.8cqw; text-align: left; width: 100%; }
+.scene--bulkedit .be-iic { width: 5cqw; height: 5cqw; flex: none; border-radius: 0.4cqw; background: var(--s1); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.scene--bulkedit .be-iic img { width: 118%; height: 118%; object-fit: contain; }
+.scene--bulkedit .be-item strong { display: block; color: var(--text); font-size: 1.3cqw; }
+.scene--bulkedit .be-item small { display: block; color: var(--text3); font-size: 1.05cqw; }
+
+/* Ability pane — context, DIMMED. */
+.scene--bulkedit .be-ability { flex: 1; background: var(--s1); padding: 1.6cqw 1.8cqw; overflow: hidden; min-width: 0; opacity: 0.6; }
+.scene--bulkedit .be-aname { color: var(--gold); font-size: 1.9cqw; margin: 0 0 1.2cqw; font-weight: 700; }
+.scene--bulkedit .be-arow { border-bottom: 1px solid var(--border); padding: 1cqw 0; }
+.scene--bulkedit .be-arow h3 { color: var(--text2); font-size: 1.25cqw; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 0.8cqw; }
+.scene--bulkedit .be-spells { display: flex; gap: 0.8cqw; margin-bottom: 0.9cqw; }
+.scene--bulkedit .be-spell { width: 4.2cqw; height: 4.2cqw; border-radius: 50%; border: 0.22cqw solid var(--border2); background: var(--s3); overflow: hidden; padding: 0; flex: none; }
+.scene--bulkedit .be-spell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scene--bulkedit .be-spell-on { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, var(--s3)); box-shadow: 0 0 0 0.12cqw var(--gold2), 0 0 1.2cqw rgba(201,168,76,0.35); }
+.scene--bulkedit .be-detail { background: var(--s3); border: 1px solid var(--border); border-radius: 0.5cqw; padding: 1cqw 1.2cqw; }
+.scene--bulkedit .be-detail h4 { margin: 0 0 0.6cqw; color: var(--text); font-size: 1.4cqw; }
+.scene--bulkedit .be-detail p { margin: 0; color: var(--text2); font-size: 1.15cqw; line-height: 1.5; }
+.scene--bulkedit .be-detail b { color: var(--text); }
+/* W row mixed hint — mirrors production ability-mixed-hint; must stay readable
+   even through the pane dim, so size it generously. */
+.scene--bulkedit .be-mixhint { color: #e08840; font-size: 1.3cqw; font-weight: 600; line-height: 1.4; }
+
+/* ---- Cinematic choreography (one shared 10s timeline) ----------------------
+   A "camera" (the .be-camera wrapper) zooms/pans while the Main Hand slot goes
+   from Mixed -> set -> Unanimous:
+     beat 1 (0-8%)    full screen, Main Hd is Mixed (orange)
+     beat 2 (8-24%)   zoom IN to a close-up; cursor presses the Main Hd slot
+     beat 3 (24-42%)  zoom OUT to a medium shot; cursor moves to the Arcane Staff
+                      row and presses it -> the slot is SET
+     beat 4 (42-58%)  hold; the slot now reads Unanimous (green + icon)
+     beat 5 (58-100%) zoom OUT to full screen, at rest
+   EVERY animated element's BASE (non-animated) state is its COMPLETED look, so
+   under prefers-reduced-motion (animation:none) the scene rests on the finished
+   frame: full screen, Main Hd Unanimous (green border, Arcane Staff icon, gold
+   active ring), the target item highlighted. The static Mixed example lives on
+   the Chest slot, so "Reading the shared state" still teaches Mixed at rest. */
+
+/* Camera: transforms computed for transform-origin 0 0 — to centre a point
+   (Px,Py)% at scale S: translate(50 - S*Px, 50 - S*Py)% scale(S).
+   Close-up centres the Main Hd slot (5.1,41.6) @2.0; medium centres ~ (28.75,45)
+   @1.4 so both the slot and the Arcane Staff row stay in frame. */
+.scene--bulkedit .be-camera { animation: be-camera 10s ease-in-out infinite; }
+@keyframes be-camera {
+  0%, 8%    { transform: translate(0, 0) scale(1); }
+  20%, 24%  { transform: translate(39.8%, -33.2%) scale(2.0); }   /* close-up: Main Hd */
+  36%, 58%  { transform: translate(9.8%, -13%) scale(1.4); }      /* medium: slot + item row */
+  72%, 100% { transform: translate(0, 0) scale(1); }              /* full screen */
+}
+
+/* Main Hand slot: base = Unanimous (completed). Animations REVEAL the Mixed
+   start and flip to set at ~40% (the moment the Arcane Staff row is pressed). */
+/* Base border = green (completed/Unanimous). The border-color animation is
+   declared on the higher-specificity `.be-slot-main .be-ic` rule below, ALONGSIDE
+   the ring animation — `animation` is a single property, so if it lived here it
+   would be overridden by that rule and never run (border would stay green). */
+.scene--bulkedit .be-mh-ic { border-color: #4ec87a; }
+@keyframes be-mh-border { 0%, 38% { border-color: #e08840; } 42%, 100% { border-color: #4ec87a; } }
+.scene--bulkedit .be-mh-img { opacity: 1; animation: be-mh-fill 10s ease-in-out infinite; }
+@keyframes be-mh-fill { 0%, 38% { opacity: 0; transform: scale(0.6); } 42%, 100% { opacity: 1; transform: scale(1); } }
+/* Mixed phase = an EMPTY orange-bordered cell with a "Mixed" label below,
+   IDENTICAL to the static Chest slot (be-ic--mixed + be-sl--mixed). The icon
+   cell is just empty (be-mh-img is faded out above); the label cross-fades
+   "Mixed" -> "Main Hd" at the set frame. Base = "Main Hd" shown (completed). */
+.scene--bulkedit .be-mh-labels { position: relative; display: flex; justify-content: center; }
+.scene--bulkedit .be-mh-label-set { opacity: 1; animation: be-mh-labelset 10s ease-in-out infinite; }
+@keyframes be-mh-labelset { 0%, 38% { opacity: 0; } 42%, 100% { opacity: 1; } }
+.scene--bulkedit .be-mh-label-mixed { position: absolute; left: 0; right: 0; text-align: center; opacity: 0; animation: be-mh-labelmixed 10s ease-in-out infinite; }
+@keyframes be-mh-labelmixed { 0%, 38% { opacity: 1; } 42%, 100% { opacity: 0; } }
+/* Active gold ring: lands with the beat-2 press (~22%), then persists. Additive
+   (outline + glow) over the slot border. Base = ring shown (completed). */
+.scene--bulkedit .be-slot-main .be-ic { outline: 1px dashed var(--gold); outline-offset: 0.2cqw; box-shadow: 0 0 0 0.3cqw rgba(201,168,76,0.18), 0 0 1.2cqw rgba(201,168,76,0.3); animation: be-slotactive 10s ease-in-out infinite, be-mh-border 10s ease-in-out infinite; }
+@keyframes be-slotactive {
+  0%, 19% { outline-color: transparent; box-shadow: none; }
+  22%, 100% { outline-color: var(--gold); box-shadow: 0 0 0 0.3cqw rgba(201,168,76,0.18), 0 0 1.2cqw rgba(201,168,76,0.3); }
+}
+/* Target item row: highlighted once picked (~40%); base = highlighted. */
+.scene--bulkedit .be-item-target { border-color: var(--gold); background: rgba(201,168,76,0.1); animation: be-itempick 10s ease-in-out infinite; }
+@keyframes be-itempick { 0%, 38% { border-color: transparent; background: var(--s3); } 42%, 100% { border-color: var(--gold); background: rgba(201,168,76,0.1); } }
+
+/* Cursor: lives inside .be-camera so it zooms with the content. Two presses —
+   the Main Hd slot (~22%) and the Arcane Staff row (~40%) — then rests on the
+   set slot. Positions are camera-space %; tip offsets tuned to land on target. */
+.scene--bulkedit .s-cursor { width: max(15px, 2.2cqw); height: max(21px, 3.1cqw); left: 5.2%; top: 38%; animation: be-cursor 10s ease-in-out infinite; }
+@keyframes be-cursor {
+  0%, 6% { left: 30%; top: 88%; transform: scale(1); }   /* idle */
+  16% { left: 5.2%; top: 38%; transform: scale(1); }      /* arrive: Main Hd slot */
+  22% { left: 5.2%; top: 38%; transform: scale(0.78); }   /* press slot */
+  25% { left: 5.2%; top: 38%; transform: scale(1); }
+  34% { left: 52%; top: 40%; transform: scale(1); }       /* arrive: Arcane Staff row */
+  40% { left: 52%; top: 40%; transform: scale(0.78); }    /* press item -> set */
+  43% { left: 52%; top: 40%; transform: scale(1); }
+  58% { left: 52%; top: 40%; transform: scale(1); }
+  72% { left: 5.2%; top: 38%; transform: scale(1); }      /* drift back to the set slot */
+  100% { left: 5.2%; top: 38%; transform: scale(1); }
+}

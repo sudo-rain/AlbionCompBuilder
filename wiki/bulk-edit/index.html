@@ -91,7 +91,72 @@
         <li><strong>Unanimous</strong> — every selected loadout has the same item in that slot.</li>
         <li><strong>Mixed</strong> — the selected loadouts differ in that slot.</li>
       </ul>
-      <div class="placeholder-media">[Screenshot: bulk edit slot grid with shared-state badges — add asset]</div>
+      <figure class="demo scene scene--bulkedit" role="img" aria-label="Animated demo: the three-pane bulk editor applying to 2 loadouts — an equipment pane shows each slot's shared state (Empty Bag and Off Hand, Unanimous slots with shared item icons, and a Mixed Chest), while the dimmed item browser and ability panes give context; a cursor presses the Unanimous Main Hand slot.">
+        <div class="scene-stage">
+          <div class="be-camera">
+          <header class="be-bar">
+            <button class="be-btn">← Back</button>
+            <span class="be-seg"><span class="on">Gear &amp; Abilities</span><span>Names &amp; Roles</span></span>
+            <span class="be-count">applies to 2 loadouts</span>
+            <button class="be-apply">Apply to 2</button>
+          </header>
+          <div class="be-panes">
+            <aside class="be-equip">
+              <div class="be-label">Equipment Slots</div>
+              <div class="be-grid">
+                <button class="be-slot"><span class="be-ic"><span class="be-empty">+</span></span><span class="be-sl">Bag</span></button>
+                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_HEAD_LEATHER_SET3@0.png" alt="" loading="lazy"></span><span class="be-sl">Helm</span></button>
+                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_CAPEITEM_MORGANA@0.png" alt="" loading="lazy"></span><span class="be-sl">Cape</span></button>
+                <button class="be-slot be-slot-main"><span class="be-ic be-mh-ic"><img class="be-mh-img" src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span class="be-mh-labels"><span class="be-sl be-mh-label-set">Main Hd</span><span class="be-sl be-sl--mixed be-mh-label-mixed">Mixed</span></span></button>
+                <button class="be-slot"><span class="be-ic be-ic--mixed"></span><span class="be-sl be-sl--mixed">Mixed</span></button>
+                <button class="be-slot"><span class="be-ic"><span class="be-empty">+</span></span><span class="be-sl">Off Hand</span></button>
+                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T7_POTION_REVIVE@0.png" alt="" loading="lazy"></span><span class="be-sl">Potion</span></button>
+                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_SHOES_CLOTH_SET2@0.png" alt="" loading="lazy"></span><span class="be-sl">Boots</span></button>
+                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_MEAL_SANDWICH@1.png" alt="" loading="lazy"></span><span class="be-sl">Food</span></button>
+                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_MOUNT_ARMORED_HORSE@0.png" alt="" loading="lazy"></span><span class="be-sl">Mount</span></button>
+              </div>
+              <button class="be-inv">Inventory ▸</button>
+              <div class="be-actions"><button class="be-act">Leave unchanged</button><button class="be-act be-act--danger">Clear for all</button></div>
+            </aside>
+            <section class="be-browser">
+              <header class="be-bhead">
+                <div class="be-titlerow"><strong>Main Hand</strong><button class="be-remove">Remove</button></div>
+                <div class="be-search">Search items…</div>
+                <div class="be-te">
+                  <div class="be-tef"><span>Tier</span><span class="be-sel">T8 <span class="be-caret">▾</span></span></div>
+                  <div class="be-tef"><span>Enchantment</span><span class="be-sel">All <span class="be-caret">▾</span></span></div>
+                </div>
+              </header>
+              <div class="be-bbody">
+                <div class="be-cats"><button class="be-cat be-cat-ancestor">Arcane Staff</button><div class="be-cat-children"><button class="be-cat be-cat-l2 be-cat-active">Arcane Staff</button><button class="be-cat be-cat-l2">Enigmatic Staff</button><button class="be-cat be-cat-l2">Evensong</button><button class="be-cat be-cat-l2">Occult Staff</button><button class="be-cat be-cat-l2">Witchwork Staff</button></div><button class="be-cat">Axe</button><button class="be-cat">Bow</button><button class="be-cat">Crossbow</button><button class="be-cat">Cursed Staff</button><button class="be-cat">Dagger</button><button class="be-cat">Fire Staff</button><button class="be-cat">Frost Staff</button><button class="be-cat">Hammer</button></div>
+                <div class="be-items">
+                  <button class="be-item be-item-target"><span class="be-iic"><img src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span><strong>Arcane Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
+                  <button class="be-item"><span class="be-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF_CRYSTAL@0.png" alt="" loading="lazy"></span><span><strong>Astral Staff</strong><small>Arcane Staff · IP 1200</small></span></button>
+                  <button class="be-item"><span class="be-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ENIGMATICSTAFF@0.png" alt="" loading="lazy"></span><span><strong>Enigmatic Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
+                  <button class="be-item"><span class="be-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANE_RINGPAIR_AVALON@0.png" alt="" loading="lazy"></span><span><strong>Evensong</strong><small>Arcane Staff · IP 1200</small></span></button>
+                  <button class="be-item"><span class="be-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span><strong>Great Arcane Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
+                  <button class="be-item"><span class="be-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF_HELL@0.png" alt="" loading="lazy"></span><span><strong>Occult Staff</strong><small>Arcane Staff · IP 1150</small></span></button>
+                </div>
+              </div>
+            </section>
+            <section class="be-ability">
+              <h2 class="be-aname">Arcane Staff</h2>
+              <div class="be-arow">
+                <h3>Q · Active</h3>
+                <div class="be-spells"><button class="be-spell be-spell-on"><img src="https://render.albiononline.com/v1/spell/ARCANE_CHAIN_MISSILE.png" alt="" loading="lazy"></button><button class="be-spell"><img src="https://render.albiononline.com/v1/spell/SHIELDFRIENDLY.png" alt="" loading="lazy"></button><button class="be-spell"><img src="https://render.albiononline.com/v1/spell/MAGICSHOCK.png" alt="" loading="lazy"></button></div>
+                <article class="be-detail"><h4>Chain Missile</h4><p>Shoot a Chain Missile, dealing <b>132 magical damage</b> to the first enemy, then jumping to the closest enemy within <b>7m</b>.</p></article>
+              </div>
+              <div class="be-arow">
+                <h3>W · Active</h3>
+                <div class="be-spells"><button class="be-spell"><img src="https://render.albiononline.com/v1/spell/ENIGMA_BLADE.png" alt="" loading="lazy"></button><button class="be-spell"><img src="https://render.albiononline.com/v1/spell/CLEANSESPEED2.png" alt="" loading="lazy"></button><button class="be-spell"><img src="https://render.albiononline.com/v1/spell/FRAZZLE2.png" alt="" loading="lazy"></button><button class="be-spell"><img src="https://render.albiononline.com/v1/spell/EMPOWERBEAM.png" alt="" loading="lazy"></button><button class="be-spell"><img src="https://render.albiononline.com/v1/spell/MIMIC.png" alt="" loading="lazy"></button></div>
+                <div class="be-mixhint">Differs across selection — pick one to set for all.</div>
+              </div>
+            </section>
+          </div>
+          <div class="s-cursor"></div>
+          </div>
+        </div>
+      </figure>
 
       <h2>What you can bulk edit</h2>
       <p>The editor covers gear slots, inventory slots, spell selections, and meta fields (each loadout's name and role). Changes are staged as you go.</p>
