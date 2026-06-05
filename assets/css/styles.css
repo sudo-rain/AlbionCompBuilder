@@ -54,19 +54,6 @@ body {
   display: block;
 }
 
-/* Shared placeholder frame */
-.placeholder-media {
-  border: 2px dashed var(--border2);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text3);
-  font-size: 0.9rem;
-  font-style: italic;
-  background: var(--s2);
-}
-
 /* Nav */
 nav {
   position: sticky;
@@ -142,12 +129,6 @@ nav {
   margin-bottom: 3rem;
 }
 
-.placeholder-media--hero {
-  height: 400px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
 /* Pain bridge */
 #pain {
   background: var(--s1);
@@ -216,12 +197,6 @@ nav {
 .link-disabled::after {
   content: " (Coming Soon)";
   font-size: 0.8rem;
-}
-
-.placeholder-media--feature {
-  height: 280px;
-  flex: 1;
-  min-width: 260px;
 }
 
 /* Install section */
@@ -336,10 +311,6 @@ footer p {
     text-align: center;
   }
 
-  .placeholder-media--hero {
-    height: 240px;
-  }
-
   #features {
     padding: 2rem 1.25rem;
   }
@@ -350,7 +321,6 @@ footer p {
     gap: 1.5rem;
   }
 
-  .placeholder-media--feature,
   .demo--feature {
     width: 100%;
     min-width: unset;
@@ -538,37 +508,6 @@ footer p {
   padding: 0.1em 0.4em;
 }
 
-/* deliberate "coming soon" media slot: faint diagonal hatch + image icon */
-.wiki-content .placeholder-media {
-  height: 260px;
-  margin: 1.25rem 0 2rem;
-  flex-direction: column;
-  gap: 0.7rem;
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.85rem;
-  color: var(--text3);
-  border-color: var(--border2);
-  background-color: var(--s2);
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--s3) 0,
-    var(--s3) 1px,
-    transparent 1px,
-    transparent 11px
-  );
-}
-
-.wiki-content .placeholder-media::before {
-  content: "";
-  width: 30px;
-  height: 30px;
-  flex: none;
-  background: var(--text3);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.6'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3'%20y='4'%20width='18'%20height='16'%20rx='2'/%3E%3Ccircle%20cx='8.5'%20cy='9.5'%20r='1.5'/%3E%3Cpath%20d='M21%2015l-5-5L6%2019'/%3E%3C/svg%3E") center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.6'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='3'%20y='4'%20width='18'%20height='16'%20rx='2'/%3E%3Ccircle%20cx='8.5'%20cy='9.5'%20r='1.5'/%3E%3Cpath%20d='M21%2015l-5-5L6%2019'/%3E%3C/svg%3E") center / contain no-repeat;
-}
-
 /* related / next-up block as a distinct callout card */
 .wiki-next {
   margin-top: 3rem;
@@ -628,7 +567,7 @@ footer p {
 }
 
 /* ===== Demo scenes ===================================================== */
-/* Auto-playing CSS mockups that replace the old .placeholder-media slots.
+/* Auto-playing CSS mockups that replace the old static screenshot slots.
    Animations run with zero JS (baseline); demos.js only pauses off-screen
    scenes when JS is present (html.js gate). prefers-reduced-motion freezes
    each scene on its base frame. No binary assets. */
