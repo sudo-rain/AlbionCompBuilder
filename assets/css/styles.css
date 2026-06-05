@@ -1283,3 +1283,241 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
   84% { left: 71.5%; top: 74.9%; transform: scale(1); }
   100% { left: 71.5%; top: 74.9%; transform: scale(1); }
 }
+
+/* Scene: Export / Import ----------------------------------------------- */
+/* Faithful recreations of the two real flows. EXPORT (scene--export) mirrors
+   the composition view (src/ui/CompositionView.tsx): a toolbar (Back · color-dot ·
+   name · "N roles" · + Add Empty · + From Template · ⋯) over a grid of real
+   loadout cards (.lc-card). The ⋯ opens the real DropdownMenu (📄 Export .xlsx /
+   📊 Export to Google Sheets / ✎ Bulk Edit); choosing Sheets swaps ⋯ to an
+   "Exporting" spinner (btn-loading) and a green "Opened in Google Sheets /
+   Open sheet" banner (composition-banner-success) slides in. Uses the
+   templates-save CAMERA pattern: a .xp-camera (transform-origin 0 0, cursor
+   INSIDE it) zooms toward the top-right ⋯/menu region for legibility, then
+   returns to full frame as the banner reveals. IMPORT (scene--export-import)
+   mirrors the dashboard (src/ui/Dashboard.tsx) -> WorksheetPickerModal flow:
+   the Party Compositions dashboard, cursor presses "Import from .xlsx", the
+   real "Choose Worksheet" radiogroup overlay fades in (first option selected),
+   cursor presses "Import", a new composition card appears in the grid.
+   1cqw = 1% of demo width. Role colors are the REAL ROLE_COLORS from
+   src/domain/loadouts.ts (Tank #4a90d9, Healer #4ec87a, DPS #e05555).
+   Every animated element's BASE (non-animated) state = its COMPLETED look, so
+   each scene rests correctly under prefers-reduced-motion (animation:none) AND
+   headless single-frame captures land on the finished frame. EXCEPTIONS (per
+   the real climax): the export dropdown and the import modal rest CLOSED
+   (base opacity 0), while the export banner and the new import card rest SHOWN. */
+
+/* ===== EXPORT variant (scene--export) — composition -> ⋯ menu -> banner ==== */
+.demo.scene--export { container-type: inline-size; aspect-ratio: 1.95 / 1; height: auto; }
+.scene--export .scene-stage { padding: 0; font-size: 1.4cqw; text-align: left; }
+.scene--export .xp-camera { position: absolute; inset: 0; transform-origin: 100% 0; }
+.scene--export .xp-comp { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--bg); }
+/* composition toolbar (mirrors .app-toolbar.composition-toolbar) */
+.scene--export .xp-toolbar { position: relative; display: flex; align-items: center; gap: 1cqw; background: var(--s1); border-bottom: 1px solid var(--border); padding: 1.2cqw 1.4cqw; z-index: 4; }
+.scene--export .xp-back { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); font-size: 1.2cqw; padding: 0.5cqw 0.9cqw; flex: none; }
+.scene--export .xp-dot { width: 1.5cqw; height: 1.5cqw; border-radius: 50%; flex: none; }
+.scene--export .xp-name { color: var(--gold); font-weight: 700; font-size: 1.75cqw; flex: none; white-space: nowrap; }
+.scene--export .xp-roles { color: var(--text3); font-size: 1.2cqw; flex: none; }
+/* right-aligned action cluster (mirrors .composition-toolbar-actions): pushes
+   + Add Empty · + From Template · ⋯ to the toolbar's right edge. */
+.scene--export .xp-actions { margin-left: auto; display: flex; align-items: center; gap: 1cqw; flex: none; }
+.scene--export .xp-tbtn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); font-size: 1.2cqw; padding: 0.55cqw 0.9cqw; flex: none; white-space: nowrap; }
+.scene--export .xp-tbtn--gold { background: var(--gold); color: #1a160a; font-weight: 700; border-color: var(--gold); }
+/* ⋯ / Exporting button (mirrors the DropdownMenu trigger + btn-loading swap).
+   Two stacked layers cross-fade — CSS can't change text content. The real button
+   RESIZES when its label changes from ⋯ to the spinner + "Exporting", so the
+   button widens in sync with that swap (xp-morewidth): narrow for ⋯ during the
+   menu beat, wide enough to hold the spinner + "Exporting" once exporting begins.
+   Base (rest/climax) = wide, since the resting state shows "Exporting". */
+.scene--export .xp-more { position: relative; box-sizing: border-box; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text); flex: none; min-width: 10.5cqw; height: 3.2cqw; padding: 0 0.9cqw; display: flex; align-items: center; justify-content: center; animation: xp-morewidth 10s ease-in-out infinite; }
+@keyframes xp-morewidth { 0%, 48% { min-width: 5cqw; } 52%, 100% { min-width: 10.5cqw; } }
+.scene--export .xp-more-dots { font-size: 1.9cqw; line-height: 1; }
+.scene--export .xp-more-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0.7cqw; font-size: 1.3cqw; font-weight: 600; color: var(--text); white-space: nowrap; }
+.scene--export .xp-spinner { width: 1.3cqw; height: 1.3cqw; border: 0.28cqw solid rgba(224,201,127,0.25); border-top-color: #e0c97f; border-radius: 50%; animation: xp-spin 0.7s linear infinite; flex: none; }
+@keyframes xp-spin { to { transform: rotate(360deg); } }
+/* dropdown menu (mirrors .dropdown-menu / .dropdown-menu-item) */
+.scene--export .xp-menu { position: absolute; right: 1.4cqw; top: 4.6cqw; z-index: 6; min-width: 28cqw; padding: 0.5cqw; border: 1px solid var(--border2); border-radius: 0.6cqw; background: var(--s3); box-shadow: 0 1.2cqw 2.8cqw rgba(0,0,0,0.55); }
+.scene--export .xp-mi { display: flex; align-items: center; gap: 0.9cqw; border-radius: 0.4cqw; color: var(--text); font-size: 1.35cqw; font-weight: 600; padding: 0.95cqw 1.1cqw; white-space: nowrap; }
+.scene--export .xp-mi-icon { width: 1.8cqw; text-align: center; flex: none; }
+/* green success banner (mirrors .composition-banner-success) */
+.scene--export .xp-banner { display: flex; align-items: center; gap: 1.2cqw; margin: 1cqw 1.4cqw 0; padding: 0.9cqw 1.2cqw; border-radius: 0.6cqw; background: rgba(78,200,122,0.12); color: #7fd99e; font-weight: 600; font-size: 1.35cqw; }
+.scene--export .xp-banner-link { margin-left: auto; color: #9fe3b6; text-decoration: underline; font-weight: 700; }
+/* loadout cards grid (mirrors the composition .loadout-card grid) */
+.scene--export .xp-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; padding: 1.4cqw; align-content: start; min-height: 0; }
+/* loadout card (mirrors .loadout-card; the .lc-* base is scoped per-scene, so it
+   is redeclared here for .scene--export). Header = grip · role-dot · title · Edit
+   · ⋯ (mirrors LoadoutCard's role-dot/title/Edit/DropdownMenu). The full 4-row
+   SLOT_GRID is rendered (bag/helm/cape · main/chest/off · potion/boots/food ·
+   ·/mount/·); slots are capped (5.4cqw) so all four rows + the gold notation fit
+   within the toolbar+banner+cards vertical budget. */
+.scene--export .lc-card { background: var(--s2); border: 1px solid var(--border); border-radius: 0.6cqw; display: flex; flex-direction: column; overflow: hidden; }
+.scene--export .lc-head { display: flex; align-items: center; gap: 0.8cqw; background: var(--s3); border-bottom: 1px solid var(--border); padding: 0.8cqw 1cqw; }
+.scene--export .lc-grip { color: var(--text2); font-size: 1.6cqw; line-height: 1; flex: none; }
+.scene--export .lc-dot { width: 1.3cqw; height: 1.3cqw; border-radius: 50%; flex: none; }
+.scene--export .lc-title { flex: 1; color: var(--text); font-weight: 700; font-size: 1.4cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scene--export .lc-btn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); font-size: 1.1cqw; padding: 0.35cqw 0.8cqw; flex: none; }
+.scene--export .lc-more { padding: 0.1cqw 0.55cqw; font-size: 1.5cqw; line-height: 1; }
+.scene--export .lc-grid { display: grid; grid-template-columns: repeat(3, 5.4cqw); justify-content: center; gap: 0.45cqw; padding: 0.8cqw 1cqw 0.3cqw; }
+.scene--export .lc-slot { aspect-ratio: 1; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s1); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.scene--export .lc-slot img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.scene--export .lc-slot--empty { border-style: dashed; background: transparent; }
+.scene--export .lc-slot--spacer { border: 0; background: none; }
+.scene--export .lc-notation { color: var(--gold); font-weight: 700; font-size: 1.2cqw; padding: 0.3cqw 1cqw 0.8cqw; margin-top: auto; }
+
+/* ---- Choreography (one shared 10s timeline) ----
+   beat 1 (0-9%)    composition view rests (toolbar + cards)
+   beat 2 (9-30%)   camera zooms toward the top-right ⋯; cursor presses ⋯ -> menu opens
+   beat 3 (30-46%)  cursor presses "Export to Google Sheets" (highlighted)
+   beat 4 (46-58%)  ⋯ swaps to the Exporting spinner; menu closes; camera returns
+   beat 5 (58-100%) green "Opened in Google Sheets / Open sheet" banner slides in
+   Base (reduced-motion / frozen) = camera scale 1, menu CLOSED, ⋯ resting as the
+   Exporting spinner, banner SHOWN. Cursor rests on the ⋯/Exporting button. */
+.scene--export .xp-camera { animation: xp-camera 10s ease-in-out infinite; }
+@keyframes xp-camera {
+  0%, 9% { transform: scale(1); }
+  24%, 46% { transform: scale(1.45); }   /* zoom about top-right origin: frames the far-right ⋯ + menu */
+  58%, 100% { transform: scale(1); }      /* full frame */
+}
+.scene--export .xp-menu { opacity: 0; animation: xp-menu 10s ease-in-out infinite; }
+@keyframes xp-menu { 0%, 16% { opacity: 0; } 22%, 48% { opacity: 1; } 52%, 100% { opacity: 0; } }
+.scene--export .xp-mi-gs { animation: xp-mion 10s ease-in-out infinite; }
+@keyframes xp-mion { 0%, 32% { background: transparent; color: var(--text); } 36%, 46% { background: rgba(201,168,76,0.14); color: var(--gold); } 50%, 100% { background: transparent; color: var(--text); } }
+/* ⋯ <-> Exporting cross-fade. Base = Exporting shown (completed). */
+.scene--export .xp-more-dots { opacity: 0; animation: xp-dots 10s ease-in-out infinite; }
+@keyframes xp-dots { 0%, 48% { opacity: 1; } 52%, 100% { opacity: 0; } }
+.scene--export .xp-more-loading { opacity: 1; animation: xp-loading 10s ease-in-out infinite; }
+@keyframes xp-loading { 0%, 48% { opacity: 0; } 52%, 100% { opacity: 1; } }
+/* banner slides in; base = shown (completed). */
+.scene--export .xp-banner { animation: xp-bannerin 10s ease-in-out infinite; }
+@keyframes xp-bannerin { 0%, 58% { opacity: 0; transform: translateY(-0.8cqw); } 68%, 100% { opacity: 1; transform: none; } }
+/* cursor (inside camera, camera-space %). presses ⋯, then the Sheets menu item,
+   then rests on ⋯/Exporting. Targets measured on-canvas at scale 1. */
+.scene--export .s-cursor { width: max(13px, 1.8cqw); height: max(18px, 2.5cqw); left: 96%; top: 5.5%; animation: xp-cursor 10s ease-in-out infinite; }
+@keyframes xp-cursor {
+  0%, 5% { left: 80%; top: 40%; transform: scale(1); }
+  18% { left: 96%; top: 5.5%; transform: scale(1); }         /* arrive: ⋯ (far right) */
+  24% { left: 96%; top: 5.5%; transform: scale(0.78); }      /* press ⋯ -> menu opens */
+  29% { left: 96%; top: 5.5%; transform: scale(1); }
+  36% { left: 84.6%; top: 19.5%; transform: scale(1); }      /* arrive: Export to Google Sheets */
+  41% { left: 84.6%; top: 19.5%; transform: scale(0.78); }   /* press */
+  46% { left: 84.6%; top: 19.5%; transform: scale(1); }
+  58% { left: 96%; top: 5.5%; transform: scale(1); }         /* return to ⋯/Exporting */
+  100% { left: 96%; top: 5.5%; transform: scale(1); }
+}
+
+/* ===== IMPORT variant (scene--export-import) — dashboard -> modal -> new card */
+.demo.scene--export-import { container-type: inline-size; aspect-ratio: 1.6 / 1; height: auto; }
+.scene--export-import .scene-stage { padding: 0; font-size: 1.4cqw; text-align: left; }
+.scene--export-import .xi-dash { position: absolute; inset: 0; background: var(--bg); display: flex; flex-direction: column; padding: 1.8cqw 1.8cqw; }
+/* dashboard header (mirrors .dashboard-header) */
+.scene--export-import .xi-head { display: flex; align-items: center; justify-content: space-between; gap: 1.2cqw; margin-bottom: 1.6cqw; }
+.scene--export-import .xi-h1 { color: var(--gold); font-weight: 700; font-size: 2.2cqw; }
+.scene--export-import .xi-sub { color: var(--text3); font-size: 1.25cqw; margin-top: 0.3cqw; }
+.scene--export-import .xi-actions-top { display: flex; align-items: center; gap: 1cqw; flex: none; }
+.scene--export-import .xi-import-btn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text); font-size: 1.35cqw; padding: 0.8cqw 1.2cqw; white-space: nowrap; }
+.scene--export-import .xi-new-btn { border-radius: 0.5cqw; background: var(--gold); color: #1a160a; font-weight: 700; font-size: 1.35cqw; padding: 0.8cqw 1.2cqw; white-space: nowrap; }
+/* composition card grid (mirrors .composition-grid + .sd-card) */
+.scene--export-import .xi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; align-content: start; }
+.scene--export-import .sd-card { background: var(--s2); border: 1px solid var(--border); border-radius: 0.6cqw; padding: 1.2cqw 1.3cqw; }
+.scene--export-import .sd-row1 { display: flex; align-items: center; gap: 0.8cqw; }
+.scene--export-import .sd-handle { color: var(--text3); font-size: 1.5cqw; letter-spacing: 1px; }
+.scene--export-import .sd-name { color: var(--text); font-weight: 700; font-size: 1.55cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scene--export-import .sd-dot { width: 1.3cqw; height: 1.3cqw; border-radius: 50%; margin-left: auto; flex: none; }
+.scene--export-import .sd-sub { color: var(--text3); font-size: 1.15cqw; margin: 0.7cqw 0 0.9cqw; }
+.scene--export-import .sd-chips { display: flex; gap: 0.6cqw; flex-wrap: wrap; }
+/* role chips are NEUTRAL in the real app (.composition-loadouts span: var(--s3)
+   surface + muted text, NOT role-colored) — mirror that, like the .s-chip convention. */
+.scene--export-import .sd-chip { background: var(--s3); color: var(--text2); font-weight: 600; font-size: 1cqw; border-radius: 0.4cqw; padding: 0.3cqw 0.7cqw; }
+/* new card appears in the grid (mirrors the dashboard scene's sd-cardin), after
+   the rename modal's Import is pressed. Base (rest) = shown. */
+.scene--export-import .sd-card--new { animation: xi-cardin 13s ease-in-out infinite; }
+@keyframes xi-cardin { 0%, 64% { opacity: 0; transform: translateY(1.2cqw); } 72%, 100% { opacity: 1; transform: none; } }
+/* "Choose Worksheet" modal overlay (mirrors Modal + WorksheetPickerModal) */
+.scene--export-import .xi-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(8,8,12,0.66); z-index: 8; }
+.scene--export-import .xi-modal { width: 56cqw; background: var(--s2); border: 1px solid var(--border2); border-radius: 0.8cqw; padding: 2cqw 2.2cqw; box-shadow: 0 2cqw 5cqw rgba(0,0,0,0.55); }
+.scene--export-import .xi-mtitle { color: var(--gold); font-weight: 700; font-size: 2cqw; margin-bottom: 0.5cqw; }
+.scene--export-import .xi-mfile { color: var(--text2); font-size: 1.25cqw; margin-bottom: 1.4cqw; }
+.scene--export-import .xi-list { display: flex; flex-direction: column; gap: 0.7cqw; }
+.scene--export-import .xi-opt { display: flex; align-items: center; gap: 0.9cqw; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s1); padding: 0.9cqw 1.1cqw; }
+.scene--export-import .xi-radio { width: 1.5cqw; height: 1.5cqw; border-radius: 50%; border: 0.2cqw solid var(--border2); flex: none; }
+.scene--export-import .xi-optname { color: var(--text); font-weight: 600; font-size: 1.4cqw; }
+.scene--export-import .xi-optcount { color: var(--text3); font-size: 1.15cqw; margin-left: auto; }
+.scene--export-import .xi-opt--on { border-color: var(--gold); box-shadow: 0 0 0 0.16cqw rgba(201,168,76,0.4); }
+.scene--export-import .xi-opt--on .xi-radio { border-color: var(--gold); background: radial-gradient(circle, var(--gold) 0 42%, transparent 46%); }
+.scene--export-import .xi-modal-actions { display: flex; gap: 1cqw; justify-content: flex-end; margin-top: 1.6cqw; }
+.scene--export-import .xi-cancel { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s3); color: var(--text); font-size: 1.4cqw; padding: 0.85cqw 1.4cqw; }
+.scene--export-import .xi-import { border-radius: 0.5cqw; background: var(--gold); color: #1a160a; font-weight: 700; font-size: 1.4cqw; padding: 0.85cqw 1.6cqw; }
+/* second modal: "Import Party Composition" (mirrors NewCompositionModal — a
+   rename field + color swatches), which the real flow shows after the worksheet
+   is chosen. Cross-fades up over the worksheet picker (higher z); its primary
+   button reuses .xi-import for styling. Swatches are circular like .swatch, with
+   the active one ringed white (.swatch-active). */
+.scene--export-import .xi-overlay2 { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(8,8,12,0.66); z-index: 9; }
+.scene--export-import .xi-modal2 { width: 48cqw; background: var(--s2); border: 1px solid var(--border2); border-radius: 0.8cqw; padding: 2cqw 2.2cqw; box-shadow: 0 2cqw 5cqw rgba(0,0,0,0.55); }
+.scene--export-import .xi-flabel { color: var(--text3); font-size: 1.05cqw; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.55cqw; }
+.scene--export-import .xi-field { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s1); color: var(--text); font-size: 1.5cqw; padding: 0.9cqw 1.1cqw; margin-bottom: 1.4cqw; }
+.scene--export-import .xi-swatches { display: flex; gap: 0.9cqw; }
+.scene--export-import .xi-swatch { width: 2.5cqw; height: 2.5cqw; border-radius: 50%; border: 0.28cqw solid transparent; flex: none; }
+.scene--export-import .xi-swatch--on { border-color: #fff; }
+
+/* ---- Choreography (one shared 13s timeline) ----
+   beat 1 (0-8%)    dashboard rests (header + 2 existing cards)
+   beat 2 (14-22%)  cursor presses "Import from .xlsx" -> Choose-Worksheet modal fades in
+   beat 3 (30-36%)  cursor presses the worksheet "Import" -> worksheet picker cross-fades
+                    OUT as the "Import Party Composition" modal cross-fades IN
+   beat 4 (46-52%)  cursor presses the green color swatch (rename + color step)
+   beat 5 (60-66%)  cursor presses the modal "Import" -> rename modal closes, the new
+                    "Depths 3v3" card drops into the grid
+   Base (reduced-motion / frozen) = the CLIMAX: BOTH modals CLOSED, new card SHOWN.
+   Cursor rests on the always-visible "Import from .xlsx" button. The two overlays
+   cross-fade (their dark backdrops overlap) so the dashboard never flashes between
+   the two modal steps. */
+.scene--export-import .xi-overlay { opacity: 0; animation: xi-overlay 13s ease-in-out infinite; }
+@keyframes xi-overlay { 0%, 16% { opacity: 0; } 22%, 38% { opacity: 1; } 44%, 100% { opacity: 0; } }
+.scene--export-import .xi-overlay2 { opacity: 0; animation: xi-overlay2 13s ease-in-out infinite; }
+@keyframes xi-overlay2 { 0%, 36% { opacity: 0; } 42%, 66% { opacity: 1; } 72%, 100% { opacity: 0; } }
+/* Only the two dark BACKDROPS overlap (36-44%) so the dashboard never flashes
+   between the two steps; the inner modals HARD-SWAP — worksheet fades out by 36%,
+   rename fades in at 40%+ — mirroring the real app (which swaps these dialogs with
+   no cross-fade) and avoiding two dialog titles superimposed mid-transition. */
+.scene--export-import .xi-modal { animation: xi-modal-out 13s ease-in-out infinite; }
+@keyframes xi-modal-out { 0%, 33% { opacity: 1; } 36%, 100% { opacity: 0; } }
+.scene--export-import .xi-modal2 { animation: xi-modal2-in 13s ease-in-out infinite; }
+@keyframes xi-modal2-in { 0%, 40% { opacity: 0; } 43%, 100% { opacity: 1; } }
+/* worksheet "Import" press (~33%) */
+.scene--export-import .xi-import--ws { animation: xi-pulse-ws 13s ease-in-out infinite; }
+@keyframes xi-pulse-ws {
+  0%, 30% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
+  34% { box-shadow: 0 0 0 0.4cqw rgba(201,168,76,0.4); transform: scale(0.97); }
+  38%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
+}
+/* rename-modal "Import" press (~63%) */
+.scene--export-import .xi-import--final { animation: xi-pulse-final 13s ease-in-out infinite; }
+@keyframes xi-pulse-final {
+  0%, 60% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
+  64% { box-shadow: 0 0 0 0.4cqw rgba(201,168,76,0.4); transform: scale(0.97); }
+  68%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
+}
+/* green swatch pops when the cursor selects it (~49%) */
+.scene--export-import .xi-swatch--on { animation: xi-swatchpop 13s ease-in-out infinite; }
+@keyframes xi-swatchpop { 0%, 46% { transform: scale(1); } 50% { transform: scale(1.18); } 54%, 100% { transform: scale(1); } }
+/* cursor: Import-from-xlsx -> worksheet Import -> green swatch -> modal Import ->
+   rest on Import-from-xlsx. Targets measured on-canvas. */
+.scene--export-import .s-cursor { width: max(13px, 1.8cqw); height: max(18px, 2.5cqw); left: 74.5%; top: 7.7%; animation: xi-cursor 13s ease-in-out infinite; }
+@keyframes xi-cursor {
+  0%, 6% { left: 58%; top: 38%; transform: scale(1); }
+  14% { left: 74.5%; top: 7.7%; transform: scale(1); }     /* arrive: Import from .xlsx */
+  18% { left: 74.5%; top: 7.7%; transform: scale(0.78); }  /* press -> worksheet modal opens */
+  22% { left: 74.5%; top: 7.7%; transform: scale(1); }
+  30% { left: 71.6%; top: 64.4%; transform: scale(1); }    /* arrive: worksheet Import */
+  33% { left: 71.6%; top: 64.4%; transform: scale(0.78); } /* press -> rename modal opens */
+  36% { left: 71.6%; top: 64.4%; transform: scale(1); }
+  46% { left: 36.25%; top: 57%; transform: scale(1); }     /* arrive: green color swatch */
+  49% { left: 36.25%; top: 57%; transform: scale(0.78); }  /* press -> color selected */
+  52% { left: 36.25%; top: 57%; transform: scale(1); }
+  60% { left: 67.8%; top: 64%; transform: scale(1); }      /* arrive: rename-modal Import */
+  63% { left: 67.8%; top: 64%; transform: scale(0.78); }   /* press -> new card appears */
+  66% { left: 67.8%; top: 64%; transform: scale(1); }
+  72% { left: 74.5%; top: 7.7%; transform: scale(1); }     /* return to Import from .xlsx */
+  100% { left: 74.5%; top: 7.7%; transform: scale(1); }
+}
