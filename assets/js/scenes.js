@@ -20,6 +20,9 @@
     }
   }
 
+  // always present, even when no GSAP scenes exist (test/freeze API)
+  window.__scenes = {};
+
   if (!stages.length || typeof gsap === 'undefined') return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -76,7 +79,9 @@
       .to(el, { backgroundColor: 'rgba(0,0,0,0)', color: '#dddad0',
         duration: 0.25 }, offAt);
   }
-  // Infinite spinner (replaces xp-spin). Separate anim, not on the timeline.
+  // Infinite spinner (replaces xp-spin). Separate anim, not on the timeline —
+  // MUST be included in the builder's returned array so init pauses it and the
+  // IO observer can play/pause it with the scene.
   function spin(el) {
     return gsap.to(el, { rotation: 360, duration: 0.7, ease: 'none', repeat: -1 });
   }
@@ -87,7 +92,6 @@
   var SCENES = {};
 
   /* ---- init ------------------------------------------------------------ */
-  window.__scenes = {};
   stages.forEach(function (stage) {
     var name = stage.getAttribute('data-scene');
     var build = SCENES[name];

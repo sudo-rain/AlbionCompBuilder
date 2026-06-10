@@ -1,6 +1,6 @@
 /* ===== Demo scenes ===================================================== */
 /* Auto-playing CSS mockups that replace the old static screenshot slots.
-   Animations run with zero JS (baseline); demos.js only pauses off-screen
+   Animations run with zero JS (baseline); scenes.js only pauses off-screen
    scenes when JS is present (html.js gate). prefers-reduced-motion freezes
    each scene on its base frame. No binary assets. */
 
