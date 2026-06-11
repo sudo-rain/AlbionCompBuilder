@@ -116,6 +116,21 @@
         </div>
       </figure>
 
+      <h2>Signing in to Google</h2>
+      <p>The first time you export to Google Sheets, the app starts a one-time sign-in. A browser window opens to Google's sign-in page; once you approve access the app can proceed. After that, your credentials are stored in the system keychain and future exports skip this step entirely.</p>
+      <p>The access granted covers only files the app creates — it cannot read or modify anything else in your Drive.</p>
+
+      <h2>If sign-in is interrupted</h2>
+      <p>If you close the browser tab before approving, or the sign-in stalls, the composition view shows a waiting banner: <em>Google sign-in is waiting. Sign-in expires in 5 minutes.</em> From the banner you can:</p>
+      <ul>
+        <li><strong>Open Google sign-in</strong> — reopens the sign-in page in your browser so you can try again without restarting the export.</li>
+        <li><strong>Cancel upload</strong> — abandons the current export attempt. The app shows a brief dismissible notice; your composition data is never affected.</li>
+      </ul>
+      <p>Cancelling is always safe. It only stops that export — you can choose <strong>Export to Google Sheets</strong> again whenever you are ready.</p>
+
+      <h2>What gets exported</h2>
+      <p>Each export creates a new Google Sheet in a <em>Albion Loadout Planner</em> folder in your Drive. The sheet is named after your composition with a date and time stamp, so repeated exports produce separate versioned files rather than overwriting previous ones. Once the upload completes, the sheet opens automatically in your browser and a green <em>Opened in Google Sheets</em> banner appears with an <em>Open sheet</em> link in case you need it later.</p>
+
       <h2>Export to .xlsx</h2>
       <p>Prefer a file? Export the composition to an <code>.xlsx</code> spreadsheet you can store, send, or open in Excel or Google Sheets yourself.</p>
 
