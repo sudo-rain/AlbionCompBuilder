@@ -476,6 +476,124 @@
     return [tl, applyPulse];
   };
 
+  // Keyframe ground truth (9s):
+  //   sb-slotactive: 0-9% border2/no-shadow → 12-26% dashed gold glow → 30-100% gold2 border+glow
+  //   sb-fill:       0-28% opacity:0 scale(0.6) → 32-100% opacity:1 scale(1)
+  //   sb-itempick:   0-26% transparent/s3 → 30-100% gold border+bg
+  //   sb-spellpick:  0-29% border2/no-shadow/s3 → 33-100% gold lit
+  //   sb-w0 (Enigma): 0-44% LIT → 46-66% UNLIT → 68-100% LIT
+  //   sb-w2 (Frazzle): 0-44% UNLIT → 46-66% LIT → 68-100% UNLIT
+  //   sb-d-enigma:   0-44% opacity:1 → 46-66% opacity:0 → 68-100% opacity:1
+  //   sb-d-frazzle:  0-44% opacity:0 → 46-66% opacity:1 → 68-100% opacity:0
+  //   sb-cursor:     0-5% rest (45%,86%) → 9% arrive (4.7%,44%) → 12% press →
+  //                  24% arrive (42%,51%) → 27% press → 40% arrive (75.8%,75.4%) →
+  //                  43% press → 62% arrive (65.9%,75.4%) → 65% press → 68-100% rest
+  // Beats (% × 9s):
+  //   Cursor arrives slot: 9%=0.81s; press 12%=1.08s; dashed gold active 12-26%=1.08-2.34s
+  //   Cursor arrives item: 24%=2.16s; press 27%=2.43s
+  //   Slot fill+lit+row+Q-spell: 28-33%=2.52-2.97s (transition 0.35-0.4s)
+  //   Cursor arrives W-Frazzle: 40%=3.6s; press 43%=3.87s
+  //   Frazzle lit/Enigma unlit swap: 44-46%=3.96-4.14s (0.18s snap)
+  //   Cursor arrives W-Enigma: 62%=5.58s; press 65%=5.85s
+  //   Enigma relit/Frazzle unlit swap: 66-68%=5.94-6.12s (0.18s snap)
+  // Static base (100% states, retained in CSS):
+  //   .sb-slot-main .sb-ic: border #8a6e2a (--gold2), glow 0 0 1.4cqw rgba(201,168,76,0.25)
+  //   .sb-fill: opacity:1, scale(1)
+  //   .sb-item-pick: border gold, bg rgba(201,168,76,0.1)
+  //   .sb-spell-pick: border gold, bg color-mix(#3e3833), glow
+  //   .sb-w0 (Enigma): LIT (also has sb-spell-on class)
+  //   .sb-w2 (Frazzle): UNLIT
+  //   .sb-d-enigma: opacity:1; .sb-d-frazzle: opacity:0
+  //   cursor: left:65.9% top:75.4%
+  // Beat discrepancies vs plan: plan t=2.5 for fill/item/qSpell; keyframes 28-33%=2.52-2.97s —
+  //   close; plan slot-border at 2.6s (keyframe 30%=2.7s — 0.1s earlier, acceptable).
+  //   Plan w0/w2 swap at 3.96s = 44%×9 — exact match.
+  //   Plan Enigma relit at 6.0s (keyframe 66%=5.94s — 0.06s late, acceptable).
+  // Color literals (computed from styles.css :root / browser getComputedStyle):
+  //   --gold  = #c9a84c   --gold2 = #8a6e2a   --s3 = #1f1f2e   --border2 = #363650
+  //   color-mix(in srgb, var(--gold) 18%, var(--s3)) = #3e3833
+  // NOTE: 4 instances (index hero + builder-game, getting-started, building-a-composition)
+  SCENES['builder'] = function (stage) {
+    var q = gsap.utils.selector(stage);
+    // LIT = spell selected look; matches .sb-spell-on (color-mix bg resolved to #3e3833)
+    var LIT = {
+      borderColor: '#c9a84c',
+      backgroundColor: '#3e3833',                             // color-mix(srgb #c9a84c 18%, #1f1f2e)
+      boxShadow: '0 0 0 0.12cqw #8a6e2a, 0 0 1.2cqw rgba(201,168,76,0.35)'  // --gold2 literal
+    };
+    var UNLIT = {
+      borderColor: '#363650',                                 // --border2
+      backgroundColor: '#1f1f2e',                            // --s3
+      boxShadow: 'none'
+    };
+    var cursor = q('.sc-cursor');
+    var slotIc = q('.sb-slot-main .sb-ic');
+    var fillImg = q('.sb-fill');
+    var itemRow = q('.sb-item-pick');
+    var qSpell = q('.sb-spell-pick');
+    var enigmaSpell = q('.sb-w0'), frazzleSpell = q('.sb-w2');
+    var enigmaDetail = q('.sb-d-enigma'), frazzleDetail = q('.sb-d-frazzle');
+    var tl = gsap.timeline({ repeat: -1 });
+    // t=0: set everything to pre-animation (0% keyframe) state
+    tl.set(cursor, { left: '45%', top: '86%', scale: 1 }, 0)
+      // Slot starts unlit/empty (sb-slotactive 0-9%: border2, no shadow; sb-fill 0-28%: hidden)
+      .set(slotIc, { borderColor: '#363650', borderStyle: 'solid', boxShadow: 'none' }, 0)
+      .set(fillImg, { opacity: 0, scale: 0.6 }, 0)
+      // Item row unhighlighted (sb-itempick 0-26%)
+      .set(itemRow, { borderColor: 'transparent', backgroundColor: '#1f1f2e' }, 0)
+      // Q Chain Missile unlit (sb-spellpick 0-29%)
+      .set(qSpell, Object.assign({ duration: 0 }, UNLIT), 0)
+      // W Enigma lit, Frazzle unlit (sb-w0 0-44% LIT; sb-w2 0-44% UNLIT)
+      .set(enigmaSpell, Object.assign({ duration: 0 }, LIT), 0)
+      .set(frazzleSpell, Object.assign({ duration: 0 }, UNLIT), 0)
+      // Detail cards: Enigma visible, Frazzle hidden
+      .set(enigmaDetail, { opacity: 1 }, 0)
+      .set(frazzleDetail, { opacity: 0 }, 0);
+    // Cursor glides to main-hand slot; arrives 9%=0.81s, departs 5%=0.45s, dur=0.36 ≈ dur arg 0.36
+    cursorTo(tl, cursor, '4.7%', '44%', 0.81, 0.36);
+    // Press slot at 12%=1.08s
+    press(tl, cursor, 1.08);
+    // Slot goes gold-dashed active (sb-slotactive 12%=1.08s)
+    tl.to(slotIc, {
+      borderColor: '#c9a84c', borderStyle: 'dashed',
+      boxShadow: '0 0 0 0.3cqw rgba(201,168,76,0.18)',
+      duration: 0.25
+    }, 1.08);
+    // Cursor glides to Arcane Staff item row; arrives 24%=2.16s, departs 15%=1.35s, dur=0.81s
+    cursorTo(tl, cursor, '42%', '51%', 2.16, 0.81);
+    // Press item row at 27%=2.43s
+    press(tl, cursor, 2.43);
+    // Slot border becomes solid gold2 (sb-slotactive 30%=2.7s); fill appears (sb-fill 32%=2.88s);
+    // item row highlights (sb-itempick 30%=2.7s); Q Chain Missile lights up (sb-spellpick 33%=2.97s)
+    tl.to(slotIc, { borderColor: '#8a6e2a', borderStyle: 'solid',     // gold2 border, solid
+        boxShadow: '0 0 1.4cqw rgba(201,168,76,0.25)', duration: 0.3 }, 2.6)
+      .to(fillImg, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, 2.52)
+      .to(itemRow, { borderColor: '#c9a84c', backgroundColor: 'rgba(201,168,76,0.1)',
+        duration: 0.3 }, 2.6)
+      .to(qSpell, Object.assign({ duration: 0.35 }, LIT), 2.62);
+    // Cursor glides to W Frazzle; arrives 40%=3.6s, departs 30%=2.7s, dur=0.9s
+    cursorTo(tl, cursor, '75.8%', '75.4%', 3.6, 0.9);
+    // Press W Frazzle at 43%=3.87s
+    press(tl, cursor, 3.87);
+    // Fast snap: Frazzle lights, Enigma unlights, detail cards cross-fade (44-46%=3.96-4.14s)
+    tl.to(enigmaSpell, Object.assign({ duration: 0.18 }, UNLIT), 3.96)
+      .to(frazzleSpell, Object.assign({ duration: 0.18 }, LIT), 3.96)
+      .to(enigmaDetail, { opacity: 0, duration: 0.18 }, 3.96)
+      .to(frazzleDetail, { opacity: 1, duration: 0.18 }, 3.96);
+    // Cursor glides to W Enigma; arrives 62%=5.58s, departs 46%=4.14s, dur=1.44s
+    cursorTo(tl, cursor, '65.9%', '75.4%', 5.58, 1.44);
+    // Press W Enigma at 65%=5.85s
+    press(tl, cursor, 5.85);
+    // Snap back: Enigma relights, Frazzle unlights (66-68%=5.94-6.12s)
+    tl.to(enigmaSpell, Object.assign({ duration: 0.18 }, LIT), 5.94)
+      .to(frazzleSpell, Object.assign({ duration: 0.18 }, UNLIT), 5.94)
+      .to(enigmaDetail, { opacity: 1, duration: 0.18 }, 5.94)
+      .to(frazzleDetail, { opacity: 0, duration: 0.18 }, 5.94)
+      // Cycle pad at 9s
+      .set({}, {}, 9);
+    return [tl];
+  };
+
   /* ---- init ------------------------------------------------------------ */
   stages.forEach(function (stage) {
     var name = stage.getAttribute('data-scene');

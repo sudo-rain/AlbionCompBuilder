@@ -57,10 +57,10 @@
 
       <h2>3. Fill slots in the builder</h2>
       <p>Open the loadout to enter the three-pane builder: the <strong>slot grid</strong> on the left, the <strong>item browser</strong> in the center, and <strong>ability detail</strong> on the right. Select a slot, pick an item, and its abilities and stats appear instantly. See <a href="../building-a-composition/">Building a composition</a> for the full tour.</p>
-      <figure class="demo scene scene--builder" role="img" aria-label="Animated demo: the three-pane loadout builder — selecting the main-hand slot, picking the Arcane Staff from the item browser, and switching between its abilities to read each spell's details in the ability panel.">
+      <figure class="demo scene scene--builder" data-scene="builder" role="img" aria-label="Animated demo: the three-pane loadout builder — selecting the main-hand slot, picking the Arcane Staff from the item browser, and switching between its abilities to read each spell's details in the ability panel.">
               <div class="scene-stage">
                 <header class="sb-bar">
-                  <button class="sb-btn">← Back to ZvZ Frontline</button>
+                  <button class="sc-btn sb-btn">← Back to ZvZ Frontline</button>
                   <span class="sb-roledot"></span>
                   <span class="sb-name">Earthrune Staff</span>
                   <span class="sb-role">Tank <span class="sb-caret">▾</span></span>
@@ -68,7 +68,7 @@
                 <div class="sb-panes">
                   <aside class="sb-equip">
                     <div class="sb-label">Equipment Slots</div>
-                    <div class="sb-grid"><button class="sb-slot"><span class="sb-ic"><span class="sb-empty">+</span></span><span class="sb-sl">Bag</span></button><button class="sb-slot"><span class="sb-ic"><img src="https://render.albiononline.com/v1/item/T8_HEAD_LEATHER_SET3@0.png" alt="" loading="lazy"></span><span class="sb-sl">Helm</span></button><button class="sb-slot"><span class="sb-ic"><img src="https://render.albiononline.com/v1/item/T8_CAPEITEM_MORGANA@0.png" alt="" loading="lazy"></span><span class="sb-sl">Cape</span></button><button class="sb-slot sb-slot-main"><span class="sb-ic"><img class="sb-fill" src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span class="sb-sl">Main Hd</span></button><button class="sb-slot"><span class="sb-ic"><img src="https://render.albiononline.com/v1/item/T8_ARMOR_PLATE_KEEPER@0.png" alt="" loading="lazy"></span><span class="sb-sl">Chest</span></button><button class="sb-slot"><span class="sb-ic"><span class="sb-empty">+</span></span><span class="sb-sl">Off Hand</span></button><button class="sb-slot"><span class="sb-ic"><img src="https://render.albiononline.com/v1/item/T7_POTION_REVIVE@0.png" alt="" loading="lazy"></span><span class="sb-sl">Potion</span></button><button class="sb-slot"><span class="sb-ic"><img src="https://render.albiononline.com/v1/item/T8_SHOES_CLOTH_SET2@0.png" alt="" loading="lazy"></span><span class="sb-sl">Boots</span></button><button class="sb-slot"><span class="sb-ic"><img src="https://render.albiononline.com/v1/item/T8_MEAL_SANDWICH@1.png" alt="" loading="lazy"></span><span class="sb-sl">Food</span></button><button class="sb-slot"><span class="sb-ic"><img src="https://render.albiononline.com/v1/item/T8_MOUNT_ARMORED_HORSE@0.png" alt="" loading="lazy"></span><span class="sb-sl">Mount</span></button></div>
+                    <div class="sb-grid"><button class="sb-slot"><span class="sc-slot sb-ic"><span class="sb-empty">+</span></span><span class="sb-sl">Bag</span></button><button class="sb-slot"><span class="sc-slot sb-ic"><img src="https://render.albiononline.com/v1/item/T8_HEAD_LEATHER_SET3@0.png" alt="" loading="lazy"></span><span class="sb-sl">Helm</span></button><button class="sb-slot"><span class="sc-slot sb-ic"><img src="https://render.albiononline.com/v1/item/T8_CAPEITEM_MORGANA@0.png" alt="" loading="lazy"></span><span class="sb-sl">Cape</span></button><button class="sb-slot sb-slot-main"><span class="sc-slot sb-ic"><img class="sb-fill" src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span class="sb-sl">Main Hd</span></button><button class="sb-slot"><span class="sc-slot sb-ic"><img src="https://render.albiononline.com/v1/item/T8_ARMOR_PLATE_KEEPER@0.png" alt="" loading="lazy"></span><span class="sb-sl">Chest</span></button><button class="sb-slot"><span class="sc-slot sb-ic"><span class="sb-empty">+</span></span><span class="sb-sl">Off Hand</span></button><button class="sb-slot"><span class="sc-slot sb-ic"><img src="https://render.albiononline.com/v1/item/T7_POTION_REVIVE@0.png" alt="" loading="lazy"></span><span class="sb-sl">Potion</span></button><button class="sb-slot"><span class="sc-slot sb-ic"><img src="https://render.albiononline.com/v1/item/T8_SHOES_CLOTH_SET2@0.png" alt="" loading="lazy"></span><span class="sb-sl">Boots</span></button><button class="sb-slot"><span class="sc-slot sb-ic"><img src="https://render.albiononline.com/v1/item/T8_MEAL_SANDWICH@1.png" alt="" loading="lazy"></span><span class="sb-sl">Food</span></button><button class="sb-slot"><span class="sc-slot sb-ic"><img src="https://render.albiononline.com/v1/item/T8_MOUNT_ARMORED_HORSE@0.png" alt="" loading="lazy"></span><span class="sb-sl">Mount</span></button></div>
                     <button class="sb-inv">Inventory ▸</button>
                     <div class="sb-notation"><span>Build Notation</span><strong>Q1·W1·E1-P1</strong></div>
                     <div class="sb-fieldlabel">Notes</div>
@@ -76,7 +76,7 @@
                   </aside>
                   <section class="sb-browser">
                     <header class="sb-bhead">
-                      <div class="sb-titlerow"><strong>Main Hand</strong><button class="sb-remove">Remove</button></div>
+                      <div class="sb-titlerow"><strong>Main Hand</strong><button class="sc-btn sb-remove">Remove</button></div>
                       <div class="sb-search">Search items…</div>
                       <div class="sb-te">
                         <div class="sb-tef"><span>Tier</span><span class="sb-sel">T8 <span class="sb-caret">▾</span></span></div>
@@ -86,14 +86,14 @@
                     <div class="sb-bbody">
                       <div class="sb-cats"><button class="sb-cat sb-cat-ancestor">Arcane Staff</button><div class="sb-cat-children"><button class="sb-cat sb-cat-l2 sb-cat-active">Arcane Staff</button><button class="sb-cat sb-cat-l2">Enigmatic Staff</button><button class="sb-cat sb-cat-l2">Evensong</button><button class="sb-cat sb-cat-l2">Occult Staff</button><button class="sb-cat sb-cat-l2">Witchwork Staff</button></div><button class="sb-cat">Axe</button><button class="sb-cat">Bow</button><button class="sb-cat">Crossbow</button><button class="sb-cat">Cursed Staff</button><button class="sb-cat">Dagger</button><button class="sb-cat">Fire Staff</button><button class="sb-cat">Frost Staff</button><button class="sb-cat">Hammer</button><button class="sb-cat">Holy Staff</button><button class="sb-cat">Mace</button><button class="sb-cat">Nature Staff</button><button class="sb-cat">Quarterstaff</button><button class="sb-cat">Spear</button><button class="sb-cat">Sword</button></div>
                       <div class="sb-items">
-                  <button class="sb-item sb-item-pick"><span class="sb-iic"><img src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span><strong>Arcane Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
-                  <button class="sb-item"><span class="sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF_CRYSTAL@0.png" alt="" loading="lazy"></span><span><strong>Astral Staff</strong><small>Arcane Staff · IP 1200</small></span></button>
-                  <button class="sb-item"><span class="sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ENIGMATICSTAFF@0.png" alt="" loading="lazy"></span><span><strong>Enigmatic Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
-                  <button class="sb-item"><span class="sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANE_RINGPAIR_AVALON@0.png" alt="" loading="lazy"></span><span><strong>Evensong</strong><small>Arcane Staff · IP 1200</small></span></button>
-                  <button class="sb-item"><span class="sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span><strong>Great Arcane Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
-                  <button class="sb-item"><span class="sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ENIGMATICORB_MORGANA@0.png" alt="" loading="lazy"></span><span><strong>Malevolent Locus</strong><small>Arcane Staff · IP 1175</small></span></button>
-                  <button class="sb-item"><span class="sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF_HELL@0.png" alt="" loading="lazy"></span><span><strong>Occult Staff</strong><small>Arcane Staff · IP 1150</small></span></button>
-                  <button class="sb-item"><span class="sb-iic"><img src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF_UNDEAD@0.png" alt="" loading="lazy"></span><span><strong>Witchwork Staff</strong><small>Arcane Staff · IP 1125</small></span></button>
+                  <button class="sb-item sb-item-pick"><span class="sc-slot sb-iic"><img src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span><strong>Arcane Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
+                  <button class="sb-item"><span class="sc-slot sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF_CRYSTAL@0.png" alt="" loading="lazy"></span><span><strong>Astral Staff</strong><small>Arcane Staff · IP 1200</small></span></button>
+                  <button class="sb-item"><span class="sc-slot sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ENIGMATICSTAFF@0.png" alt="" loading="lazy"></span><span><strong>Enigmatic Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
+                  <button class="sb-item"><span class="sc-slot sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANE_RINGPAIR_AVALON@0.png" alt="" loading="lazy"></span><span><strong>Evensong</strong><small>Arcane Staff · IP 1200</small></span></button>
+                  <button class="sb-item"><span class="sc-slot sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span><strong>Great Arcane Staff</strong><small>Arcane Staff · IP 1100</small></span></button>
+                  <button class="sb-item"><span class="sc-slot sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ENIGMATICORB_MORGANA@0.png" alt="" loading="lazy"></span><span><strong>Malevolent Locus</strong><small>Arcane Staff · IP 1175</small></span></button>
+                  <button class="sb-item"><span class="sc-slot sb-iic"><img src="https://render.albiononline.com/v1/item/T8_2H_ARCANESTAFF_HELL@0.png" alt="" loading="lazy"></span><span><strong>Occult Staff</strong><small>Arcane Staff · IP 1150</small></span></button>
+                  <button class="sb-item"><span class="sc-slot sb-iic"><img src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF_UNDEAD@0.png" alt="" loading="lazy"></span><span><strong>Witchwork Staff</strong><small>Arcane Staff · IP 1125</small></span></button>
                 </div>
               </div>
             </section>
@@ -122,7 +122,7 @@
                     </div>
                   </section>
                 </div>
-                <div class="s-cursor"></div>
+                <span class="sc-cursor"></span>
               </div>
       </figure>
 
