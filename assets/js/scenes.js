@@ -407,7 +407,7 @@
   //   Press item: 4.0s
   //   Border/fill/labels/row transition: 3.8s–4.2s (38-42%) dur=0.4s
   //   Cursor drifts back to slot: 7.2s (58%=5.8s depart, dur=1.4s)
-  //   sd-pulse: 5s period → 2 pulses per 10s cycle; pulse() helper uses 4px which matches sd-pulse
+  //   sd-pulse: 5s period → 2 pulses per 10s cycle; pulse() helper ring is 4px but alpha=0.4 + scale dip — does NOT match (see applyPulse below)
   // Static base (100% states, kept in CSS):
   //   .be-mh-ic: border-color:#4ec87a (green), outline-color:var(--gold), glow shown
   //   .be-mh-img: opacity:1 scale(1)
