@@ -115,7 +115,7 @@
     var cur = q('.sc-cursor'), pick = q('.tp-pick'), head = q('.tp-pick .sc-head'),
         fly = q('.tp-cart-fly'), add = q('.tp-add');
     var tl = gsap.timeline({ repeat: -1 });
-    // Cursor rests at (62%,92%) per old s-cursor rule 0-6% keyframe
+    // Cursor rests at (62%,92%) mirrors old tp-cursor keyframe 0-6% rest
     tl.set(cur, { left: '62%', top: '92%', scale: 1 }, 0)
       // pick card: resting border = var(--border)=#2a2a3e (provided by sc-card after rename)
       .set(pick, { borderColor: '#2a2a3e', boxShadow: 'none' }, 0)
@@ -315,7 +315,7 @@
     cursorTo(tl, cur, '71.6%', '64.4%', 3.9, 1.04);
     // Press worksheet "Import" at 33%=4.29s
     press(tl, cur, 4.29);
-    // Pulse on wsBtn: old xi-pulse-ws uses 0.4cqw ring (not 4px); explicit tweens to match
+    // Pulse on wsBtn: old xi-pulse-ws uses 0.4cqw ring; explicit tweens to match
     // keyframe: 30%=3.9s start build → 34%=4.42s peak → 38%=4.94s off (0.52s each)
     tl.fromTo(wsBtn, { boxShadow: '0 0 0 0 rgba(201,168,76,0)' },
       { boxShadow: '0 0 0 0.4cqw rgba(201,168,76,0.4)', scale: 0.97,
@@ -381,7 +381,7 @@
   //   Press item: 4.0s
   //   Border/fill/labels/row transition: 3.8s–4.2s (38-42%) dur=0.4s
   //   Cursor drifts back to slot: 7.2s (58%=5.8s depart, dur=1.4s)
-  //   sd-pulse: 5s period → 2 pulses per 10s cycle; pulse() helper ring is 4px but alpha=0.4 + scale dip — does NOT match (see applyPulse below)
+  //   sd-pulse: 5s period → 2 pulses per 10s cycle; the generic 4px/alpha-0.4 fast-attack pulse pattern does NOT match (see applyPulse below)
   // Static base (100% states, kept in CSS):
   //   .be-mh-ic: border-color:#4ec87a (green), outline-color:var(--gold), glow shown
   //   .be-mh-img: opacity:1 scale(1)
@@ -441,7 +441,7 @@
     // Cycle pad at 10s
     tl.set({}, {}, 10);
     // old sd-pulse: slow 5s breathe, 4px ring peaking at alpha 0.22 at 50%, no scale —
-    // the pulse() helper (fast attack, alpha 0.4, scale dip) doesn't match; explicit tweens.
+    // a fast-attack pulse (alpha 0.4, scale dip) wouldn't match; explicit tweens.
     var applyPulse = gsap.timeline({ repeat: -1 });
     applyPulse.fromTo(applyBtn, { boxShadow: '0 0 0 0 rgba(201,168,76,0)' },
         { boxShadow: '0 0 0 4px rgba(201,168,76,0.22)', duration: 2.5, ease: 'power1.inOut' }, 0)

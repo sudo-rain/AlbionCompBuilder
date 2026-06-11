@@ -337,7 +337,7 @@
    width slot. Role colors are the REAL ROLE_COLORS from src/domain/loadouts.ts
    (Tank #4a90d9, Healer #4ec87a, DPS #e05555). Every animated element's BASE
    (non-animated) state = its COMPLETED look, so the scene rests correctly under
-   prefers-reduced-motion (animation:none). */
+   prefers-reduced-motion (GSAP early-return). */
 
 /* Shared faithful loadout card (mirrors .loadout-card: header + 3-col
    mini-slot-grid + notation). Sized in cqw; used by the picker grid AND the
@@ -458,7 +458,7 @@
    1cqw = 1% of demo width. Role colors are the REAL ROLE_COLORS from
    src/domain/loadouts.ts (Tank #4a90d9, Healer #4ec87a, DPS #e05555).
    Every animated element's BASE (non-animated) state = its COMPLETED look, so
-   each scene rests correctly under prefers-reduced-motion (animation:none) AND
+   each scene rests correctly under prefers-reduced-motion (GSAP early-return) AND
    headless single-frame captures land on the finished frame. EXCEPTIONS (per
    the real climax): the export dropdown and the import modal rest CLOSED
    (base opacity 0), while the export banner and the new import card rest SHOWN. */
