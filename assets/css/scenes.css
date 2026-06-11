@@ -499,12 +499,10 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 /* Shared faithful loadout card (mirrors .loadout-card: header + 3-col
    mini-slot-grid + notation). Sized in cqw; used by the picker grid AND the
    save-scene composition. */
-/* lc-card: sc-card provides background/border/display/flex-direction/overflow;
-   border-radius kept as override (0.6cqw vs sc-card's 0.55em≈8.8px at 16px). */
-.scene--templates .lc-card { border-radius: 0.6cqw; }
-/* lc-head: sc-head provides display/align-items/background/border-bottom;
-   gap and padding kept as overrides (0.9cqw/0.9cqw 1.1cqw vs sc-head's 0.7em/0.7em 0.85em). */
-.scene--templates .lc-head { gap: 0.9cqw; padding: 0.9cqw 1.1cqw; }
+/* full looks kept (not collapsed onto sc-*) until templates-save migrates — its
+   cards still carry bare lc-card/lc-head; re-collapse in that migration */
+.scene--templates .lc-card { background: var(--s2); border: 1px solid var(--border); border-radius: 0.6cqw; display: flex; flex-direction: column; overflow: hidden; }
+.scene--templates .lc-head { display: flex; align-items: center; gap: 0.9cqw; background: var(--s3); border-bottom: 1px solid var(--border); padding: 0.9cqw 1.1cqw; }
 .scene--templates .lc-dot { width: 1.3cqw; height: 1.3cqw; border-radius: 50%; flex: none; }
 .scene--templates .lc-title { flex: 1; color: var(--text); font-weight: 700; font-size: 1.55cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .scene--templates .lc-btn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); font-size: 1.15cqw; padding: 0.35cqw 0.8cqw; flex: none; }
