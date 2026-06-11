@@ -137,7 +137,7 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 /* selection variant (bulk-edit): faithful loadout cards (header + mini slot-icon
    grid + notation, matching the app's .loadout-card) selected one then the other. */
 .wiki-content .demo.scene--dashboard-select { height: 300px; }   /* taller so the full card fits */
-.scene--dashboard-select .sd-grid { align-items: start; }
+.scene--dashboard-select .sd-grid { align-items: start; } /* inherits display:grid + 2-col track from .scene--dashboard .sd-grid (demo carries both classes) */
 /* lc-card: sc-card provides background/border/display/flex-direction/overflow;
    border-radius kept as scene-specific override (5px vs sc-card's 0.55em≈6px). */
 .scene--dashboard-select .lc-card { border-radius: 5px; }

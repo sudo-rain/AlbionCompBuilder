@@ -29,6 +29,9 @@
   /* ---- shared motion helpers (the old duplicated keyframes) ------------ */
   // Time semantics: `at` is when the effect STARTS, except cursorTo, where
   // `at` is the ARRIVAL time (presses are choreographed off arrivals).
+  // Color literals in builders/helpers are the resolved values of CSS custom
+  // properties (--gold = #c9a84c / rgb(201,168,76), --border = #2a2a3e):
+  // verify new literals against styles.css :root when adding scenes.
 
   // Cursor glide: arrive at (x%, y%) at time `at`, traveling for `dur` seconds.
   function cursorTo(tl, cur, x, y, at, dur) {
