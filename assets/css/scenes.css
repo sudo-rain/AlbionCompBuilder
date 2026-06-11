@@ -216,7 +216,7 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--builder .sb-cat-l2 { padding-left: 2.4cqw; font-size: 1cqw; }
 .scene--builder .sb-items { flex: 1; min-width: 0; padding: 0.7cqw 0.9cqw; overflow: hidden; display: flex; flex-direction: column; gap: 0.5cqw; }
 .scene--builder .sb-item { display: flex; align-items: center; gap: 0.9cqw; background: var(--s3); border: 1px solid transparent; border-radius: 0.5cqw; padding: 0.8cqw; text-align: left; width: 100%; }
-.scene--builder .sb-iic { width: 5cqw; height: 5cqw; flex: none; border-radius: 0.4cqw; background: var(--s1); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.scene--builder .sb-iic { width: 5cqw; height: 5cqw; flex: none; border: 0; border-radius: 0.4cqw; background: var(--s1); overflow: hidden; display: flex; align-items: center; justify-content: center; } /* sc-slot's border is unwanted here — old cells were borderless */
 .scene--builder .sb-iic img { width: 118%; height: 118%; object-fit: contain; }
 .scene--builder .sb-item strong { display: block; color: var(--text); font-size: 1.3cqw; }
 .scene--builder .sb-item small { display: block; color: var(--text3); font-size: 1.05cqw; }
