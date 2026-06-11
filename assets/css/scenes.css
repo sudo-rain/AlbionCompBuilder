@@ -698,27 +698,39 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--export-import .xi-h1 { color: var(--gold); font-weight: 700; font-size: 2.2cqw; }
 .scene--export-import .xi-sub { color: var(--text3); font-size: 1.25cqw; margin-top: 0.3cqw; }
 .scene--export-import .xi-actions-top { display: flex; align-items: center; gap: 1cqw; flex: none; }
-.scene--export-import .xi-import-btn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text); font-size: 1.35cqw; padding: 0.8cqw 1.2cqw; white-space: nowrap; }
-.scene--export-import .xi-new-btn { border-radius: 0.5cqw; background: var(--gold); color: #1a160a; font-weight: 700; font-size: 1.35cqw; padding: 0.8cqw 1.2cqw; white-space: nowrap; }
+/* xi-import-btn: sc-btn provides border/border-radius/background/color/font-size/padding;
+   overrides: border-radius (0.5cqw), color (var(--text) vs text2), font-size (1.35cqw),
+   padding (0.8cqw 1.2cqw vs 0.5em 0.8em), white-space */
+.scene--export-import .xi-import-btn { border-radius: 0.5cqw; color: var(--text); /* #dddad0 */ font-size: 1.35cqw; padding: 0.8cqw 1.2cqw; white-space: nowrap; }
+/* xi-new-btn: sc-btn--gold provides background/color/font-weight/border-color;
+   overrides: border-radius (0.5cqw), font-size (1.35cqw), padding (0.8cqw 1.2cqw), white-space */
+.scene--export-import .xi-new-btn { border-radius: 0.5cqw; font-size: 1.35cqw; padding: 0.8cqw 1.2cqw; white-space: nowrap; }
 /* composition card grid (mirrors .composition-grid + .sd-card) */
 .scene--export-import .xi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; align-content: start; }
-.scene--export-import .sd-card { background: var(--s2); border: 1px solid var(--border); border-radius: 0.6cqw; padding: 1.2cqw 1.3cqw; }
+/* sd-card: sc-card provides background/border/display/flex-direction/overflow;
+   overrides: border (1px solid var(--border) vs border2), border-radius (0.6cqw vs 0.55em),
+   padding (1.2cqw 1.3cqw). sc-card is position:relative — no regression. */
+.scene--export-import .sd-card { border-color: var(--border); /* #2a2a3e */ border-radius: 0.6cqw; padding: 1.2cqw 1.3cqw; }
 .scene--export-import .sd-row1 { display: flex; align-items: center; gap: 0.8cqw; }
 .scene--export-import .sd-handle { color: var(--text3); font-size: 1.5cqw; letter-spacing: 1px; }
 .scene--export-import .sd-name { color: var(--text); font-weight: 700; font-size: 1.55cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .scene--export-import .sd-dot { width: 1.3cqw; height: 1.3cqw; border-radius: 50%; margin-left: auto; flex: none; }
 .scene--export-import .sd-sub { color: var(--text3); font-size: 1.15cqw; margin: 0.7cqw 0 0.9cqw; }
 .scene--export-import .sd-chips { display: flex; gap: 0.6cqw; flex-wrap: wrap; }
-/* role chips are NEUTRAL in the real app (.composition-loadouts span: var(--s3)
-   surface + muted text, NOT role-colored) — mirror that, like the .s-chip convention. */
-.scene--export-import .sd-chip { background: var(--s3); color: var(--text2); font-weight: 600; font-size: 1cqw; border-radius: 0.4cqw; padding: 0.3cqw 0.7cqw; }
-/* new card appears in the grid (mirrors the dashboard scene's sd-cardin), after
-   the rename modal's Import is pressed. Base (rest) = shown. */
-.scene--export-import .sd-card--new { animation: xi-cardin 13s ease-in-out infinite; }
-@keyframes xi-cardin { 0%, 64% { opacity: 0; transform: translateY(1.2cqw); } 72%, 100% { opacity: 1; transform: none; } }
-/* "Choose Worksheet" modal overlay (mirrors Modal + WorksheetPickerModal) */
-.scene--export-import .xi-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(8,8,12,0.66); z-index: 8; }
-.scene--export-import .xi-modal { width: 56cqw; background: var(--s2); border: 1px solid var(--border2); border-radius: 0.8cqw; padding: 2cqw 2.2cqw; box-shadow: 0 2cqw 5cqw rgba(0,0,0,0.55); }
+/* sd-chip: sc-chip provides display/padding/border-radius/background/color/font-size;
+   overrides: font-weight (600), font-size (1cqw vs 0.82em), border-radius (0.4cqw vs 0.35em),
+   padding (0.3cqw 0.7cqw vs 0.25em 0.65em).
+   role chips are NEUTRAL (var(--s3) surface + muted text, NOT role-colored). */
+.scene--export-import .sd-chip { font-weight: 600; font-size: 1cqw; border-radius: 0.4cqw; padding: 0.3cqw 0.7cqw; }
+/* new card: base (rest/GSAP end-state) = shown. GSAP sets {opacity:0, y:'1.2cqw'} at t=0. */
+.scene--export-import .sd-card--new { opacity: 1; }
+/* xi-overlay (worksheet picker backdrop): sc-overlay provides position/inset/display/
+   align-items/justify-content/background/z-index(8); identical — no override needed.
+   Base = opacity:0 (GSAP sets at t=0). */
+/* xi-modal (worksheet picker): sc-modal provides background/border/border-radius/padding/box-shadow;
+   overrides: width (56cqw), border-radius (0.8cqw vs 0.6em), padding (2cqw 2.2cqw vs 1.6em 1.75em),
+   box-shadow (cqw-based vs em-based). */
+.scene--export-import .xi-modal { width: 56cqw; border-radius: 0.8cqw; padding: 2cqw 2.2cqw; box-shadow: 0 2cqw 5cqw rgba(0,0,0,0.55); }
 .scene--export-import .xi-mtitle { color: var(--gold); font-weight: 700; font-size: 2cqw; margin-bottom: 0.5cqw; }
 .scene--export-import .xi-mfile { color: var(--text2); font-size: 1.25cqw; margin-bottom: 1.4cqw; }
 .scene--export-import .xi-list { display: flex; flex-direction: column; gap: 0.7cqw; }
@@ -729,79 +741,34 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--export-import .xi-opt--on { border-color: var(--gold); box-shadow: 0 0 0 0.16cqw rgba(201,168,76,0.4); }
 .scene--export-import .xi-opt--on .xi-radio { border-color: var(--gold); background: radial-gradient(circle, var(--gold) 0 42%, transparent 46%); }
 .scene--export-import .xi-modal-actions { display: flex; gap: 1cqw; justify-content: flex-end; margin-top: 1.6cqw; }
-.scene--export-import .xi-cancel { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s3); color: var(--text); font-size: 1.4cqw; padding: 0.85cqw 1.4cqw; }
-.scene--export-import .xi-import { border-radius: 0.5cqw; background: var(--gold); color: #1a160a; font-weight: 700; font-size: 1.4cqw; padding: 0.85cqw 1.6cqw; }
+/* xi-cancel: sc-btn provides border/border-radius/background/color;
+   overrides: border-radius (0.5cqw), background (var(--s3)), color (var(--text)),
+   font-size (1.4cqw), padding (0.85cqw 1.4cqw) */
+.scene--export-import .xi-cancel { border-radius: 0.5cqw; background: var(--s3); /* #1f1f2e */ color: var(--text); /* #dddad0 */ font-size: 1.4cqw; padding: 0.85cqw 1.4cqw; }
+/* xi-import: sc-btn--gold provides background/color/font-weight/border-color;
+   overrides: border-radius (0.5cqw), font-size (1.4cqw), padding (0.85cqw 1.6cqw) */
+.scene--export-import .xi-import { border-radius: 0.5cqw; font-size: 1.4cqw; padding: 0.85cqw 1.6cqw; }
 /* second modal: "Import Party Composition" (mirrors NewCompositionModal — a
    rename field + color swatches), which the real flow shows after the worksheet
    is chosen. Cross-fades up over the worksheet picker (higher z); its primary
    button reuses .xi-import for styling. Swatches are circular like .swatch, with
    the active one ringed white (.swatch-active). */
-.scene--export-import .xi-overlay2 { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(8,8,12,0.66); z-index: 9; }
-.scene--export-import .xi-modal2 { width: 48cqw; background: var(--s2); border: 1px solid var(--border2); border-radius: 0.8cqw; padding: 2cqw 2.2cqw; box-shadow: 0 2cqw 5cqw rgba(0,0,0,0.55); }
+/* xi-overlay2: sc-overlay provides position/inset/display/align-items/justify-content/
+   background/z-index(8); old xi-overlay2 had z-index:9 — override to keep cursor
+   (z-index:9) rendering above both overlays when both are visible. */
+.scene--export-import .xi-overlay2 { z-index: 9; /* old: z-index:9 — cursor is also z-index:9; DOM order (overlay2 before cursor) means cursor renders on top */ }
+/* xi-modal2: sc-modal provides background/border/border-radius/padding/box-shadow;
+   overrides: width (48cqw), border-radius (0.8cqw), padding (2cqw 2.2cqw), box-shadow */
+.scene--export-import .xi-modal2 { width: 48cqw; border-radius: 0.8cqw; padding: 2cqw 2.2cqw; box-shadow: 0 2cqw 5cqw rgba(0,0,0,0.55); }
 .scene--export-import .xi-flabel { color: var(--text3); font-size: 1.05cqw; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.55cqw; }
 .scene--export-import .xi-field { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s1); color: var(--text); font-size: 1.5cqw; padding: 0.9cqw 1.1cqw; margin-bottom: 1.4cqw; }
 .scene--export-import .xi-swatches { display: flex; gap: 0.9cqw; }
 .scene--export-import .xi-swatch { width: 2.5cqw; height: 2.5cqw; border-radius: 50%; border: 0.28cqw solid transparent; flex: none; }
+/* xi-swatch--on: static white ring (base look). GSAP handles the scale pop. */
 .scene--export-import .xi-swatch--on { border-color: #fff; }
-
-/* ---- Choreography (one shared 13s timeline) ----
-   beat 1 (0-8%)    dashboard rests (header + 2 existing cards)
-   beat 2 (14-22%)  cursor presses "Import from .xlsx" -> Choose-Worksheet modal fades in
-   beat 3 (30-36%)  cursor presses the worksheet "Import" -> worksheet picker cross-fades
-                    OUT as the "Import Party Composition" modal cross-fades IN
-   beat 4 (46-52%)  cursor presses the green color swatch (rename + color step)
-   beat 5 (60-66%)  cursor presses the modal "Import" -> rename modal closes, the new
-                    "Depths 3v3" card drops into the grid
-   Base (reduced-motion / frozen) = the CLIMAX: BOTH modals CLOSED, new card SHOWN.
-   Cursor rests on the always-visible "Import from .xlsx" button. The two overlays
-   cross-fade (their dark backdrops overlap) so the dashboard never flashes between
-   the two modal steps. */
-.scene--export-import .xi-overlay { opacity: 0; animation: xi-overlay 13s ease-in-out infinite; }
-@keyframes xi-overlay { 0%, 16% { opacity: 0; } 22%, 38% { opacity: 1; } 44%, 100% { opacity: 0; } }
-.scene--export-import .xi-overlay2 { opacity: 0; animation: xi-overlay2 13s ease-in-out infinite; }
-@keyframes xi-overlay2 { 0%, 36% { opacity: 0; } 42%, 66% { opacity: 1; } 72%, 100% { opacity: 0; } }
-/* Only the two dark BACKDROPS overlap (36-44%) so the dashboard never flashes
-   between the two steps; the inner modals HARD-SWAP — worksheet fades out by 36%,
-   rename fades in at 40%+ — mirroring the real app (which swaps these dialogs with
-   no cross-fade) and avoiding two dialog titles superimposed mid-transition. */
-.scene--export-import .xi-modal { animation: xi-modal-out 13s ease-in-out infinite; }
-@keyframes xi-modal-out { 0%, 33% { opacity: 1; } 36%, 100% { opacity: 0; } }
-.scene--export-import .xi-modal2 { animation: xi-modal2-in 13s ease-in-out infinite; }
-@keyframes xi-modal2-in { 0%, 40% { opacity: 0; } 43%, 100% { opacity: 1; } }
-/* worksheet "Import" press (~33%) */
-.scene--export-import .xi-import--ws { animation: xi-pulse-ws 13s ease-in-out infinite; }
-@keyframes xi-pulse-ws {
-  0%, 30% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
-  34% { box-shadow: 0 0 0 0.4cqw rgba(201,168,76,0.4); transform: scale(0.97); }
-  38%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
-}
-/* rename-modal "Import" press (~63%) */
-.scene--export-import .xi-import--final { animation: xi-pulse-final 13s ease-in-out infinite; }
-@keyframes xi-pulse-final {
-  0%, 60% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
-  64% { box-shadow: 0 0 0 0.4cqw rgba(201,168,76,0.4); transform: scale(0.97); }
-  68%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
-}
-/* green swatch pops when the cursor selects it (~49%) */
-.scene--export-import .xi-swatch--on { animation: xi-swatchpop 13s ease-in-out infinite; }
-@keyframes xi-swatchpop { 0%, 46% { transform: scale(1); } 50% { transform: scale(1.18); } 54%, 100% { transform: scale(1); } }
-/* cursor: Import-from-xlsx -> worksheet Import -> green swatch -> modal Import ->
-   rest on Import-from-xlsx. Targets measured on-canvas. */
-.scene--export-import .s-cursor { width: max(13px, 1.8cqw); height: max(18px, 2.5cqw); left: 74.5%; top: 7.7%; animation: xi-cursor 13s ease-in-out infinite; }
-@keyframes xi-cursor {
-  0%, 6% { left: 58%; top: 38%; transform: scale(1); }
-  14% { left: 74.5%; top: 7.7%; transform: scale(1); }     /* arrive: Import from .xlsx */
-  18% { left: 74.5%; top: 7.7%; transform: scale(0.78); }  /* press -> worksheet modal opens */
-  22% { left: 74.5%; top: 7.7%; transform: scale(1); }
-  30% { left: 71.6%; top: 64.4%; transform: scale(1); }    /* arrive: worksheet Import */
-  33% { left: 71.6%; top: 64.4%; transform: scale(0.78); } /* press -> rename modal opens */
-  36% { left: 71.6%; top: 64.4%; transform: scale(1); }
-  46% { left: 36.25%; top: 57%; transform: scale(1); }     /* arrive: green color swatch */
-  49% { left: 36.25%; top: 57%; transform: scale(0.78); }  /* press -> color selected */
-  52% { left: 36.25%; top: 57%; transform: scale(1); }
-  60% { left: 67.8%; top: 64%; transform: scale(1); }      /* arrive: rename-modal Import */
-  63% { left: 67.8%; top: 64%; transform: scale(0.78); }   /* press -> new card appears */
-  66% { left: 67.8%; top: 64%; transform: scale(1); }
-  72% { left: 74.5%; top: 7.7%; transform: scale(1); }     /* return to Import from .xlsx */
-  100% { left: 74.5%; top: 7.7%; transform: scale(1); }
-}
+/* Cursor rest position (74.5%, 7.7%) = on "Import from .xlsx" at rest/end of cycle.
+   sc-cursor provides position/bg/filter/transform-origin/z-index(9) primitives; only coords + size here. */
+.scene--export-import .sc-cursor { width: max(13px, 1.8cqw); height: max(18px, 2.5cqw); left: 74.5%; top: 7.7%; }
+/* Motion driven by SCENES['export-import'] GSAP timeline.
+   Static base = old 100% state: both overlays opacity:0, modal1 opacity:0, modal2 opacity:1,
+   new card opacity:1 transform:none, cursor at 74.5%,7.7%. */

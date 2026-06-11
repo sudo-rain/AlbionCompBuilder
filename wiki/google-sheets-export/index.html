@@ -122,7 +122,7 @@
 
       <h2>Importing an .xlsx</h2>
       <p>To bring a composition back in, use <strong>Import</strong> and choose an <code>.xlsx</code> file that was exported from Albion Comp Builder. The app reads the loadouts back into a composition you can edit. Importing a sheet that matches the export format is the round-trip counterpart to exporting — a comp you exported can be re-imported later.</p>
-      <figure class="demo scene scene--export-import" role="img" aria-label="Animated demo: on the Party Compositions dashboard, pressing Import from .xlsx; the Choose Worksheet dialog lists the file's worksheets as a radio group with the first selected; pressing Import opens an Import Party Composition dialog where the composition is renamed and given a color; pressing Import there adds a new Depths 3v3 card to the grid.">
+      <figure class="demo scene scene--export-import" data-scene="export-import" role="img" aria-label="Animated demo: on the Party Compositions dashboard, pressing Import from .xlsx; the Choose Worksheet dialog lists the file's worksheets as a radio group with the first selected; pressing Import opens an Import Party Composition dialog where the composition is renamed and given a color; pressing Import there adds a new Depths 3v3 card to the grid.">
         <div class="scene-stage">
           <div class="xi-dash">
             <div class="xi-head">
@@ -131,41 +131,41 @@
                 <div class="xi-sub">3 saved compositions</div>
               </div>
               <div class="xi-actions-top">
-                <span class="xi-import-btn">Import from .xlsx</span>
-                <span class="xi-new-btn">+ New Composition</span>
+                <span class="sc-btn xi-import-btn">Import from .xlsx</span>
+                <span class="sc-btn sc-btn--gold xi-new-btn">+ New Composition</span>
               </div>
             </div>
             <div class="xi-grid">
-              <article class="sd-card">
+              <article class="sc-card sd-card">
                 <div class="sd-row1"><span class="sd-handle">⠿</span><span class="sd-name">ZvZ Frontline</span><span class="sd-cdot sd-dot" style="background:#4a90d9"></span></div>
                 <div class="sd-sub">3 loadouts</div>
-                <div class="sd-chips"><span class="sd-chip">Tank</span><span class="sd-chip">Healer</span><span class="sd-chip">DPS</span></div>
+                <div class="sd-chips"><span class="sc-chip sd-chip">Tank</span><span class="sc-chip sd-chip">Healer</span><span class="sc-chip sd-chip">DPS</span></div>
               </article>
-              <article class="sd-card">
+              <article class="sc-card sd-card">
                 <div class="sd-row1"><span class="sd-handle">⠿</span><span class="sd-name">Ganking Squad</span><span class="sd-cdot sd-dot" style="background:#e05555"></span></div>
                 <div class="sd-sub">2 loadouts</div>
-                <div class="sd-chips"><span class="sd-chip">DPS</span><span class="sd-chip">Tank</span></div>
+                <div class="sd-chips"><span class="sc-chip sd-chip">DPS</span><span class="sc-chip sd-chip">Tank</span></div>
               </article>
-              <article class="sd-card sd-card--new">
+              <article class="sc-card sd-card sd-card--new">
                 <div class="sd-row1"><span class="sd-handle">⠿</span><span class="sd-name">Depths 3v3</span><span class="sd-cdot sd-dot" style="background:#4ec87a"></span></div>
                 <div class="sd-sub">3 loadouts</div>
-                <div class="sd-chips"><span class="sd-chip">Tank</span><span class="sd-chip">Healer</span><span class="sd-chip">DPS</span></div>
+                <div class="sd-chips"><span class="sc-chip sd-chip">Tank</span><span class="sc-chip sd-chip">Healer</span><span class="sc-chip sd-chip">DPS</span></div>
               </article>
             </div>
           </div>
-          <div class="xi-overlay">
-            <div class="xi-modal">
+          <div class="sc-overlay xi-overlay">
+            <div class="sc-modal xi-modal">
               <div class="xi-mtitle">Choose Worksheet</div>
               <div class="xi-mfile">albion-comps.xlsx</div>
               <div class="xi-list" role="radiogroup" aria-label="Worksheets">
                 <span class="xi-opt xi-opt--on"><span class="xi-radio"></span><span class="xi-optname">Depths 3v3</span><span class="xi-optcount">3 rows</span></span>
                 <span class="xi-opt"><span class="xi-radio"></span><span class="xi-optname">ZvZ Backline</span><span class="xi-optcount">6 rows</span></span>
               </div>
-              <div class="xi-modal-actions"><span class="xi-cancel">Cancel</span><span class="xi-import xi-import--ws">Import</span></div>
+              <div class="xi-modal-actions"><span class="sc-btn xi-cancel">Cancel</span><span class="sc-btn sc-btn--gold xi-import xi-import--ws">Import</span></div>
             </div>
           </div>
-          <div class="xi-overlay2">
-            <div class="xi-modal2">
+          <div class="sc-overlay xi-overlay2">
+            <div class="sc-modal xi-modal2">
               <div class="xi-mtitle">Import Party Composition</div>
               <div class="xi-flabel">Composition name</div>
               <div class="xi-field">Depths 3v3</div>
@@ -179,10 +179,10 @@
                 <span class="xi-swatch" style="background:#3bbfa8"></span>
                 <span class="xi-swatch" style="background:#e08840"></span>
               </div>
-              <div class="xi-modal-actions"><span class="xi-cancel">Cancel</span><span class="xi-import xi-import--final">Import</span></div>
+              <div class="xi-modal-actions"><span class="sc-btn xi-cancel">Cancel</span><span class="sc-btn sc-btn--gold xi-import xi-import--final">Import</span></div>
             </div>
           </div>
-          <span class="s-cursor"></span>
+          <span class="sc-cursor"></span>
         </div>
       </figure>
 

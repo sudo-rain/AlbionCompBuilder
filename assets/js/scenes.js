@@ -286,6 +286,104 @@
     return [tl, spin(spinner)];
   };
 
+  // Keyframe ground truth (13s):
+  //   xi-cursor:     0-6%  rest (58%,38%) → 14% arrive (74.5%,7.7%) → 18% press → 22% release
+  //                  → 30% arrive (71.6%,64.4%) → 33% press → 36% release
+  //                  → 46% arrive (36.25%,57%) → 49% press → 52% release
+  //                  → 60% arrive (67.8%,64%) → 63% press → 66% release
+  //                  → 72% return (74.5%,7.7%) → 100% hold
+  //   xi-overlay:    0-16% opacity:0 → 22-38% opacity:1 → 44-100% opacity:0
+  //                  fade-in: 2.08s–2.86s (0.78s); fade-out: 4.94s–5.72s (0.78s)
+  //   xi-overlay2:   0-36% opacity:0 → 42-66% opacity:1 → 72-100% opacity:0
+  //                  fade-in: 4.68s–5.46s (0.78s); fade-out: 8.58s–9.36s (0.78s)
+  //   Backdrop overlap window: 4.94–5.46s (ov1 fading out, ov2 fading in simultaneously)
+  //   xi-modal-out:  0-33% opacity:1 → 36-100% opacity:0 (fade-out: 4.29s–4.68s, dur=0.39s)
+  //   xi-modal2-in:  0-40% opacity:0 → 43-100% opacity:1 (fade-in: 5.20s–5.59s, dur=0.39s)
+  //   xi-pulse-ws:   30%=3.9s start, 34%=4.42s peak (0.4cqw ring), 38%=4.94s off
+  //                  (NOT 4px — old keyframe uses 0.4cqw; explicit tweens required)
+  //   xi-pulse-final: 60%=7.8s start, 64%=8.32s peak (0.4cqw), 68%=8.84s off
+  //                  (same cqw override as ws pulse)
+  //   xi-swatchpop:  46%=5.98s scale(1) → 50%=6.50s scale(1.18) → 54%=7.02s scale(1)
+  //                  build starts 0.39s before press (6.37s); peak is 0.13s after press
+  //   xi-cardin:     64%=8.32s start, 72%=9.36s full (dur=1.04s; cardIn at=8.32, dur=1.04)
+  //   old base (100% state): overlays opacity:0, modal1 opacity:0, modal2 opacity:1,
+  //                          new card opacity:1 transform:none, cursor at 74.5%,7.7%
+  // Beat-table discrepancies vs plan:
+  //   ov1 fade-in: plan says fadeIn(ov1, 2.34, 0.5); keyframe starts 2.08s, full at 2.86s
+  //     → using keyframe times: 2.08s start, 0.78s dur
+  //   pulse(wsBtn): plan uses helper (4px ring); keyframe has 0.4cqw ring → explicit tweens
+  //   pulse(fin): same cqw discrepancy → explicit tweens
+  //   swatch build: plan tl.to(sw, {scale:1.18}, 6.37); keyframe build starts 5.98s
+  //     → start scale build at 5.98s to match keyframe, peak at 6.50s, release at 7.02s
+  //   cardIn duration: plan leaves at helper default (0.5s); keyframe dur=1.04s → pass dur explicitly
+  SCENES['export-import'] = function (stage) {
+    var q = gsap.utils.selector(stage);
+    var cur = q('.sc-cursor'), ov1 = q('.xi-overlay'), ov2 = q('.xi-overlay2'),
+        m1 = q('.xi-modal'), m2 = q('.xi-modal2'), wsBtn = q('.xi-import--ws'),
+        fin = q('.xi-import--final'), sw = q('.xi-swatch--on'), card = q('.sd-card--new');
+    var tl = gsap.timeline({ repeat: -1 });
+    // Initial states at t=0 (cycle start / old 0% keyframe values)
+    tl.set(cur, { left: '58%', top: '38%', scale: 1 }, 0)
+      .set(ov1, { opacity: 0 }, 0)
+      .set(ov2, { opacity: 0 }, 0)
+      .set(m1, { opacity: 1 }, 0)    /* modal1 base opacity: 1 (old 0-33% state = visible inside hidden overlay) */
+      .set(m2, { opacity: 0 }, 0)    /* modal2 base opacity: 0 (old 0-40% state) */
+      .set(card, { opacity: 0, y: '1.2cqw' }, 0);
+    // Cursor travels to "Import from .xlsx"; arrives 14%=1.82s, departs ~6%=0.78s, dur=1.04s
+    cursorTo(tl, cur, '74.5%', '7.7%', 1.82, 1.04);
+    // Press "Import from .xlsx" at 18%=2.34s
+    press(tl, cur, 2.34);
+    // Overlay1 fades in: keyframe 16%=2.08s → 22%=2.86s (0.78s)
+    fadeIn(tl, ov1, 2.08, 0.78);
+    // Cursor travels to worksheet "Import"; arrives 30%=3.9s, departs ~22%=2.86s, dur=1.04s
+    cursorTo(tl, cur, '71.6%', '64.4%', 3.9, 1.04);
+    // Press worksheet "Import" at 33%=4.29s
+    press(tl, cur, 4.29);
+    // Pulse on wsBtn: old xi-pulse-ws uses 0.4cqw ring (not 4px); explicit tweens to match
+    // keyframe: 30%=3.9s start build → 34%=4.42s peak → 38%=4.94s off (0.52s each)
+    tl.fromTo(wsBtn, { boxShadow: '0 0 0 0 rgba(201,168,76,0)' },
+      { boxShadow: '0 0 0 0.4cqw rgba(201,168,76,0.4)', scale: 0.97,
+        duration: 0.52, ease: 'power2.out' }, 3.9)
+      .to(wsBtn, { boxShadow: '0 0 0 0 rgba(201,168,76,0)', scale: 1, duration: 0.52 }, 4.42);
+    // Modal1 fades out: 33%=4.29s → 36%=4.68s (0.39s)
+    fadeOut(tl, m1, 4.29, 0.39);
+    // Overlay1 fades out: 38%=4.94s → 44%=5.72s (0.78s)
+    fadeOut(tl, ov1, 4.94, 0.78);
+    // Overlay2 fades in: 36%=4.68s → 42%=5.46s (0.78s) — OVERLAPS with ov1 fade-out (4.94–5.46)
+    fadeIn(tl, ov2, 4.68, 0.78);
+    // Modal2 fades in: 40%=5.20s → 43%=5.59s (0.39s)
+    fadeIn(tl, m2, 5.20, 0.39);
+    // Cursor travels to green swatch; arrives 46%=5.98s, departs ~42%=5.46s, dur=0.52s
+    cursorTo(tl, cur, '36.25%', '57%', 5.98, 0.52);
+    // Press green swatch at 49%=6.37s
+    press(tl, cur, 6.37);
+    // Swatch pop: xi-swatchpop 46%=5.98s → 50%=6.50s (build) → 54%=7.02s (release) — scale 1.18
+    // Build starts at cursor arrival (5.98s), peaks 0.52s later at 6.50s, returns at 7.02s
+    tl.to(sw, { scale: 1.18, duration: 0.52, ease: 'power2.out' }, 5.98)
+      .to(sw, { scale: 1, duration: 0.52 }, 6.50);
+    // Cursor travels to final "Import" in rename modal; arrives 60%=7.8s, departs ~52%=6.76s, dur=1.04s
+    cursorTo(tl, cur, '67.8%', '64%', 7.80, 1.04);
+    // Press final "Import" at 63%=8.19s
+    press(tl, cur, 8.19);
+    // Pulse on fin: old xi-pulse-final uses 0.4cqw ring; explicit tweens to match
+    // keyframe: 60%=7.8s start → 64%=8.32s peak → 68%=8.84s off (0.52s each)
+    tl.fromTo(fin, { boxShadow: '0 0 0 0 rgba(201,168,76,0)' },
+      { boxShadow: '0 0 0 0.4cqw rgba(201,168,76,0.4)', scale: 0.97,
+        duration: 0.52, ease: 'power2.out' }, 7.80)
+      .to(fin, { boxShadow: '0 0 0 0 rgba(201,168,76,0)', scale: 1, duration: 0.52 }, 8.32);
+    // Overlay2 fades out: 66%=8.58s → 72%=9.36s (0.78s)
+    fadeOut(tl, ov2, 8.58, 0.78);
+    // New card enters: xi-cardin 64%=8.32s → 72%=9.36s (dur=1.04s); y offset matches keyframe
+    // Using fromTo directly since cardIn hardcodes duration:0.5 but keyframe dur=1.04s
+    tl.fromTo(card, { opacity: 0, y: '1.2cqw' },
+      { opacity: 1, y: 0, duration: 1.04, ease: 'power2.out' }, 8.32);
+    // Cursor returns to "Import from .xlsx": 72%=9.36s, travels from 66%=8.58s, dur=0.78s
+    cursorTo(tl, cur, '74.5%', '7.7%', 9.36, 0.78);
+    // Cycle pad at 13s
+    tl.set({}, {}, 13);
+    return [tl];
+  };
+
   /* ---- init ------------------------------------------------------------ */
   stages.forEach(function (stage) {
     var name = stage.getAttribute('data-scene');
