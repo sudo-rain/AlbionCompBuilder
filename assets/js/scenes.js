@@ -466,11 +466,13 @@
     cursorTo(tl, cur, '5.2%', '38%', 7.2, 1.4);
     // Cycle pad at 10s
     tl.set({}, {}, 10);
-    // Separate looping pulse for Apply button: sd-pulse was 5s period, 4px ring (pulse() helper matches)
-    // 2 pulses per 10s cycle; first pulse starts at 0 (peak at 0.25s), second at 5.0s (peak at 5.25s)
+    // old sd-pulse: slow 5s breathe, 4px ring peaking at alpha 0.22 at 50%, no scale —
+    // the pulse() helper (fast attack, alpha 0.4, scale dip) doesn't match; explicit tweens.
     var applyPulse = gsap.timeline({ repeat: -1 });
-    pulse(applyPulse, applyBtn, 0);
-    applyPulse.set({}, {}, 5);
+    applyPulse.fromTo(applyBtn, { boxShadow: '0 0 0 0 rgba(201,168,76,0)' },
+        { boxShadow: '0 0 0 4px rgba(201,168,76,0.22)', duration: 2.5, ease: 'power1.inOut' }, 0)
+      .to(applyBtn, { boxShadow: '0 0 0 0 rgba(201,168,76,0)', duration: 2.5,
+        ease: 'power1.inOut' }, 2.5);
     return [tl, applyPulse];
   };
 
