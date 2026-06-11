@@ -627,44 +627,51 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--export .xp-comp { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--bg); }
 /* composition toolbar (mirrors .app-toolbar.composition-toolbar) */
 .scene--export .xp-toolbar { position: relative; display: flex; align-items: center; gap: 1cqw; background: var(--s1); border-bottom: 1px solid var(--border); padding: 1.2cqw 1.4cqw; z-index: 4; }
-.scene--export .xp-back { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); font-size: 1.2cqw; padding: 0.5cqw 0.9cqw; flex: none; }
+/* xp-back: sc-btn provides border/border-radius/background/color/font-size/padding;
+   overrides: border-radius (0.5cqw vs 0.4em), font-size (1.2cqw), padding (0.5cqw 0.9cqw), flex:none */
+.scene--export .xp-back { border-radius: 0.5cqw; font-size: 1.2cqw; padding: 0.5cqw 0.9cqw; flex: none; }
 .scene--export .xp-dot { width: 1.5cqw; height: 1.5cqw; border-radius: 50%; flex: none; }
 .scene--export .xp-name { color: var(--gold); font-weight: 700; font-size: 1.75cqw; flex: none; white-space: nowrap; }
 .scene--export .xp-roles { color: var(--text3); font-size: 1.2cqw; flex: none; }
 /* right-aligned action cluster (mirrors .composition-toolbar-actions): pushes
    + Add Empty · + From Template · ⋯ to the toolbar's right edge. */
 .scene--export .xp-actions { margin-left: auto; display: flex; align-items: center; gap: 1cqw; flex: none; }
-.scene--export .xp-tbtn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); font-size: 1.2cqw; padding: 0.55cqw 0.9cqw; flex: none; white-space: nowrap; }
-.scene--export .xp-tbtn--gold { background: var(--gold); color: #1a160a; font-weight: 700; border-color: var(--gold); }
+/* xp-tbtn: sc-btn provides border/border-radius/background/color/font-size/padding;
+   overrides: border-radius (0.5cqw), font-size (1.2cqw), padding (0.55cqw 0.9cqw), flex:none, white-space */
+.scene--export .xp-tbtn { border-radius: 0.5cqw; font-size: 1.2cqw; padding: 0.55cqw 0.9cqw; flex: none; white-space: nowrap; }
+/* xp-tbtn--gold: sc-btn--gold provides background/color/font-weight/border-color; no override needed */
 /* ⋯ / Exporting button (mirrors the DropdownMenu trigger + btn-loading swap).
    Two stacked layers cross-fade — CSS can't change text content. The real button
    RESIZES when its label changes from ⋯ to the spinner + "Exporting", so the
-   button widens in sync with that swap (xp-morewidth): narrow for ⋯ during the
-   menu beat, wide enough to hold the spinner + "Exporting" once exporting begins.
+   button widens in sync with that swap: narrow for ⋯ during the menu beat, wide
+   enough to hold the spinner + "Exporting" once exporting begins.
    Base (rest/climax) = wide, since the resting state shows "Exporting". */
-.scene--export .xp-more { position: relative; box-sizing: border-box; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text); flex: none; min-width: 10.5cqw; height: 3.2cqw; padding: 0 0.9cqw; display: flex; align-items: center; justify-content: center; animation: xp-morewidth 10s ease-in-out infinite; }
-@keyframes xp-morewidth { 0%, 48% { min-width: 5cqw; } 52%, 100% { min-width: 10.5cqw; } }
-.scene--export .xp-more-dots { font-size: 1.9cqw; line-height: 1; }
-.scene--export .xp-more-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0.7cqw; font-size: 1.3cqw; font-weight: 600; color: var(--text); white-space: nowrap; }
-.scene--export .xp-spinner { width: 1.3cqw; height: 1.3cqw; border: 0.28cqw solid rgba(224,201,127,0.25); border-top-color: #e0c97f; border-radius: 50%; animation: xp-spin 0.7s linear infinite; flex: none; }
-@keyframes xp-spin { to { transform: rotate(360deg); } }
-/* dropdown menu (mirrors .dropdown-menu / .dropdown-menu-item) */
-.scene--export .xp-menu { position: absolute; right: 1.4cqw; top: 4.6cqw; z-index: 6; min-width: 28cqw; padding: 0.5cqw; border: 1px solid var(--border2); border-radius: 0.6cqw; background: var(--s3); box-shadow: 0 1.2cqw 2.8cqw rgba(0,0,0,0.55); }
-.scene--export .xp-mi { display: flex; align-items: center; gap: 0.9cqw; border-radius: 0.4cqw; color: var(--text); font-size: 1.35cqw; font-weight: 600; padding: 0.95cqw 1.1cqw; white-space: nowrap; }
+.scene--export .xp-more { position: relative; box-sizing: border-box; border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text); flex: none; min-width: 10.5cqw; height: 3.2cqw; padding: 0 0.9cqw; display: flex; align-items: center; justify-content: center; }
+.scene--export .xp-more-dots { font-size: 1.9cqw; line-height: 1; opacity: 0; }
+.scene--export .xp-more-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 0.7cqw; font-size: 1.3cqw; font-weight: 600; color: var(--text); white-space: nowrap; opacity: 1; }
+/* xp-spinner: sc-spinner provides border/border-top-color/border-radius/flex:none;
+   overrides: width/height (1.3cqw vs 0.95em), border-width (0.28cqw vs 0.2em).
+   NO CSS animation — spin() GSAP helper drives rotation. */
+.scene--export .xp-spinner { width: 1.3cqw; height: 1.3cqw; border-width: 0.28cqw; }
+/* dropdown menu: sc-menu provides position:absolute/z-index:6/border/border-radius/padding/box-shadow;
+   overrides: right/top/min-width, padding (0.5cqw vs 0.35em), border-radius (0.6cqw),
+   background (--s3=#1f1f2e vs sc-menu's --s1), box-shadow (cqw-based vs em-based) */
+.scene--export .xp-menu { right: 1.4cqw; top: 4.6cqw; min-width: 28cqw; padding: 0.5cqw; border-radius: 0.6cqw; background: var(--s3); box-shadow: 0 1.2cqw 2.8cqw rgba(0,0,0,0.55); opacity: 0; }
+/* xp-mi: sc-menu-item provides display/align-items/border-radius/color/font-size/font-weight/padding/white-space;
+   overrides: gap (0.9cqw vs 0.65em), border-radius (0.4cqw), font-size (1.35cqw), padding (0.95cqw 1.1cqw) */
+.scene--export .xp-mi { gap: 0.9cqw; border-radius: 0.4cqw; font-size: 1.35cqw; padding: 0.95cqw 1.1cqw; }
 .scene--export .xp-mi-icon { width: 1.8cqw; text-align: center; flex: none; }
-/* green success banner (mirrors .composition-banner-success) */
+/* green success banner (mirrors .composition-banner-success); base = shown (completed) */
 .scene--export .xp-banner { display: flex; align-items: center; gap: 1.2cqw; margin: 1cqw 1.4cqw 0; padding: 0.9cqw 1.2cqw; border-radius: 0.6cqw; background: rgba(78,200,122,0.12); color: #7fd99e; font-weight: 600; font-size: 1.35cqw; }
 .scene--export .xp-banner-link { margin-left: auto; color: #9fe3b6; text-decoration: underline; font-weight: 700; }
 /* loadout cards grid (mirrors the composition .loadout-card grid) */
 .scene--export .xp-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; padding: 1.4cqw; align-content: start; min-height: 0; }
-/* loadout card (mirrors .loadout-card; the .lc-* base is scoped per-scene, so it
-   is redeclared here for .scene--export). Header = grip · role-dot · title · Edit
-   · ⋯ (mirrors LoadoutCard's role-dot/title/Edit/DropdownMenu). The full 4-row
-   SLOT_GRID is rendered (bag/helm/cape · main/chest/off · potion/boots/food ·
-   ·/mount/·); slots are capped (5.4cqw) so all four rows + the gold notation fit
-   within the toolbar+banner+cards vertical budget. */
-.scene--export .lc-card { background: var(--s2); border: 1px solid var(--border); border-radius: 0.6cqw; display: flex; flex-direction: column; overflow: hidden; }
-.scene--export .lc-head { display: flex; align-items: center; gap: 0.8cqw; background: var(--s3); border-bottom: 1px solid var(--border); padding: 0.8cqw 1cqw; }
+/* lc-card: sc-card provides background/border/display/flex-direction/overflow;
+   override: border-radius (0.6cqw vs sc-card's 0.55em) */
+.scene--export .lc-card { border-radius: 0.6cqw; }
+/* lc-head: sc-head provides display/align-items/background/border-bottom;
+   overrides: gap (0.8cqw vs 0.7em), padding (0.8cqw 1cqw vs 0.7em 0.85em) */
+.scene--export .lc-head { gap: 0.8cqw; padding: 0.8cqw 1cqw; }
 .scene--export .lc-grip { color: var(--text2); font-size: 1.6cqw; line-height: 1; flex: none; }
 .scene--export .lc-dot { width: 1.3cqw; height: 1.3cqw; border-radius: 50%; flex: none; }
 .scene--export .lc-title { flex: 1; color: var(--text); font-weight: 700; font-size: 1.4cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -676,47 +683,11 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--export .lc-slot--empty { border-style: dashed; background: transparent; }
 .scene--export .lc-slot--spacer { border: 0; background: none; }
 .scene--export .lc-notation { color: var(--gold); font-weight: 700; font-size: 1.2cqw; padding: 0.3cqw 1cqw 0.8cqw; margin-top: auto; }
-
-/* ---- Choreography (one shared 10s timeline) ----
-   beat 1 (0-9%)    composition view rests (toolbar + cards)
-   beat 2 (9-30%)   camera zooms toward the top-right ⋯; cursor presses ⋯ -> menu opens
-   beat 3 (30-46%)  cursor presses "Export to Google Sheets" (highlighted)
-   beat 4 (46-58%)  ⋯ swaps to the Exporting spinner; menu closes; camera returns
-   beat 5 (58-100%) green "Opened in Google Sheets / Open sheet" banner slides in
-   Base (reduced-motion / frozen) = camera scale 1, menu CLOSED, ⋯ resting as the
-   Exporting spinner, banner SHOWN. Cursor rests on the ⋯/Exporting button. */
-.scene--export .xp-camera { animation: xp-camera 10s ease-in-out infinite; }
-@keyframes xp-camera {
-  0%, 9% { transform: scale(1); }
-  24%, 46% { transform: scale(1.45); }   /* zoom about top-right origin: frames the far-right ⋯ + menu */
-  58%, 100% { transform: scale(1); }      /* full frame */
-}
-.scene--export .xp-menu { opacity: 0; animation: xp-menu 10s ease-in-out infinite; }
-@keyframes xp-menu { 0%, 16% { opacity: 0; } 22%, 48% { opacity: 1; } 52%, 100% { opacity: 0; } }
-.scene--export .xp-mi-gs { animation: xp-mion 10s ease-in-out infinite; }
-@keyframes xp-mion { 0%, 32% { background: transparent; color: var(--text); } 36%, 46% { background: rgba(201,168,76,0.14); color: var(--gold); } 50%, 100% { background: transparent; color: var(--text); } }
-/* ⋯ <-> Exporting cross-fade. Base = Exporting shown (completed). */
-.scene--export .xp-more-dots { opacity: 0; animation: xp-dots 10s ease-in-out infinite; }
-@keyframes xp-dots { 0%, 48% { opacity: 1; } 52%, 100% { opacity: 0; } }
-.scene--export .xp-more-loading { opacity: 1; animation: xp-loading 10s ease-in-out infinite; }
-@keyframes xp-loading { 0%, 48% { opacity: 0; } 52%, 100% { opacity: 1; } }
-/* banner slides in; base = shown (completed). */
-.scene--export .xp-banner { animation: xp-bannerin 10s ease-in-out infinite; }
-@keyframes xp-bannerin { 0%, 58% { opacity: 0; transform: translateY(-0.8cqw); } 68%, 100% { opacity: 1; transform: none; } }
-/* cursor (inside camera, camera-space %). presses ⋯, then the Sheets menu item,
-   then rests on ⋯/Exporting. Targets measured on-canvas at scale 1. */
-.scene--export .s-cursor { width: max(13px, 1.8cqw); height: max(18px, 2.5cqw); left: 96%; top: 5.5%; animation: xp-cursor 10s ease-in-out infinite; }
-@keyframes xp-cursor {
-  0%, 5% { left: 80%; top: 40%; transform: scale(1); }
-  18% { left: 96%; top: 5.5%; transform: scale(1); }         /* arrive: ⋯ (far right) */
-  24% { left: 96%; top: 5.5%; transform: scale(0.78); }      /* press ⋯ -> menu opens */
-  29% { left: 96%; top: 5.5%; transform: scale(1); }
-  36% { left: 84.6%; top: 19.5%; transform: scale(1); }      /* arrive: Export to Google Sheets */
-  41% { left: 84.6%; top: 19.5%; transform: scale(0.78); }   /* press */
-  46% { left: 84.6%; top: 19.5%; transform: scale(1); }
-  58% { left: 96%; top: 5.5%; transform: scale(1); }         /* return to ⋯/Exporting */
-  100% { left: 96%; top: 5.5%; transform: scale(1); }
-}
+/* Cursor rest position (inside camera, camera-space %). Rests on ⋯/Exporting at top-right. */
+.scene--export .sc-cursor { width: max(13px, 1.8cqw); height: max(18px, 2.5cqw); left: 96%; top: 5.5%; }
+/* Motion driven by SCENES['export'] GSAP timeline + spin() helper.
+   Base = camera scale(1), menu CLOSED (opacity:0), dots HIDDEN (opacity:0),
+   loading SHOWN (opacity:1), more-button wide (min-width:10.5cqw), banner SHOWN. */
 
 /* ===== IMPORT variant (scene--export-import) — dashboard -> modal -> new card */
 .demo.scene--export-import { container-type: inline-size; aspect-ratio: 1.6 / 1; height: auto; }

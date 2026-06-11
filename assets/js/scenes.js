@@ -30,8 +30,8 @@
   // Time semantics: `at` is when the effect STARTS, except cursorTo, where
   // `at` is the ARRIVAL time (presses are choreographed off arrivals).
   // Color literals in builders/helpers are the resolved values of CSS custom
-  // properties (--gold = #c9a84c / rgb(201,168,76), --border = #2a2a3e):
-  // verify new literals against styles.css :root when adding scenes.
+  // properties (--gold = #c9a84c / rgb(201,168,76), --border = #2a2a3e,
+  // --text = #dddad0): verify new literals against styles.css :root when adding scenes.
 
   // Cursor glide: arrive at (x%, y%) at time `at`, traveling for `dur` seconds.
   function cursorTo(tl, cur, x, y, at, dur) {
@@ -221,6 +221,69 @@
     // Cycle pad at 11s
     tl.set({}, {}, 11);
     return [tl];
+  };
+
+  // Keyframe ground truth (10s):
+  //   xp-camera:    0-9% scale(1) → 9-24% zoom → 24-46% hold scale(1.45) → 46-58% return → 58-100% scale(1)
+  //                 transform-origin: 100% 0 (top-right, kept in CSS)
+  //   xp-menu:      0-16% opacity:0 → 16-22% fade in → 22-48% opacity:1 → 48-52% fade out → 52-100% opacity:0
+  //   xp-mion:      0-32% transparent/text → 32-36% on → 36-46% rgba(201,168,76,0.14)/gold
+  //                 → 46-50% off → 50-100% transparent (bg=0.14; menuItemOn helper matches)
+  //   xp-dots:      0-48% opacity:1 → 48-52% fade out → 52-100% opacity:0; base=0 (CSS sets opacity:0)
+  //   xp-loading:   0-48% opacity:0 → 48-52% fade in → 52-100% opacity:1; base=1 (CSS sets opacity:1)
+  //   xp-morewidth: 0-48% min-width:5cqw → 48-52% → 52-100% min-width:10.5cqw; base=10.5cqw
+  //   xp-bannerin:  0-58% opacity:0 translateY(-0.8cqw) → 58-68% slide in → 68-100% opacity:1 none
+  //   xp-cursor:    0-5% rest (80%,40%) → 18% arrive ⋯ (96%,5.5%) → 24% press → 29% release
+  //                 → 36% arrive gs (84.6%,19.5%) → 41% press → 46% release → 58% return ⋯ → 100%
+  //   xp-spin:      separate CSS (deleted); replaced by spin() GSAP helper
+  // Beat-table discrepancies vs plan:
+  //   menu fade-in: keyframe 16%→22% = 1.6s–2.2s (plan said start at 2.4s); using keyframe times
+  //   mion window: keyframe 32%→46% = 3.2s–4.6s (plan said 3.4–4.8s); using keyframe times
+  //   camera return: keyframe 46%→58% = 4.6s–5.8s dur=1.2s (plan said 5.0–6.2s); using keyframe
+  SCENES['export'] = function (stage) {
+    var q = gsap.utils.selector(stage);
+    var cur = q('.sc-cursor'), cam = q('.xp-camera'), menu = q('.xp-menu'),
+        gs = q('.xp-mi-gs'), dots = q('.xp-more-dots'), load = q('.xp-more-loading'),
+        more = q('.xp-more'), banner = q('.xp-banner'), spinner = q('.xp-spinner');
+    var tl = gsap.timeline({ repeat: -1 });
+    // Initial state: cursor rests at (80%,40%) per xp-cursor 0-5% keyframe
+    tl.set(cur, { left: '80%', top: '40%', scale: 1 }, 0)
+      .set(cam, { transform: 'scale(1)' }, 0)
+      .set(menu, { opacity: 0 }, 0)
+      // dots/loading base from CSS: dots=0, loading=1 — GSAP set confirms for clean cycle
+      .set(dots, { opacity: 1 }, 0)    /* 0% keyframe state: dots shown at start of cycle */
+      .set(load, { opacity: 0 }, 0)    /* 0% keyframe state: loading hidden at start of cycle */
+      .set(more, { minWidth: '5cqw' }, 0)  /* 0% keyframe state: narrow ⋯ button */
+      .set(banner, { opacity: 0, y: '-0.8cqw' }, 0);
+    // Camera zooms to top-right; 9%=0.9s start, 24%=2.4s arrive, dur=1.5s
+    cameraTo(tl, cam, 'scale(1.45)', 0.9, 1.5);
+    // Cursor travels to ⋯; arrives 18%=1.8s, departs ~5%=0.5s, dur=1.3s
+    cursorTo(tl, cur, '96%', '5.5%', 1.8, 1.3);
+    // Press ⋯ at 24%=2.4s
+    press(tl, cur, 2.4);
+    // Menu fades in; keyframe 16%=1.6s–22%=2.2s (0.6s). Starts BEFORE press — CSS approximation
+    fadeIn(tl, menu, 1.6, 0.6);
+    // Cursor travels to "Export to Google Sheets"; arrives 36%=3.6s, departs ~29%=2.9s, dur=0.7s
+    cursorTo(tl, cur, '84.6%', '19.5%', 3.6, 0.7);
+    // Menu item highlights: keyframe 32%=3.2s on, 46%=4.6s off; bg=0.14 matches helper
+    menuItemOn(tl, gs, 3.2, 4.6);
+    // Press "Export to Google Sheets" at 41%=4.1s
+    press(tl, cur, 4.1);
+    // Menu fades out; keyframe 48%=4.8s–52%=5.2s
+    fadeOut(tl, menu, 4.8, 0.4);
+    // Dots fade out, loading fades in, button widens; keyframe 48%=4.8s–52%=5.2s
+    tl.to(dots, { opacity: 0, duration: 0.4 }, 4.8)
+      .to(load, { opacity: 1, duration: 0.4 }, 4.8)
+      .to(more, { minWidth: '10.5cqw', duration: 0.4 }, 4.8);
+    // Camera returns to full frame; keyframe 46%=4.6s start, 58%=5.8s arrive, dur=1.2s
+    cameraTo(tl, cam, 'scale(1)', 4.6, 1.2);
+    // Cursor returns to ⋯/Exporting; keyframe 46%=4.6s–58%=5.8s
+    cursorTo(tl, cur, '96%', '5.5%', 5.8, 1.2);
+    // Banner slides in; keyframe 58%=5.8s–68%=6.8s
+    tl.to(banner, { opacity: 1, y: 0, duration: 1.0, ease: 'power2.out' }, 5.8)
+      // Cycle pad
+      .set({}, {}, 10);
+    return [tl, spin(spinner)];
   };
 
   /* ---- init ------------------------------------------------------------ */
