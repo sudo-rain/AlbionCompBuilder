@@ -111,18 +111,18 @@
 
   SCENES['dashboard-select'] = function (stage) {
     var q = gsap.utils.selector(stage);
-    var cur = q('.sc-cursor'), a = q('.lc-card--a'), b = q('.lc-card--b'), btn = q('.sd-new');
+    var cur = q('.sc-cursor'), cardA = q('.lc-card--a'), cardB = q('.lc-card--b'), btn = q('.sd-new');
     var SEL = { borderColor: '#c9a84c', boxShadow: '0 0 0 2px rgba(201,168,76,0.5)' };
     var UNSEL = { borderColor: '#2a2a3e', boxShadow: 'none' };
     var tl = gsap.timeline({ repeat: -1 });
     tl.set(cur, { left: '22%', top: '86%', scale: 1 }, 0)
-      .set([a, b], UNSEL, 0).set(btn, { opacity: 0.5 }, 0);
+      .set([cardA, cardB], UNSEL, 0).set(btn, { opacity: 0.5 }, 0);
     cursorTo(tl, cur, '26%', '52%', 0.99, 0.7); press(tl, cur, 1.21);
-    tl.to(a, Object.assign({ duration: 0.25 }, SEL), 1.43);
+    tl.to(cardA, Object.assign({ duration: 0.25 }, SEL), 1.43);
     cursorTo(tl, cur, '70%', '52%', 2.53, 0.9); press(tl, cur, 2.75);
-    tl.to(b, Object.assign({ duration: 0.25 }, SEL), 2.97)
+    tl.to(cardB, Object.assign({ duration: 0.25 }, SEL), 2.97)
       .to(btn, { opacity: 1, duration: 0.33 }, 2.97)
-      .to([a, b], Object.assign({ duration: 0.33 }, UNSEL), 5.17)
+      .to([cardA, cardB], Object.assign({ duration: 0.33 }, UNSEL), 5.17)
       .set({}, {}, 5.5);
     return [tl];
   };
