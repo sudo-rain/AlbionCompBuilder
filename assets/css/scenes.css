@@ -588,9 +588,9 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--templates-save .ts-actions { display: flex; gap: 1cqw; justify-content: flex-end; margin-top: 0.2cqw; }
 /* ts-cancel / ts-savebtn: sc-btn provides border/border-radius/background/color/font-size/padding;
    font-size/padding kept as overrides (1.4cqw/0.9cqw 1.4cqw vs sc-btn's 0.95em/0.5em 0.8em) */
-.scene--templates-save .ts-cancel { font-size: 1.4cqw; padding: 0.9cqw 1.4cqw; }
-/* sc-btn--gold covers background/color/font-weight/border-color; padding override only */
-.scene--templates-save .ts-savebtn { font-size: 1.4cqw; padding: 0.9cqw 1.6cqw; }
+.scene--templates-save .ts-cancel { font-size: 1.4cqw; padding: 0.9cqw 1.4cqw; color: var(--text); background: var(--s3); /* brighter than sc-btn base — matches old look */ }
+/* sc-btn--gold covers background/color/font-weight/border-color; looks from sc-btn--gold; border:0 is deliberate */
+.scene--templates-save .ts-savebtn { font-size: 1.4cqw; padding: 0.9cqw 1.6cqw; border: 0; }
 /* Cursor rest position for this scene (inside .ts-camera, camera-space %).
    Scoped to scene--templates-save to not conflict with other cursor-rule scene classes.
    sc-cursor provides position/size/bg/filter/transform-origin/z-index primitives; only rest coords here. */
