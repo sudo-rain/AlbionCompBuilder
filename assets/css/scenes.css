@@ -138,21 +138,15 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
    grid + notation, matching the app's .loadout-card) selected one then the other. */
 .wiki-content .demo.scene--dashboard-select { height: 300px; }   /* taller so the full card fits */
 .scene--dashboard-select .sd-grid { align-items: start; }
-.scene--dashboard-select .sd-new { animation: sds-enable 5.5s ease-in-out infinite; }
-@keyframes sds-enable {            /* Bulk Edit button enables once both are selected */
-  0%, 54% { opacity: 0.5; }
-  60%, 100% { opacity: 1; }
-}
-.scene--dashboard-select .lc-card {
-  background: var(--s2); border: 1px solid var(--border); border-radius: 5px;
-  display: flex; flex-direction: column; overflow: hidden;
-}
-.scene--dashboard-select .lc-head {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--s3); border-bottom: 1px solid var(--border); padding: 6px 8px;
-}
+/* lc-card: sc-card provides background/border/display/flex-direction/overflow;
+   border-radius kept as scene-specific override (5px vs sc-card's 0.55em≈6px). */
+.scene--dashboard-select .lc-card { border-radius: 5px; }
+/* lc-head: sc-head provides display/align-items/background/border-bottom;
+   gap and padding kept as scene-specific overrides (6px/6px 8px vs sc-head's 0.7em/0.7em 0.85em). */
+.scene--dashboard-select .lc-head { gap: 6px; padding: 6px 8px; }
 .scene--dashboard-select .lc-handle { color: var(--text3); letter-spacing: 1px; font-size: 10px; }
-.scene--dashboard-select .lc-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+/* lc-dot: sc-dot is 0.95em (~10.5px); override to the original 8px size. */
+.scene--dashboard-select .lc-dot { width: 8px; height: 8px; }
 .scene--dashboard-select .lc-name { color: var(--text); font-weight: 700; font-size: 11px; }
 .scene--dashboard-select .lc-slots {
   display: grid; grid-template-columns: repeat(3, 34px); gap: 4px;
@@ -166,30 +160,8 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--dashboard-select .lc-slots .lc-add { color: var(--text3); font-size: 14px; border-style: dashed; }
 .scene--dashboard-select .lc-slots .mount { grid-column: 2; }   /* mount centered, last row */
 .scene--dashboard-select .lc-note { color: var(--gold); font-weight: 700; font-size: 10px; padding: 3px 9px 8px; }
-.scene--dashboard-select .lc-card--a { animation: sds-sel 5.5s ease-in-out infinite; }
-.scene--dashboard-select .lc-card--b { animation: sds-sel-b 5.5s ease-in-out infinite; }
-@keyframes sds-sel {
-  0%, 22% { box-shadow: none; border-color: var(--border); }
-  26%, 94% { box-shadow: 0 0 0 2px rgba(201,168,76,0.5); border-color: var(--gold); }
-  100% { box-shadow: none; border-color: var(--border); }
-}
-@keyframes sds-sel-b {
-  0%, 50% { box-shadow: none; border-color: var(--border); }
-  54%, 94% { box-shadow: 0 0 0 2px rgba(201,168,76,0.5); border-color: var(--gold); }
-  100% { box-shadow: none; border-color: var(--border); }
-}
-/* Cursor clicks card A (~22%), then card B (~50%). */
-.scene--dashboard-select .s-cursor { left: 22%; top: 86%; animation: sds-cursor 5.5s ease-in-out infinite; }
-@keyframes sds-cursor {
-  0%, 5% { left: 22%; top: 86%; transform: scale(1); }
-  18% { left: 26%; top: 52%; transform: scale(1); }
-  22% { left: 26%; top: 52%; transform: scale(0.78); }
-  26% { left: 26%; top: 52%; transform: scale(1); }
-  46% { left: 70%; top: 52%; transform: scale(1); }
-  50% { left: 70%; top: 52%; transform: scale(0.78); }
-  54% { left: 70%; top: 52%; transform: scale(1); }
-  100% { left: 70%; top: 52%; transform: scale(1); }
-}
+/* Cursor rest position; motion handled by the GSAP timeline. */
+.scene--dashboard-select .sc-cursor { left: 22%; top: 86%; }
 
 
 /* Scene: Builder (faithful three-pane) --------------------------------- */
