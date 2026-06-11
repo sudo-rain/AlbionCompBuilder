@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item stats &amp; abilities — Albion Comp Builder Wiki</title>
+  <meta name="description" content="Learn how to read the compact loadout notation, spell numbers, and item stat tables in Albion Comp Builder.">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/scenes.css">
+</head>
+<body>
+
+  <nav>
+    <a href="../../" class="nav-brand">Albion Comp Builder</a>
+    <div class="nav-links">
+      <a href="../getting-started/" class="nav-wiki-link">Wiki</a>
+      <a href="../../#install" class="btn btn-gold">Download</a>
+    </div>
+  </nav>
+
+  <div class="wiki-body">
+    <details class="wiki-sidebar-wrap" open>
+      <summary>Wiki contents</summary>
+      <nav id="wiki-sidebar" aria-label="Wiki navigation"></nav>
+    </details>
+
+    <main class="wiki-content">
+      <h1>Item stats &amp; abilities</h1>
+      <p>Every loadout card, item browser, and ability detail pane surfaces numbers so you can compare options at a glance. This page explains what each number means and how to read them.</p>
+
+      <h2>Reading the loadout notation</h2>
+      <p>Each loadout card shows a compact gold notation line summarising the spell selections across all ability-bearing slots, for example: <strong>Q2·W3·P1&nbsp;&nbsp;/&nbsp;&nbsp;D1·P2&nbsp;&nbsp;/&nbsp;&nbsp;R3·P1&nbsp;&nbsp;/&nbsp;&nbsp;F2·P1</strong>.</p>
+      <p>The format is <em>row letter + 1-based option number</em>, tokens separated by <code>·</code> within a slot and <code>&nbsp;&nbsp;/&nbsp;&nbsp;</code> between slots. Slots appear in the order <strong>Main Hand&nbsp;/ Helm&nbsp;/ Chest&nbsp;/ Boots</strong> — only slots that actually carry ability rows appear in the notation.</p>
+      <p>Row letters map to keybinds in-game:</p>
+      <ul>
+        <li><strong>Q, W</strong> — active abilities from the main-hand weapon (E is always the weapon's default ability and is not notated)</li>
+        <li><strong>D</strong> — helm active ability</li>
+        <li><strong>R</strong> — chest active ability</li>
+        <li><strong>F</strong> — boots active ability</li>
+        <li><strong>P</strong> — passive rows (all passive rows share the <code>P</code> prefix; they are numbered sequentially)</li>
+      </ul>
+      <p>See <a href="../building-a-composition/">Building a composition</a> for the builder itself.</p>
+
+      <h2>Spell numbers in the ability detail pane</h2>
+      <p>Selecting an ability in the builder's right-hand detail pane shows a description and a stat table beneath it. Each row in the table is a stat (Damage, Duration, Radius, Cast Time, and so on) with the value resolved for the item's current tier and enchantment level. Items with combo attacks list per-hit values across multiple columns.</p>
+      <p>The values update automatically whenever you change the Tier or Enchantment dropdowns in the item browser — you do not need to re-select the spell.</p>
+
+      <h2>Off-hand, armor, and cape stats</h2>
+      <p>Off-hands, armor pieces (helm, chest, boots), and capes do not have active abilities to choose, so their ability detail pane shows an <strong>item stat table</strong> instead — rows such as armor, magic resist, hitpoint bonus, max energy, or cast time reduction. The values shown reflect the base item power for the selected tier and enchantment; changing the Tier or Enchantment dropdowns updates the table immediately. The same stat table also appears in the <a href="../bulk-edit/">Bulk Edit</a> detail pane when an off-hand or armor piece is selected.</p>
+
+      <figure class="demo scene--item-stats" data-scene="item-stats" role="img" aria-label="Animated demo: clicking the Tier dropdown from T6 to T8 updates three stat rows in the ability detail pane; clicking the Enchantment dropdown to .3 increases the values further.">
+        <div class="scene-stage">
+          <div class="is-layout">
+            <!-- Left: item browser panel (header + selected item tile) -->
+            <aside class="is-browser">
+              <header class="is-bhead">
+                <div class="is-titlerow"><strong>Off-Hand</strong></div>
+                <div class="is-filters">
+                  <div class="is-filterfield">
+                    <span class="is-flabel">Tier</span>
+                    <span class="sc-btn is-tier">T8</span>
+                  </div>
+                  <div class="is-filterfield">
+                    <span class="is-flabel">Enchantment</span>
+                    <span class="sc-btn is-ench">.3</span>
+                  </div>
+                </div>
+              </header>
+              <div class="is-bbody">
+                <div class="is-itemrow is-itemrow--sel">
+                  <span class="is-iic">
+                    <img src="https://render.albiononline.com/v1/item/T8_OFF_BOOK@3.png" alt="" loading="lazy">
+                  </span>
+                  <span class="is-itext">
+                    <strong>Tome of Spells</strong>
+                    <small>Off-Hand · IP 1400</small>
+                  </span>
+                </div>
+                <div class="is-itemrow">
+                  <span class="is-iic">
+                    <img src="https://render.albiononline.com/v1/item/T8_OFF_SHIELD@3.png" alt="" loading="lazy">
+                  </span>
+                  <span class="is-itext">
+                    <strong>Shield</strong>
+                    <small>Off-Hand · IP 1400</small>
+                  </span>
+                </div>
+              </div>
+            </aside>
+            <!-- Right: ability detail pane -->
+            <section class="is-detail sc-card">
+              <div class="sc-head">
+                <span class="sc-title">Tome of Spells</span>
+                <span class="sc-chip">Off-Hand</span>
+              </div>
+              <div class="is-statblock">
+                <div class="is-statrow">
+                  <span class="is-statlabel">Max Energy</span>
+                  <span class="is-val is-statval" data-t6="+22" data-t8="+29" data-t8e3="+44">+44</span>
+                </div>
+                <div class="is-statrow">
+                  <span class="is-statlabel">Energy Regeneration</span>
+                  <span class="is-val is-statval" data-t6="+0.3/s" data-t8="+0.4/s" data-t8e3="+0.5/s">+0.5/s</span>
+                </div>
+                <div class="is-statrow">
+                  <span class="is-statlabel">Cast Time Reduction</span>
+                  <span class="is-val is-statval" data-t6="-15%" data-t8="-17%" data-t8e3="-21%">-21%</span>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="sc-cursor"></div>
+        </div>
+      </figure>
+
+      <div class="wiki-next">
+        <h2>Related</h2>
+        <ul>
+          <li><a href="../building-a-composition/">Building a composition</a> — where you select items and spells</li>
+          <li><a href="../bulk-edit/">Bulk edit</a> — the same stat table appears there for off-hands and armor</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <script defer src="../../assets/js/vendor/gsap.min.js"></script>
+  <script defer src="../../assets/js/scenes.js"></script>
+  <script src="../../assets/js/wiki.js"></script>
+</body>
+</html>

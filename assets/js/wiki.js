@@ -7,6 +7,7 @@
     { slug: 'building-a-composition', label: 'Building a composition' },
     { slug: 'loadout-templates', label: 'Loadout templates' },
     { slug: 'bulk-edit', label: 'Bulk edit' },
+    { slug: 'item-stats', label: 'Item stats & abilities' },
     { slug: 'google-sheets-export', label: 'Export & import' }
   ];
 

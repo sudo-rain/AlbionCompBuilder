@@ -568,6 +568,79 @@
     return [tl];
   };
 
+  // Keyframe ground truth (7s):
+  //   Demo story: t=0 set T6 values + "T6" tier label + "All" ench label;
+  //   cursor moves to Tier btn (left filter) → press → values swap to T8;
+  //   cursor moves to Ench btn (right filter) → press → values swap to T8.3.
+  //   Base (rest) frame = T8.3 values with tier "T8" + ench ".3" (the story's end).
+  //   Stat rows get a brief gold flash on each swap to draw the eye.
+  //   Cycle pad at 7s so the reset to T6 is seamless.
+  // Cursor positions (measured from CSS layout):
+  //   Tier button (.is-tier) ~= left: 22%, top: 18% of container
+  //   Ench button (.is-ench) ~= left: 38%, top: 18% of container
+  SCENES['item-stats'] = function (stage) {
+    var q = gsap.utils.selector(stage);
+    var cur = q('.sc-cursor');
+    var tierBtn = q('.is-tier')[0];
+    var enchBtn = q('.is-ench')[0];
+    var vals = q('.is-val');
+    var rows = q('.is-statrow');
+
+    function swapVals(attr) {
+      vals.forEach(function (v) { v.textContent = v.getAttribute(attr); });
+    }
+    function flashRows() {
+      rows.forEach(function (r) {
+        gsap.fromTo(r, { backgroundColor: 'rgba(201,168,76,0.10)' },
+          { backgroundColor: 'rgba(201,168,76,0)', duration: 0.5, ease: 'power1.out' });
+      });
+    }
+
+    var tl = gsap.timeline({ repeat: -1 });
+    function setLabel(el, text) {
+      if (!el) return;
+      // The button contains only a text node (CSS ::after adds the caret);
+      // setting textContent replaces the text without touching the pseudo-element.
+      el.textContent = text;
+    }
+
+    // t=0: reset to T6 / All state (cursor rests at ench btn from end of last cycle)
+    tl.set(cur, { left: '38%', top: '19%', scale: 1 }, 0)
+      .call(function () {
+        swapVals('data-t6');
+        setLabel(tierBtn, 'T6');
+        setLabel(enchBtn, 'All');
+      }, null, 0);
+
+    // Move cursor to Tier btn; arrives 1.2s (travel 1.0s from 0.2s)
+    cursorTo(tl, cur, '22%', '18%', 1.2, 1.0);
+    // Press Tier btn at 1.5s
+    press(tl, cur, 1.5);
+    clickFlash(tl, tierBtn, 1.45);
+    // Swap to T8 values at 1.7s; update tier label; flash rows
+    tl.call(function () {
+      swapVals('data-t8');
+      setLabel(tierBtn, 'T8');
+      flashRows();
+    }, null, 1.7);
+
+    // Move cursor to Ench btn; arrives 3.2s (travel 0.9s from 2.3s)
+    cursorTo(tl, cur, '38%', '18%', 3.2, 0.9);
+    // Press Ench btn at 3.5s
+    press(tl, cur, 3.5);
+    clickFlash(tl, enchBtn, 3.45);
+    // Swap to T8.3 values at 3.7s; update ench label; flash rows
+    tl.call(function () {
+      swapVals('data-t8e3');
+      setLabel(enchBtn, '.3');
+      flashRows();
+    }, null, 3.7);
+
+    // Cycle pad at 7s — long enough to read the final T8.3 state
+    tl.set({}, {}, 7);
+    return [tl];
+  };
+
   /* ---- init ------------------------------------------------------------ */
   stages.forEach(function (stage) {
     var name = stage.getAttribute('data-scene');
