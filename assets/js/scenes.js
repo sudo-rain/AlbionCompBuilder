@@ -163,6 +163,66 @@
     return [tl];
   };
 
+  // Keyframe ground truth (11s):
+  //   ts-camera: 0-8% full → 8-22% zoom to translate(7.5%,5.8%) scale(1.7) → 22-50% hold →
+  //              50-60% zoom back → 60-100% full
+  //   ts-menu:   0-30% opacity:0 → 30-34% fade in → 34-52% opacity:1 → 52-56% fade out → 56-100% opacity:0
+  //   ts-mion:   0-44% transparent/var(--text) → 47-53% rgba(201,168,76,0.12)/#c9a84c → 56-100% off
+  //              (bg uses 0.12 not 0.14 as plan stated — using explicit tweens to match)
+  //   ts-overlay: 0-60% opacity:0 → 60-66% fade in → 66-100% opacity:1; base=SHOWN (100% state)
+  //   ts-savepulse: 0-72% no shadow → 78% box-shadow 0.4cqw (NOT 4px) + scale(0.97) → 84-100% off
+  //              (pulse helper uses 4px — writing explicit cqw-based tweens to match)
+  //   ts-cursor: 0-6% rest (42%,72%) → 24% arrive ⋯ (2.64s) → 30% press (3.3s) →
+  //              42% arrive Save-as-Template (4.62s) → 46% press (5.06s) →
+  //              72% arrive Save-Template btn (7.92s) → 78% press (8.58s)
+  // Beat-table discrepancies vs plan: menuItemOn offAt=5.83s (not 5.16); cursor travel to
+  //   savebtn dur=2.31s (not 1.3s); pulse at t=7.92 (72%) not 8.5; ts-mion bg=0.12 not 0.14.
+  SCENES['templates-save'] = function (stage) {
+    var q = gsap.utils.selector(stage);
+    var cur = q('.sc-cursor'), cam = q('.ts-camera'), menu = q('.ts-menu'),
+        mi = q('.ts-mi-save'), ovl = q('.ts-overlay'), save = q('.ts-savebtn');
+    var tl = gsap.timeline({ repeat: -1 });
+    tl.set(cur, { left: '42%', top: '72%', scale: 1 }, 0)
+      .set(cam, { transform: 'translate(0,0) scale(1)' }, 0)
+      .set(menu, { opacity: 0 }, 0)
+      .set(ovl, { opacity: 0 }, 0);
+    // Camera zooms to focal card; zoom transition 8%-22% = 0.88s-2.42s, dur=1.54s
+    cameraTo(tl, cam, 'translate(7.5%, 5.8%) scale(1.7)', 0.88, 1.54);
+    // Cursor travels to ⋯ button; arrives 24%=2.64s, departs ~6%=0.66s, dur=1.98s
+    cursorTo(tl, cur, '30.1%', '9.1%', 2.64, 1.98);
+    // Press ⋯ at 30%=3.3s; menu fades in 30%-34% = 3.3s-3.74s
+    press(tl, cur, 3.3);
+    fadeIn(tl, menu, 3.3, 0.44);
+    // Cursor travels to "Save as Template"; arrives 42%=4.62s, departs ~35%=3.85s, dur=0.77s
+    cursorTo(tl, cur, '23.7%', '18.4%', 4.62, 0.77);
+    // Menu item highlights at 44%=4.84s; turns off at 53%=5.83s
+    // Using explicit tweens: ts-mion bg=rgba(201,168,76,0.12) (not 0.14 as helper uses)
+    tl.to(mi, { backgroundColor: 'rgba(201,168,76,0.12)', color: '#c9a84c', duration: 0.33 }, 4.84)
+      .to(mi, { backgroundColor: 'rgba(0,0,0,0)', color: '#dddad0', duration: 0.33 }, 5.83);
+    // Press "Save as Template" at 46%=5.06s
+    press(tl, cur, 5.06);
+    // Menu fades out 52%-56% = 5.72s-6.16s
+    fadeOut(tl, menu, 5.72, 0.44);
+    // Camera returns to full frame; zoom-out 50%-60% = 5.5s-6.6s, dur=1.1s
+    cameraTo(tl, cam, 'translate(0,0) scale(1)', 5.5, 1.1);
+    // Overlay + modal fade in 60%-66% = 6.6s-7.26s
+    fadeIn(tl, ovl, 6.6, 0.66);
+    // Cursor travels to Save Template button; arrives 72%=7.92s, departs 51%=5.61s, dur=2.31s
+    cursorTo(tl, cur, '71.5%', '74.9%', 7.92, 2.31);
+    // Pulse on savebtn: ts-savepulse uses 0.4cqw ring (not 4px); explicit tweens to match
+    // builds 72%-78% = 7.92s-8.58s (0.66s), releases 78%-84% = 8.58s-9.24s (0.66s)
+    tl.fromTo(save, { boxShadow: '0 0 0 0 rgba(201,168,76,0)' },
+      { boxShadow: '0 0 0 0.4cqw rgba(201,168,76,0.4)', scale: 0.97,
+        duration: 0.66, ease: 'power2.out' }, 7.92)
+      .to(save, { boxShadow: '0 0 0 0 rgba(201,168,76,0)', scale: 1,
+        duration: 0.66 }, 8.58);
+    // Press at 78%=8.58s
+    press(tl, cur, 8.58);
+    // Cycle pad at 11s
+    tl.set({}, {}, 11);
+    return [tl];
+  };
+
   /* ---- init ------------------------------------------------------------ */
   stages.forEach(function (stage) {
     var name = stage.getAttribute('data-scene');

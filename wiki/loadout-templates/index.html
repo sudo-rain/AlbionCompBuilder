@@ -31,13 +31,13 @@
 
       <h2>Saving a loadout as a template</h2>
       <p>From a loadout you've built, choose <strong>Save as template</strong>, give it a name, and confirm. The template captures the gear, spells, and role so you can reuse the exact setup later.</p>
-      <figure class="demo scene scene--templates scene--templates-save" role="img" aria-label="Animated demo: from a composition, opening a loadout card's menu, choosing Save as Template, and naming the reusable template in the Save as Loadout Template dialog.">
+      <figure class="demo scene scene--templates scene--templates-save" data-scene="templates-save" role="img" aria-label="Animated demo: from a composition, opening a loadout card's menu, choosing Save as Template, and naming the reusable template in the Save as Loadout Template dialog.">
         <div class="scene-stage">
           <div class="ts-camera">
             <div class="ts-comp">
               <div class="ts-row">
-                <article class="lc-card ts-cardwrap">
-                  <div class="lc-head"><span class="lc-grip">⠿</span><span class="lc-dot" style="background:#4a90d9"></span><span class="lc-title">Main Tank</span><span class="lc-btn">Edit</span><span class="lc-btn lc-more">⋯</span></div>
+                <article class="sc-card lc-card ts-cardwrap">
+                  <div class="sc-head lc-head"><span class="lc-grip">⠿</span><span class="lc-dot" style="background:#4a90d9"></span><span class="lc-title">Main Tank</span><span class="lc-btn">Edit</span><span class="lc-btn lc-more">⋯</span></div>
                   <div class="lc-grid">
                     <span class="lc-slot lc-slot--empty"></span>
                     <span class="lc-slot"><img src="https://render.albiononline.com/v1/item/T8_HEAD_PLATE_SET3.png" alt=""></span>
@@ -53,14 +53,14 @@
                     <span class="lc-slot lc-slot--spacer"></span>
                   </div>
                   <div class="lc-notation">Q2·W4-P1 / R3-P1 / D1-P2 / F2-P1</div>
-                  <div class="ts-menu">
-                    <div class="ts-mi ts-mi-save">Save as Template</div>
-                    <div class="ts-mi">Duplicate</div>
-                    <div class="ts-mi ts-mi--danger">Delete</div>
+                  <div class="sc-menu ts-menu">
+                    <div class="sc-menu-item ts-mi ts-mi-save">Save as Template</div>
+                    <div class="sc-menu-item ts-mi">Duplicate</div>
+                    <div class="sc-menu-item sc-menu-item--danger ts-mi ts-mi--danger">Delete</div>
                   </div>
                 </article>
-                <article class="lc-card">
-                  <div class="lc-head"><span class="lc-grip">⠿</span><span class="lc-dot" style="background:#4ec87a"></span><span class="lc-title">Main Healer</span></div>
+                <article class="sc-card lc-card">
+                  <div class="sc-head lc-head"><span class="lc-grip">⠿</span><span class="lc-dot" style="background:#4ec87a"></span><span class="lc-title">Main Healer</span></div>
                   <div class="lc-grid">
                     <span class="lc-slot lc-slot--empty"></span>
                     <span class="lc-slot"><img src="https://render.albiononline.com/v1/item/T8_HEAD_CLOTH_SET2.png" alt=""></span>
@@ -77,8 +77,8 @@
                   </div>
                   <div class="lc-notation">Q1·W3-P2 / R1-P1 / D3-P1 / F1-P3</div>
                 </article>
-                <article class="lc-card">
-                  <div class="lc-head"><span class="lc-grip">⠿</span><span class="lc-dot" style="background:#e05555"></span><span class="lc-title">Burst DPS</span></div>
+                <article class="sc-card lc-card">
+                  <div class="sc-head lc-head"><span class="lc-grip">⠿</span><span class="lc-dot" style="background:#e05555"></span><span class="lc-title">Burst DPS</span></div>
                   <div class="lc-grid">
                     <span class="lc-slot lc-slot--empty"></span>
                     <span class="lc-slot"><img src="https://render.albiononline.com/v1/item/T8_HEAD_CLOTH_SET3.png" alt=""></span>
@@ -97,18 +97,18 @@
                 </article>
               </div>
             </div>
-            <div class="ts-overlay">
-              <div class="ts-modal">
+            <div class="sc-overlay ts-overlay">
+              <div class="sc-modal ts-modal">
                 <div class="ts-mtitle">Save as Loadout Template</div>
                 <div class="ts-msub">Create a reusable template from this loadout. Gear, spells, notes, and inventory will be copied.</div>
                 <div class="ts-flabel">Template name</div>
                 <div class="ts-field">Main Tank</div>
                 <div class="ts-flabel">Role</div>
                 <div class="ts-field ts-field--select">Tank<span class="ts-caret">▾</span></div>
-                <div class="ts-actions"><span class="ts-cancel">Cancel</span><span class="ts-savebtn">Save Template</span></div>
+                <div class="ts-actions"><span class="sc-btn ts-cancel">Cancel</span><span class="sc-btn sc-btn--gold ts-savebtn">Save Template</span></div>
               </div>
             </div>
-            <span class="s-cursor"></span>
+            <span class="sc-cursor"></span>
           </div>
         </div>
       </figure>
