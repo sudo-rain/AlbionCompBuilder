@@ -578,6 +578,8 @@
   // Cursor positions (measured from CSS layout):
   //   Tier button (.is-tier) ~= left: 22%, top: 18% of container
   //   Ench button (.is-ench) ~= left: 38%, top: 18% of container
+  // Freeze-screenshot note: tl.call() callbacks are skipped by pause(T) (GSAP suppresses events on seek).
+  // Use tl.pause(T, false) to fire callbacks during the seek so stat text lands in the correct state.
   SCENES['item-stats'] = function (stage) {
     var q = gsap.utils.selector(stage);
     var cur = q('.sc-cursor');
@@ -588,12 +590,6 @@
 
     function swapVals(attr) {
       vals.forEach(function (v) { v.textContent = v.getAttribute(attr); });
-    }
-    function flashRows() {
-      rows.forEach(function (r) {
-        gsap.fromTo(r, { backgroundColor: 'rgba(201,168,76,0.10)' },
-          { backgroundColor: 'rgba(201,168,76,0)', duration: 0.5, ease: 'power1.out' });
-      });
     }
 
     var tl = gsap.timeline({ repeat: -1 });
@@ -621,11 +617,12 @@
     tl.call(function () {
       swapVals('data-t8');
       setLabel(tierBtn, 'T8');
-      flashRows();
-    }, null, 1.7);
+    }, null, 1.7)
+      .fromTo(rows, { backgroundColor: 'rgba(201,168,76,0.10)' },
+        { backgroundColor: 'rgba(201,168,76,0)', duration: 0.5, ease: 'power1.out' }, 1.7);
 
     // Move cursor to Ench btn; arrives 3.2s (travel 0.9s from 2.3s)
-    cursorTo(tl, cur, '38%', '18%', 3.2, 0.9);
+    cursorTo(tl, cur, '38%', '19%', 3.2, 0.9);
     // Press Ench btn at 3.5s
     press(tl, cur, 3.5);
     clickFlash(tl, enchBtn, 3.45);
@@ -633,8 +630,9 @@
     tl.call(function () {
       swapVals('data-t8e3');
       setLabel(enchBtn, '.3');
-      flashRows();
-    }, null, 3.7);
+    }, null, 3.7)
+      .fromTo(rows, { backgroundColor: 'rgba(201,168,76,0.10)' },
+        { backgroundColor: 'rgba(201,168,76,0)', duration: 0.5, ease: 'power1.out' }, 3.7);
 
     // Cycle pad at 7s — long enough to read the final T8.3 state
     tl.set({}, {}, 7);
