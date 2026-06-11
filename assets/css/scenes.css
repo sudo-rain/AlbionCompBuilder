@@ -1,8 +1,7 @@
 /* ===== Demo scenes ===================================================== */
-/* Auto-playing CSS mockups that replace the old static screenshot slots.
-   Animations run with zero JS (baseline); scenes.js only pauses off-screen
-   scenes when JS is present (html.js gate). prefers-reduced-motion freezes
-   each scene on its base frame. No binary assets. */
+/* Looks live here; ALL scene motion lives in scenes.js as GSAP timelines.
+   Base frames = completed look, so no-JS and prefers-reduced-motion both
+   rest on the finished frame without extra rules. No binary assets. */
 
 .demo {
   position: relative;
@@ -14,6 +13,9 @@
 .wiki-content .demo { height: 260px; margin: 1.25rem 0 2rem; }
 .demo--hero { height: 400px; margin-top: 1.5rem; }
 .demo--feature { height: 280px; flex: 1; min-width: 260px; }
+@media (max-width: 700px) {
+  .demo--feature { width: 100%; min-width: unset; }
+}
 
 .scene-stage {
   position: absolute;
@@ -53,64 +55,6 @@
 .sc-menu-item { display: flex; align-items: center; gap: 0.65em; border-radius: 0.3em; color: var(--text); font-size: 0.98em; font-weight: 600; padding: 0.7em 0.8em; white-space: nowrap; }
 .sc-menu-item--danger { color: #e05555; }
 .sc-spinner { width: 0.95em; height: 0.95em; border: 0.2em solid rgba(224,201,127,0.25); border-top-color: #e0c97f; border-radius: 50%; flex: none; }
-
-/* Shared primitives ---------------------------------------------------- */
-.s-cursor {
-  position: absolute;
-  width: 18px;
-  height: 26px;
-  /* macOS-style pointer: slim black arrow with a real white stroke (an SVG
-     stroke gives a crisp, even outline that a chained drop-shadow can't). */
-  background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 28'><path d='M2 2 L2 22 L7.5 17 L11 25.5 L14 24 L10.5 16 L18 16 Z' fill='%2316161c' stroke='%23ffffff' stroke-width='2.4' stroke-linejoin='round'/></svg>") center/contain no-repeat;
-  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.55)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
-  transform-origin: 10% 7%;    /* press scales from the pointer tip */
-  z-index: 9;
-  pointer-events: none;
-}
-.s-card {
-  position: relative;
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--gold);
-  border-radius: 6px;
-  padding: 10px 12px;
-}
-.s-chip {
-  display: inline-block;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: var(--s3);
-  color: var(--text2);
-  font-size: 9px;
-}
-.s-btn {
-  display: inline-block;
-  padding: 4px 9px;
-  border-radius: 4px;
-  font-size: 9px;
-  letter-spacing: 0.03em;
-  background: var(--s3);
-  color: var(--text);
-}
-.s-btn--gold { background: var(--gold); color: #1a160a; font-weight: 700; }
-.s-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-.s-slot {
-  border: 1px solid var(--border2);
-  border-radius: 4px;
-  background: var(--s2);
-  aspect-ratio: 1;
-}
-.s-slot--filled { border-style: solid; }
-.s-slot--active { border: 1px dashed var(--gold); box-shadow: 0 0 0 2px rgba(201,168,76,0.18); }
-
-/* JS-only perf gate: pause scenes that are off-screen. With no JS the
-   html.js prefix never matches, so animations always run (PE baseline). */
-html.js .demo:not(.is-onscreen) .scene-stage,
-html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !important; }
-
-@media (prefers-reduced-motion: reduce) {
-  .scene-stage, .scene-stage * { animation: none !important; }
-}
 
 /* Scene: Dashboard ----------------------------------------------------- */
 .scene--dashboard .sd-head {

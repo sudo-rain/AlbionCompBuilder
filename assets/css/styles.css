@@ -321,11 +321,6 @@ footer p {
     gap: 1.5rem;
   }
 
-  .demo--feature {
-    width: 100%;
-    min-width: unset;
-  }
-
   #install {
     padding: 2.5rem 1.25rem;
   }

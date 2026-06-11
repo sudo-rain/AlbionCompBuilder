@@ -3,22 +3,6 @@
 // its completed base frame. window.__scenes exposes anims for test freezing.
 (function () {
   var stages = document.querySelectorAll('.demo[data-scene]');
-  var legacy = document.querySelectorAll('.demo:not([data-scene])');
-
-  // Transitional: un-migrated scenes still run CSS animations behind the
-  // html.js/is-onscreen gate that demos.js used to drive. Remove with the gate
-  // in the final cleanup task.
-  if (legacy.length) {
-    legacy.forEach(function (demo) { demo.classList.add('is-onscreen'); });
-    if ('IntersectionObserver' in window) {
-      var legacyObs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          e.target.classList.toggle('is-onscreen', e.isIntersecting);
-        });
-      }, { threshold: 0.1 });
-      legacy.forEach(function (demo) { legacyObs.observe(demo); });
-    }
-  }
 
   // always present, even when no GSAP scenes exist (test/freeze API)
   window.__scenes = {};
@@ -50,19 +34,11 @@
       .to(btn, { boxShadow: '0 0 0 0 rgba(201,168,76,0)', scale: 1,
         duration: 0.3 }, at + 0.18);
   }
-  // Soft pulse ring (replaces sd-pulse / ts-savepulse / xi-pulse-*).
-  function pulse(tl, el, at) {
-    tl.fromTo(el, { boxShadow: '0 0 0 0 rgba(201,168,76,0)' },
-      { boxShadow: '0 0 0 4px rgba(201,168,76,0.4)', scale: 0.97,
-        duration: 0.25, ease: 'power2.out' }, at)
-      .to(el, { boxShadow: '0 0 0 0 rgba(201,168,76,0)', scale: 1,
-        duration: 0.4 }, at + 0.25);
-  }
   // Card entrance (replaces sd-cardin / tp-cartin / xi-cardin).
-  // `from` = {y: '10px'} or {x: '2cqw'} style offset.
-  function cardIn(tl, el, at, from) {
+  // `from` = {y: '10px'} or {x: '2cqw'} style offset. `dur` defaults to 0.5.
+  function cardIn(tl, el, at, from, dur) {
     tl.fromTo(el, Object.assign({ opacity: 0 }, from),
-      { opacity: 1, x: 0, y: 0, duration: 0.5, ease: 'power2.out' }, at);
+      { opacity: 1, x: 0, y: 0, duration: dur || 0.5, ease: 'power2.out' }, at);
   }
   // Camera pan/zoom starting at `at` (replaces be-/ts-/xp-camera).
   function cameraTo(tl, cam, transform, at, dur) {
@@ -373,10 +349,8 @@
       .to(fin, { boxShadow: '0 0 0 0 rgba(201,168,76,0)', scale: 1, duration: 0.52 }, 8.32);
     // Overlay2 fades out: 66%=8.58s → 72%=9.36s (0.78s)
     fadeOut(tl, ov2, 8.58, 0.78);
-    // New card enters: xi-cardin 64%=8.32s → 72%=9.36s (dur=1.04s); y offset matches keyframe
-    // Using fromTo directly since cardIn hardcodes duration:0.5 but keyframe dur=1.04s
-    tl.fromTo(card, { opacity: 0, y: '1.2cqw' },
-      { opacity: 1, y: 0, duration: 1.04, ease: 'power2.out' }, 8.32);
+    // New card enters: xi-cardin 64%=8.32s → 72%=9.36s (dur=1.04s)
+    cardIn(tl, card, 8.32, { y: '1.2cqw' }, 1.04);
     // Cursor returns to "Import from .xlsx": 72%=9.36s, travels from 66%=8.58s, dur=0.78s
     cursorTo(tl, cur, '74.5%', '7.7%', 9.36, 0.78);
     // Cycle pad at 13s
