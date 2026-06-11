@@ -500,7 +500,7 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
    mini-slot-grid + notation). Sized in cqw; used by the picker grid AND the
    save-scene composition. */
 /* full looks kept (not collapsed onto sc-*) until templates-save migrates — its
-   cards still carry bare lc-card/lc-head; re-collapse in that migration */
+   cards still carry bare lc-card/lc-head; re-collapse in the SCENES['templates-save'] migration */
 .scene--templates .lc-card { background: var(--s2); border: 1px solid var(--border); border-radius: 0.6cqw; display: flex; flex-direction: column; overflow: hidden; }
 .scene--templates .lc-head { display: flex; align-items: center; gap: 0.9cqw; background: var(--s3); border-bottom: 1px solid var(--border); padding: 0.9cqw 1.1cqw; }
 .scene--templates .lc-dot { width: 1.3cqw; height: 1.3cqw; border-radius: 50%; flex: none; }
@@ -537,7 +537,7 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--templates-pick .tp-qc { display: grid; grid-template-columns: 4.4cqw 1fr 4.4cqw; gap: 0.8cqw; align-items: center; }
 .scene--templates-pick .tp-step { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s3); color: var(--text); font-size: 1.6cqw; line-height: 1; padding: 0.4cqw 0; text-align: center; }
 .scene--templates-pick .tp-qval { background: var(--s3); border: 1px solid var(--border2); border-radius: 0.5cqw; color: var(--text); text-align: center; font-size: 1.3cqw; padding: 0.5cqw 0; }
-.scene--templates-pick .tp-add { margin-top: auto; border: 0; border-radius: 0.5cqw; background: var(--gold); color: #1a160a; font-weight: 700; font-size: 1.4cqw; padding: 0.9cqw; text-align: center; }
+.scene--templates-pick .tp-add { margin-top: auto; border: 0; font-size: 1.4cqw; padding: 0.9cqw; text-align: center; /* looks from sc-btn--gold; border:0 is deliberate */ }
 
 /* Choreography (~5.2s): cursor presses the Main Tank card -> it gets the real
    .loadout-card-selected look (gold border + ring + gold-tinted header) -> a
