@@ -92,32 +92,32 @@
         <li><strong>Unanimous</strong> — every selected loadout has the same item in that slot.</li>
         <li><strong>Mixed</strong> — the selected loadouts differ in that slot.</li>
       </ul>
-      <figure class="demo scene scene--bulkedit" role="img" aria-label="Animated demo: the three-pane bulk editor applying to 2 loadouts — an equipment pane shows each slot's shared state (Empty Bag and Off Hand, Unanimous slots with shared item icons, and a Mixed Chest), while the dimmed item browser and ability panes give context; a cursor presses the Unanimous Main Hand slot.">
+      <figure class="demo scene scene--bulkedit" data-scene="bulkedit" role="img" aria-label="Animated demo: the three-pane bulk editor applying to 2 loadouts — an equipment pane shows each slot's shared state (Empty Bag and Off Hand, Unanimous slots with shared item icons, and a Mixed Chest), while the dimmed item browser and ability panes give context; a cursor presses the Unanimous Main Hand slot.">
         <div class="scene-stage">
           <div class="be-camera">
           <header class="be-bar">
-            <button class="be-btn">← Back</button>
+            <button class="sc-btn be-btn">← Back</button>
             <span class="be-seg"><span class="on">Gear &amp; Abilities</span><span>Names &amp; Roles</span></span>
             <span class="be-count">applies to 2 loadouts</span>
-            <button class="be-apply">Apply to 2</button>
+            <button class="sc-btn sc-btn--gold be-apply">Apply to 2</button>
           </header>
           <div class="be-panes">
             <aside class="be-equip">
               <div class="be-label">Equipment Slots</div>
               <div class="be-grid">
-                <button class="be-slot"><span class="be-ic"><span class="be-empty">+</span></span><span class="be-sl">Bag</span></button>
-                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_HEAD_LEATHER_SET3@0.png" alt="" loading="lazy"></span><span class="be-sl">Helm</span></button>
-                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_CAPEITEM_MORGANA@0.png" alt="" loading="lazy"></span><span class="be-sl">Cape</span></button>
-                <button class="be-slot be-slot-main"><span class="be-ic be-mh-ic"><img class="be-mh-img" src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span class="be-mh-labels"><span class="be-sl be-mh-label-set">Main Hd</span><span class="be-sl be-sl--mixed be-mh-label-mixed">Mixed</span></span></button>
-                <button class="be-slot"><span class="be-ic be-ic--mixed"></span><span class="be-sl be-sl--mixed">Mixed</span></button>
-                <button class="be-slot"><span class="be-ic"><span class="be-empty">+</span></span><span class="be-sl">Off Hand</span></button>
-                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T7_POTION_REVIVE@0.png" alt="" loading="lazy"></span><span class="be-sl">Potion</span></button>
-                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_SHOES_CLOTH_SET2@0.png" alt="" loading="lazy"></span><span class="be-sl">Boots</span></button>
-                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_MEAL_SANDWICH@1.png" alt="" loading="lazy"></span><span class="be-sl">Food</span></button>
-                <button class="be-slot"><span class="be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_MOUNT_ARMORED_HORSE@0.png" alt="" loading="lazy"></span><span class="be-sl">Mount</span></button>
+                <button class="be-slot"><span class="sc-slot be-ic"><span class="be-empty">+</span></span><span class="be-sl">Bag</span></button>
+                <button class="be-slot"><span class="sc-slot be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_HEAD_LEATHER_SET3@0.png" alt="" loading="lazy"></span><span class="be-sl">Helm</span></button>
+                <button class="be-slot"><span class="sc-slot be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_CAPEITEM_MORGANA@0.png" alt="" loading="lazy"></span><span class="be-sl">Cape</span></button>
+                <button class="be-slot be-slot-main"><span class="sc-slot be-ic be-mh-ic"><img class="be-mh-img" src="https://render.albiononline.com/v1/item/T8_MAIN_ARCANESTAFF@0.png" alt="" loading="lazy"></span><span class="be-mh-labels"><span class="be-sl be-mh-label-set">Main Hd</span><span class="be-sl be-sl--mixed be-mh-label-mixed">Mixed</span></span></button>
+                <button class="be-slot"><span class="sc-slot be-ic be-ic--mixed"></span><span class="be-sl be-sl--mixed">Mixed</span></button>
+                <button class="be-slot"><span class="sc-slot be-ic"><span class="be-empty">+</span></span><span class="be-sl">Off Hand</span></button>
+                <button class="be-slot"><span class="sc-slot be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T7_POTION_REVIVE@0.png" alt="" loading="lazy"></span><span class="be-sl">Potion</span></button>
+                <button class="be-slot"><span class="sc-slot be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_SHOES_CLOTH_SET2@0.png" alt="" loading="lazy"></span><span class="be-sl">Boots</span></button>
+                <button class="be-slot"><span class="sc-slot be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_MEAL_SANDWICH@1.png" alt="" loading="lazy"></span><span class="be-sl">Food</span></button>
+                <button class="be-slot"><span class="sc-slot be-ic be-ic--unanimous"><img src="https://render.albiononline.com/v1/item/T8_MOUNT_ARMORED_HORSE@0.png" alt="" loading="lazy"></span><span class="be-sl">Mount</span></button>
               </div>
               <button class="be-inv">Inventory ▸</button>
-              <div class="be-actions"><button class="be-act">Leave unchanged</button><button class="be-act be-act--danger">Clear for all</button></div>
+              <div class="be-actions"><button class="sc-btn be-act">Leave unchanged</button><button class="sc-btn sc-btn--danger be-act be-act--danger">Clear for all</button></div>
             </aside>
             <section class="be-browser">
               <header class="be-bhead">
@@ -154,7 +154,7 @@
               </div>
             </section>
           </div>
-          <div class="s-cursor"></div>
+          <div class="sc-cursor"></div>
           </div>
         </div>
       </figure>

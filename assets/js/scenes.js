@@ -384,6 +384,96 @@
     return [tl];
   };
 
+  // Keyframe ground truth (10s):
+  //   be-camera:      0-8% full → 8-20% zoom to translate(39.8%,-33.2%) scale(2) → 20-24% hold →
+  //                   24-36% zoom to translate(9.8%,-13%) scale(1.4) → 36-58% hold → 58-72% full → 72-100% full
+  //   be-slotactive:  0-19% outline transparent/no-shadow → 22-100% outline gold+glow (on .be-slot-main .be-ic)
+  //   be-mh-border:   0-38% border #e08840 → 42-100% border #4ec87a (on .be-mh-ic = .be-slot-main .be-ic)
+  //   be-mh-fill:     0-38% opacity:0 scale(0.6) → 42-100% opacity:1 scale(1)
+  //   be-mh-labelset: 0-38% opacity:0 → 42-100% opacity:1
+  //   be-mh-labelmixed: 0-38% opacity:1 → 42-100% opacity:0
+  //   be-itempick:    0-38% transparent/#s3 → 42-100% gold/rgba(201,168,76,0.1)
+  //   be-cursor:      0-6% rest (30%,88%) → 16% arrive (5.2%,38%) → 22% press → 25% release
+  //                   → 34% arrive (52%,40%) → 40% press → 43% release → 58% hold →
+  //                   72% drift to (5.2%,38%) → 100% hold at (5.2%,38%)
+  //   sd-pulse (be-apply): 5s period, 50%=2.5s peak, box-shadow 0 0 0 4px rgba(201,168,76,0.22)
+  // Beats (% × 10s):
+  //   Camera close-up:  transition 0.8s→2.0s (dur=1.2s); hold 2.0-2.4s
+  //   Camera medium:    transition 2.4s→3.6s (dur=1.2s); hold 3.6-5.8s
+  //   Camera full:      transition 5.8s→7.2s (dur=1.4s)
+  //   Cursor arrives slot: 1.6s (6%=0.6s depart, dur=1.0s)
+  //   Press slot: 2.2s; ring appears 2.2s (dur=0.3s)
+  //   Cursor arrives item: 3.4s (25%=2.5s depart, dur=0.9s)
+  //   Press item: 4.0s
+  //   Border/fill/labels/row transition: 3.8s–4.2s (38-42%) dur=0.4s
+  //   Cursor drifts back to slot: 7.2s (58%=5.8s depart, dur=1.4s)
+  //   sd-pulse: 5s period → 2 pulses per 10s cycle; pulse() helper uses 4px which matches sd-pulse
+  // Static base (100% states, kept in CSS):
+  //   .be-mh-ic: border-color:#4ec87a (green), outline-color:var(--gold), glow shown
+  //   .be-mh-img: opacity:1 scale(1)
+  //   .be-mh-label-set: opacity:1
+  //   .be-mh-label-mixed: opacity:0 (position:absolute set in CSS)
+  //   .be-item-target: border-color:gold, background:rgba(201,168,76,0.1)
+  // Beat-table discrepancy: plan said camera close-up 0.8-2s, hold to 2.4 — keyframes confirm
+  //   0-8% full, 20-24% at close-up, so transition ends at 2.0s not 2s, consistent.
+  //   Cursor arrives slot at 16%=1.6s (plan said 1.6s — match). Press item at 40%=4.0s (match).
+  //   Slot transition at 38-42% = 3.8-4.2s (match). Camera full from 58%=5.8s (match).
+  SCENES['bulkedit'] = function (stage) {
+    var q = gsap.utils.selector(stage);
+    var cur = q('.sc-cursor'), cam = q('.be-camera');
+    // .be-mh-ic is the main-hand slot icon cell — same element targeted by .be-slot-main .be-ic
+    var mhIc = q('.be-mh-ic'), mhImg = q('.be-mh-img');
+    var lblSet = q('.be-mh-label-set'), lblMix = q('.be-mh-label-mixed');
+    var itemRow = q('.be-item-target'), applyBtn = q('.be-apply');
+    var tl = gsap.timeline({ repeat: -1 });
+    // t=0 "before" states (old 0% keyframe values); base CSS already sets the 100% resting look
+    tl.set(cur, { left: '30%', top: '88%', scale: 1 }, 0)
+      .set(cam, { transform: 'translate(0,0) scale(1)' }, 0)
+      // Border starts orange (be-mh-border 0-38%); outline transparent (be-slotactive 0-19%)
+      .set(mhIc, { borderColor: '#e08840', outlineColor: 'transparent', boxShadow: 'none' }, 0)
+      // Image hidden (be-mh-fill 0-38%)
+      .set(mhImg, { opacity: 0, scale: 0.6 }, 0)
+      // Label: "Mixed" shown, "Main Hd" hidden (be-mh-labelset/labelmixed 0-38%)
+      .set(lblSet, { opacity: 0 }, 0)
+      .set(lblMix, { opacity: 1 }, 0)
+      // Item row unhighlighted (be-itempick 0-38%)
+      .set(itemRow, { borderColor: 'transparent', backgroundColor: '#1f1f2e' }, 0);
+    // Camera close-up: 8%=0.8s start, 20%=2.0s arrive; dur=1.2s
+    cameraTo(tl, cam, 'translate(39.8%, -33.2%) scale(2)', 0.8, 1.2);
+    // Cursor travels to Main Hand slot; arrives 16%=1.6s, departs 6%=0.6s, dur=1.0s
+    cursorTo(tl, cur, '5.2%', '38%', 1.6, 1.0);
+    // Press Main Hand slot at 22%=2.2s
+    press(tl, cur, 2.2);
+    // Gold ring appears at press (be-slotactive 22%); outline-offset:0.2cqw is static in CSS
+    tl.to(mhIc, { outlineColor: '#c9a84c',
+      boxShadow: '0 0 0 0.3cqw rgba(201,168,76,0.18), 0 0 1.2cqw rgba(201,168,76,0.3)',
+      duration: 0.3 }, 2.2);
+    // Camera medium: 24%=2.4s start, 36%=3.6s arrive; dur=1.2s
+    cameraTo(tl, cam, 'translate(9.8%, -13%) scale(1.4)', 2.4, 1.2);
+    // Cursor travels to Arcane Staff item row; arrives 34%=3.4s, departs 25%=2.5s, dur=0.9s
+    cursorTo(tl, cur, '52%', '40%', 3.4, 0.9);
+    // Press Arcane Staff row at 40%=4.0s
+    press(tl, cur, 4.0);
+    // Slot SET transition at 38%=3.8s–42%=4.2s (dur=0.4s): border green, icon appears, labels swap, row highlights
+    tl.to(mhIc, { borderColor: '#4ec87a', duration: 0.4 }, 3.8)
+      .to(mhImg, { opacity: 1, scale: 1, duration: 0.4 }, 3.8)
+      .to(lblSet, { opacity: 1, duration: 0.4 }, 3.8)
+      .to(lblMix, { opacity: 0, duration: 0.4 }, 3.8)
+      .to(itemRow, { borderColor: '#c9a84c', backgroundColor: 'rgba(201,168,76,0.1)', duration: 0.4 }, 3.8);
+    // Camera returns to full: 58%=5.8s start, 72%=7.2s arrive; dur=1.4s
+    cameraTo(tl, cam, 'translate(0,0) scale(1)', 5.8, 1.4);
+    // Cursor drifts back to set slot: arrives 72%=7.2s, departs 58%=5.8s, dur=1.4s
+    cursorTo(tl, cur, '5.2%', '38%', 7.2, 1.4);
+    // Cycle pad at 10s
+    tl.set({}, {}, 10);
+    // Separate looping pulse for Apply button: sd-pulse was 5s period, 4px ring (pulse() helper matches)
+    // 2 pulses per 10s cycle; first pulse starts at 0 (peak at 0.25s), second at 5.0s (peak at 5.25s)
+    var applyPulse = gsap.timeline({ repeat: -1 });
+    pulse(applyPulse, applyBtn, 0);
+    applyPulse.set({}, {}, 5);
+    return [tl, applyPulse];
+  };
+
   /* ---- init ------------------------------------------------------------ */
   stages.forEach(function (stage) {
     var name = stage.getAttribute('data-scene');
