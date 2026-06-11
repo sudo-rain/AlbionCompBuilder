@@ -122,24 +122,10 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
   0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
   50% { box-shadow: 0 0 0 4px rgba(201,168,76,0.22); }
 }
-/* New Composition button depresses + flashes the instant the cursor presses. */
-.scene--dashboard .sd-new { animation: sd-click 5s ease-in-out infinite; }
-@keyframes sd-click {
-  0%, 24% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
-  29% { box-shadow: 0 0 0 4px rgba(201,168,76,0.32); transform: scale(0.95); }
-  36%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); transform: none; }
-}
 .scene--dashboard .sd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-/* Cursor travels to the New Composition button (top-right) and presses at 30%;
-   the new card (sd-cardin) appears at 34%. */
-.scene--dashboard .s-cursor { left: 42%; top: 66%; animation: sd-cursor 5s ease-in-out infinite; }
-@keyframes sd-cursor {
-  0%, 6% { left: 42%; top: 66%; transform: scale(1); }
-  26% { left: 84%; top: 7%; transform: scale(1); }
-  30% { left: 84%; top: 7%; transform: scale(0.78); }
-  35% { left: 84%; top: 7%; transform: scale(1); }
-  100% { left: 84%; top: 7%; transform: scale(1); }
-}
+/* Cursor rest position; motion is handled by the GSAP timeline. */
+.scene--dashboard .sc-cursor { left: 42%; top: 66%; }
+.scene--dashboard .sd-card { border-left: 3px solid var(--gold); padding: 10px 12px; }
 .scene--dashboard .sd-card .sd-row1 { display: flex; align-items: center; gap: 6px; }
 .scene--dashboard .sd-handle { color: var(--text3); letter-spacing: 1px; }
 .scene--dashboard .sd-name { color: var(--text); font-weight: 700; font-size: 12px; }
@@ -148,14 +134,6 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 .scene--dashboard .sd-chips { display: flex; gap: 5px; margin-bottom: 8px; }
 .scene--dashboard .sd-actions { display: flex; gap: 6px; justify-content: flex-end; }
 .scene--dashboard .sd-del { background: #5a2730; color: #f0c0c4; }
-.scene--dashboard .sd-card--new {
-  animation: sd-cardin 5s ease-in-out infinite;
-}
-@keyframes sd-cardin {
-  0%, 18% { opacity: 0; transform: translateY(10px); }
-  34%, 82% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(10px); }
-}
 /* selection variant (bulk-edit): faithful loadout cards (header + mini slot-icon
    grid + notation, matching the app's .loadout-card) selected one then the other. */
 .wiki-content .demo.scene--dashboard-select { height: 300px; }   /* taller so the full card fits */

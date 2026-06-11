@@ -91,6 +91,21 @@
      animations (timelines/tweens). Builders are added per migration task. */
   var SCENES = {};
 
+  SCENES['dashboard'] = function (stage) {
+    var q = gsap.utils.selector(stage);
+    var cur = q('.sc-cursor'), btn = q('.sd-new'), card = q('.sd-card--new');
+    var tl = gsap.timeline({ repeat: -1, repeatDelay: 0 });
+    tl.set(cur, { left: '42%', top: '66%', scale: 1 }, 0)
+      .set(card, { opacity: 0, y: 10 }, 0);
+    cursorTo(tl, cur, '84%', '7%', 1.3, 1.0);
+    press(tl, cur, 1.5);
+    clickFlash(tl, btn, 1.45);
+    cardIn(tl, card, 1.7, { y: 10 });
+    tl.to(card, { opacity: 0, y: 10, duration: 0.6 }, 4.3)  // matches old 82→100% fade-back
+      .to({}, {}, 5);                                        // pad cycle to 5s
+    return [tl];
+  };
+
   /* ---- init ------------------------------------------------------------ */
   stages.forEach(function (stage) {
     var name = stage.getAttribute('data-scene');
