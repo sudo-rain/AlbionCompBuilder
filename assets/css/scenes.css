@@ -708,9 +708,9 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 /* composition card grid (mirrors .composition-grid + .sd-card) */
 .scene--export-import .xi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; align-content: start; }
 /* sd-card: sc-card provides background/border/display/flex-direction/overflow;
-   overrides: border (1px solid var(--border) vs border2), border-radius (0.6cqw vs 0.55em),
-   padding (1.2cqw 1.3cqw). sc-card is position:relative — no regression. */
-.scene--export-import .sd-card { border-color: var(--border); /* #2a2a3e */ border-radius: 0.6cqw; padding: 1.2cqw 1.3cqw; }
+   overrides: border-radius (0.6cqw vs 0.55em), padding (1.2cqw 1.3cqw).
+   sc-card is position:relative — no regression. */
+.scene--export-import .sd-card { border-radius: 0.6cqw; padding: 1.2cqw 1.3cqw; }
 .scene--export-import .sd-row1 { display: flex; align-items: center; gap: 0.8cqw; }
 .scene--export-import .sd-handle { color: var(--text3); font-size: 1.5cqw; letter-spacing: 1px; }
 .scene--export-import .sd-name { color: var(--text); font-weight: 700; font-size: 1.55cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -727,6 +727,7 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 /* xi-overlay (worksheet picker backdrop): sc-overlay provides position/inset/display/
    align-items/justify-content/background/z-index(8); identical — no override needed.
    Base = opacity:0 (GSAP sets at t=0). */
+.scene--export-import .xi-overlay { opacity: 0; }  /* hidden at rest (base frame); timeline fades it in/out */
 /* xi-modal (worksheet picker): sc-modal provides background/border/border-radius/padding/box-shadow;
    overrides: width (56cqw), border-radius (0.8cqw vs 0.6em), padding (2cqw 2.2cqw vs 1.6em 1.75em),
    box-shadow (cqw-based vs em-based). */
@@ -756,7 +757,7 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 /* xi-overlay2: sc-overlay provides position/inset/display/align-items/justify-content/
    background/z-index(8); old xi-overlay2 had z-index:9 — override to keep cursor
    (z-index:9) rendering above both overlays when both are visible. */
-.scene--export-import .xi-overlay2 { z-index: 9; /* old: z-index:9 — cursor is also z-index:9; DOM order (overlay2 before cursor) means cursor renders on top */ }
+.scene--export-import .xi-overlay2 { z-index: 9; opacity: 0; /* hidden at rest; old: z-index:9 — cursor is also z-index:9; DOM order (overlay2 before cursor) means cursor renders on top */ }
 /* xi-modal2: sc-modal provides background/border/border-radius/padding/box-shadow;
    overrides: width (48cqw), border-radius (0.8cqw), padding (2cqw 2.2cqw), box-shadow */
 .scene--export-import .xi-modal2 { width: 48cqw; border-radius: 0.8cqw; padding: 2cqw 2.2cqw; box-shadow: 0 2cqw 5cqw rgba(0,0,0,0.55); }
