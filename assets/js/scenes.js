@@ -102,7 +102,7 @@
     clickFlash(tl, btn, 1.45);
     cardIn(tl, card, 1.7, { y: 10 });
     tl.to(card, { opacity: 0, y: 10, duration: 0.6 }, 4.3)  // matches old 82→100% fade-back
-      .to({}, {}, 5);                                        // pad cycle to 5s
+      .set({}, {}, 5);                       // zero-duration pad: cycle ends at exactly 5s
     return [tl];
   };
 

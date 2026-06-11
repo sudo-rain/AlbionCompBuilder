@@ -124,7 +124,7 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 }
 .scene--dashboard .sd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 /* Cursor rest position; motion is handled by the GSAP timeline. */
-.scene--dashboard .sc-cursor { left: 42%; top: 66%; }
+.scene--dashboard .sc-cursor { left: 42%; top: 66%; } /* no-JS/pre-GSAP baseline; the timeline set()s the same rest position at t=0 */
 .scene--dashboard .sd-card { border-left: 3px solid var(--gold); padding: 10px 12px; }
 .scene--dashboard .sd-card .sd-row1 { display: flex; align-items: center; gap: 6px; }
 .scene--dashboard .sd-handle { color: var(--text3); letter-spacing: 1px; }
