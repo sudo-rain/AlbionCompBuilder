@@ -499,8 +499,12 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 /* Shared faithful loadout card (mirrors .loadout-card: header + 3-col
    mini-slot-grid + notation). Sized in cqw; used by the picker grid AND the
    save-scene composition. */
-.scene--templates .lc-card { background: var(--s2); border: 1px solid var(--border); border-radius: 0.6cqw; display: flex; flex-direction: column; overflow: hidden; }
-.scene--templates .lc-head { display: flex; align-items: center; gap: 0.9cqw; background: var(--s3); border-bottom: 1px solid var(--border); padding: 0.9cqw 1.1cqw; }
+/* lc-card: sc-card provides background/border/display/flex-direction/overflow;
+   border-radius kept as override (0.6cqw vs sc-card's 0.55em≈8.8px at 16px). */
+.scene--templates .lc-card { border-radius: 0.6cqw; }
+/* lc-head: sc-head provides display/align-items/background/border-bottom;
+   gap and padding kept as overrides (0.9cqw/0.9cqw 1.1cqw vs sc-head's 0.7em/0.7em 0.85em). */
+.scene--templates .lc-head { gap: 0.9cqw; padding: 0.9cqw 1.1cqw; }
 .scene--templates .lc-dot { width: 1.3cqw; height: 1.3cqw; border-radius: 50%; flex: none; }
 .scene--templates .lc-title { flex: 1; color: var(--text); font-weight: 700; font-size: 1.55cqw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .scene--templates .lc-btn { border: 1px solid var(--border2); border-radius: 0.5cqw; background: var(--s2); color: var(--text2); font-size: 1.15cqw; padding: 0.35cqw 0.8cqw; flex: none; }
@@ -540,28 +544,14 @@ html.js .demo:not(.is-onscreen) .scene-stage * { animation-play-state: paused !i
 /* Choreography (~5.2s): cursor presses the Main Tank card -> it gets the real
    .loadout-card-selected look (gold border + ring + gold-tinted header) -> a
    Main Tank row flies into Selected (with its quantity-control) and the Add
-   button brightens from disabled. Base = COMPLETED, so reduced-motion rests on
-   the finished frame. */
-.scene--templates-pick .tp-pick { border-color: var(--gold); box-shadow: 0 0 0 0.18cqw rgba(201,168,76,0.45); animation: tp-pickring 5.2s ease-in-out infinite; }
-@keyframes tp-pickring {
-  0%, 44% { border-color: var(--border); box-shadow: none; }
-  52%, 100% { border-color: var(--gold); box-shadow: 0 0 0 0.18cqw rgba(201,168,76,0.45); }
-}
-.scene--templates-pick .tp-pick .lc-head { background: rgba(201,168,76,0.16); animation: tp-headtint 5.2s ease-in-out infinite; }
-@keyframes tp-headtint { 0%, 44% { background: var(--s3); } 52%, 100% { background: rgba(201,168,76,0.16); } }
-.scene--templates-pick .tp-cart-fly { opacity: 1; animation: tp-cartin 5.2s ease-in-out infinite; }
-@keyframes tp-cartin { 0%, 48% { opacity: 0; transform: translateX(2cqw); } 60%, 100% { opacity: 1; transform: translateX(0); } }
-.scene--templates-pick .tp-add { animation: tp-addon 5.2s ease-in-out infinite; }
-@keyframes tp-addon { 0%, 50% { opacity: 0.4; } 60%, 100% { opacity: 1; } }
-/* cursor presses the first (Main Tank) card ~50%; target measured on-canvas */
-.scene--templates-pick .s-cursor { width: max(15px, 2.2cqw); height: max(21px, 3.1cqw); left: 29.9%; top: 49.4%; animation: tp-cursor 5.2s ease-in-out infinite; }
-@keyframes tp-cursor {
-  0%, 6% { left: 62%; top: 92%; transform: scale(1); }
-  44% { left: 29.9%; top: 49.4%; transform: scale(1); }
-  50% { left: 29.9%; top: 49.4%; transform: scale(0.78); }
-  56% { left: 29.9%; top: 49.4%; transform: scale(1); }
-  100% { left: 29.9%; top: 49.4%; transform: scale(1); }
-}
+   button brightens from disabled. Base = COMPLETED (reduced-motion rests on
+   the finished frame); motion driven by SCENES['templates-pick'] GSAP timeline. */
+/* Base (completed) state — GSAP timeline animates from unselected to this: */
+.scene--templates-pick .tp-pick { border-color: var(--gold); box-shadow: 0 0 0 0.18cqw rgba(201,168,76,0.45); }
+.scene--templates-pick .tp-pick .sc-head { background: rgba(201,168,76,0.16); }
+.scene--templates-pick .tp-cart-fly { opacity: 1; }
+/* Cursor rest position (62%,92%); GSAP timeline overrides at t=0 and animates from there. */
+.scene--templates-pick .sc-cursor { width: max(15px, 2.2cqw); height: max(21px, 3.1cqw); left: 62%; top: 92%; }
 
 /* === Save flow (scene--templates-save): cinematic discovery path === */
 /* A camera (.ts-camera, transform-origin 0 0) zooms into the focal card for the

@@ -183,21 +183,21 @@
           <p>Save reusable role loadouts — Main Tank, Healer, DPS — and apply them across compositions. Build your standard roles once and reuse them every rally.</p>
           <a href="wiki/loadout-templates/" class="link-learn">Learn more →</a>
         </div>
-        <figure class="demo demo--feature scene scene--templates scene--templates-pick" role="img" aria-label="Animated demo: the Add from Template picker — selecting the Main Tank loadout card so it lands in the Selected Templates cart with a quantity control.">
+        <figure class="demo demo--feature scene scene--templates scene--templates-pick" data-scene="templates-pick" role="img" aria-label="Animated demo: the Add from Template picker — selecting the Main Tank loadout card so it lands in the Selected Templates cart with a quantity control.">
           <div class="scene-stage">
             <div class="tp-head"><span class="tp-title">Add from Template</span></div>
             <div class="tp-body">
               <div class="tp-filters">
-                <span class="tp-filter on">All</span>
-                <span class="tp-filter">DPS</span>
-                <span class="tp-filter">Tank</span>
-                <span class="tp-filter">Support</span>
-                <span class="tp-filter">Healer</span>
-                <span class="tp-filter">Battlemount</span>
+                <span class="sc-btn tp-filter on">All</span>
+                <span class="sc-btn tp-filter">DPS</span>
+                <span class="sc-btn tp-filter">Tank</span>
+                <span class="sc-btn tp-filter">Support</span>
+                <span class="sc-btn tp-filter">Healer</span>
+                <span class="sc-btn tp-filter">Battlemount</span>
               </div>
               <div class="tp-grid">
-                <article class="lc-card tp-pick">
-                  <div class="lc-head"><span class="lc-dot" style="background:#4a90d9"></span><span class="lc-title">Main Tank</span></div>
+                <article class="sc-card lc-card tp-pick">
+                  <div class="sc-head lc-head"><span class="lc-dot" style="background:#4a90d9"></span><span class="lc-title">Main Tank</span></div>
                   <div class="lc-grid">
                     <span class="lc-slot lc-slot--empty"></span>
                     <span class="lc-slot"><img src="https://render.albiononline.com/v1/item/T8_HEAD_PLATE_SET3.png" alt=""></span>
@@ -214,8 +214,8 @@
                   </div>
                   <div class="lc-notation">Q2·W4-P1 / R3-P1 / D1-P2 / F2-P1</div>
                 </article>
-                <article class="lc-card">
-                  <div class="lc-head"><span class="lc-dot" style="background:#4ec87a"></span><span class="lc-title">Main Healer</span></div>
+                <article class="sc-card lc-card">
+                  <div class="sc-head lc-head"><span class="lc-dot" style="background:#4ec87a"></span><span class="lc-title">Main Healer</span></div>
                   <div class="lc-grid">
                     <span class="lc-slot lc-slot--empty"></span>
                     <span class="lc-slot"><img src="https://render.albiononline.com/v1/item/T8_HEAD_CLOTH_SET2.png" alt=""></span>
@@ -236,13 +236,13 @@
               <div class="tp-cart">
                 <h3>Selected Templates</h3>
                 <div class="tp-cart-row tp-cart-fly">
-                  <div class="tp-cart-rowhead"><strong>Main Tank</strong><span class="tp-remove">Remove</span></div>
+                  <div class="tp-cart-rowhead"><strong>Main Tank</strong><span class="sc-btn tp-remove">Remove</span></div>
                   <div class="tp-qc"><span class="tp-step">−</span><span class="tp-qval">1</span><span class="tp-step">+</span></div>
                 </div>
-                <span class="tp-add">Add 1 Loadout</span>
+                <span class="sc-btn sc-btn--gold tp-add">Add 1 Loadout</span>
               </div>
             </div>
-            <span class="s-cursor"></span>
+            <span class="sc-cursor"></span>
           </div>
         </figure>
       </div>

@@ -127,6 +127,42 @@
     return [tl];
   };
 
+  // Keyframe ground truth (5.2s):
+  //   tp-cursor:  0-6% rest (62%,92%) → 44% arrive (29.9%,49.4%) → 50% press → 56% release → 100% stay
+  //   tp-pickring: 0-44% unsel (border:#2a2a3e,shadow:none) → 52-100% sel (gold border + ring); no revert
+  //   tp-headtint: 0-44% bg var(--s3)=#1f1f2e → 52-100% gold tint; no revert
+  //   tp-cartin:  0-48% (opacity:0, x:2cqw) → 60-100% (opacity:1, x:0); no revert
+  //   tp-addon:   0-50% opacity:0.4 → 60-100% opacity:1; no revert
+  // Beat-table discrepancy: plan said "revert at 5.2s" — keyframes stay selected. Also --s3=#1f1f2e not #1f1f2c.
+  SCENES['templates-pick'] = function (stage) {
+    var q = gsap.utils.selector(stage);
+    var cur = q('.sc-cursor'), pick = q('.tp-pick'), head = q('.tp-pick .sc-head'),
+        fly = q('.tp-cart-fly'), add = q('.tp-add');
+    var tl = gsap.timeline({ repeat: -1 });
+    // Cursor rests at (62%,92%) per old s-cursor rule 0-6% keyframe
+    tl.set(cur, { left: '62%', top: '92%', scale: 1 }, 0)
+      // pick card: resting border = var(--border)=#2a2a3e (provided by sc-card after rename)
+      .set(pick, { borderColor: '#2a2a3e', boxShadow: 'none' }, 0)
+      // head bg: var(--s3)=#1f1f2e (NOT #1f1f2c as plan stated)
+      .set(head, { backgroundColor: '#1f1f2e' }, 0)
+      .set(fly, { opacity: 0, x: '2cqw' }, 0)
+      .set(add, { opacity: 0.4 }, 0);
+    // Cursor arrives at card at 2.29s (44% × 5.2); travels 1.9s from 0.39s
+    cursorTo(tl, cur, '29.9%', '49.4%', 2.29, 1.9);
+    // Press at 2.6s (50% × 5.2)
+    press(tl, cur, 2.6);
+    // Card selected look: transition 44%→52% = 2.29s–2.70s; start at 2.29s, duration 0.41s
+    tl.to(pick, { borderColor: '#c9a84c', boxShadow: '0 0 0 0.18cqw rgba(201,168,76,0.45)', duration: 0.41 }, 2.29)
+      .to(head, { backgroundColor: 'rgba(201,168,76,0.16)', duration: 0.41 }, 2.29);
+    // Cart row flies in: 48%=2.496s→60%=3.12s; cardIn duration=0.5s starts at ~2.5s (60%-0.5s=2.62, use 2.5 to match old keyframe start)
+    cardIn(tl, fly, 2.5, { x: '2cqw' });
+    // Add brightens: 50%=2.6s→60%=3.12s = 0.52s transition
+    tl.to(add, { opacity: 1, duration: 0.52 }, 2.6)
+      // Cycle pad: end at exactly 5.2s (no revert — keyframes hold selected state at 100%)
+      .set({}, {}, 5.2);
+    return [tl];
+  };
+
   /* ---- init ------------------------------------------------------------ */
   stages.forEach(function (stage) {
     var name = stage.getAttribute('data-scene');
