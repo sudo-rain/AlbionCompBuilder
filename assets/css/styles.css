@@ -31,6 +31,7 @@ body {
 .btn {
   display: inline-block;
   padding: 0.6rem 1.4rem;
+  border: 1px solid transparent;
   border-radius: 4px;
   font-weight: 600;
   font-size: 0.95rem;
@@ -46,6 +47,17 @@ body {
 .btn-gold {
   background: var(--gold);
   color: #09090e;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+.btn-ghost:hover {
+  opacity: 1;
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
 .btn-full {
@@ -331,15 +343,6 @@ footer p {
 }
 
 /* ===== Wiki ===== */
-.nav-wiki-link {
-  color: var(--text);
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.nav-wiki-link:hover {
-  color: var(--gold);
-}
 
 .link-learn {
   color: var(--gold);
