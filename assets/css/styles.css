@@ -296,6 +296,12 @@ footer a:hover {
   text-decoration: underline;
 }
 
+.footer-sep {
+  color: var(--text3);
+  font-size: 0.95rem;
+  margin: 0 0.75rem;
+}
+
 footer p {
   color: var(--text3);
   font-size: 0.85rem;
